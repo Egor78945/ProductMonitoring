@@ -14,3 +14,19 @@ services:
     restart: on-failure
     ports:
       - ${SERVICE_DISCOVERY_PORT_OUTER}:${SERVICE_DISCOVERY_PORT_INNER}
+
+  api-gateway:
+    container_name: ${API_GATEWAY_HOST}
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+        API_GATEWAY_PORT_OUTER: ${API_GATEWAY_PORT_OUTER}
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - service-discovery
+    ports:
+      - ${API_GATEWAY_PORT_OUTER}:${API_GATEWAY_PORT_INNER}

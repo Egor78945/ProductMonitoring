@@ -30,3 +30,16 @@ services:
       - service-discovery
     ports:
       - ${API_GATEWAY_PORT_OUTER}:${API_GATEWAY_PORT_INNER}
+
+  postgres:
+    container_name: ${POSTGRES_HOST}
+    image: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE_USER_NAME}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - ${POSTGRES_PORT_OUTER}:${POSTGRES_PORT_INNER}

@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: v6-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: account
+      changes:
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+                  autoIncrement: true
+              - column:
+                  name: uuid
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: user_uuid
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+                    foreignKeyName: account_users_uuid
+                    referencedTableName: users
+                    referencedColumnNames: uuid
+              - column:
+                  name: status_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: account_account_status_id
+                    referencedTableName: account_status
+                    referencedColumnNames: id
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false

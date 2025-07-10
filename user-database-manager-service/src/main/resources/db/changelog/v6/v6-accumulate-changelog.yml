@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: ./v6-create-account-table-changelog.yml
+      relativeToChangelogFile: true

@@ -20,4 +20,4 @@ eureka:
     fetch-registry: true
 
 server:
-  port: ${USER_DATABASE_MANAGER_SERVICE_PORT_INNER}
+  port: ${USER_DATABASE_MANAGER_SERVICE_PORT}

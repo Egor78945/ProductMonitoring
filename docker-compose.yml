@@ -43,3 +43,17 @@ services:
       - .env
     ports:
       - ${POSTGRES_PORT_OUTER}:${POSTGRES_PORT_INNER}
+
+  user-database-manager-service:
+    container_name: ${USER_DATABASE_MANAGER_SERVICE_HOST}
+    build:
+      context: ./user-database-manager-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - service-discovery
+      - postgres

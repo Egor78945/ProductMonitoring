@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
       args:
         JAVA_VERSION: ${JAVA_VERSION}
-        API_GATEWAY_PORT_OUTER: ${API_GATEWAY_PORT_OUTER}
+        API_GATEWAY_PORT_INNER: ${API_GATEWAY_PORT_INNER}
     restart: on-failure
     env_file:
       - .env

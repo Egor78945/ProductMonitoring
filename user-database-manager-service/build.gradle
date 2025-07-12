@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "$springBootVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id 'com.google.protobuf' version "$protobufVersion"
     id 'nu.studer.jooq' version "$nuStuderJooqVersion"
 }
 
@@ -23,6 +24,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation "net.devh:grpc-server-spring-boot-starter:$grpcServerSpringBootStarterVersion"
+    implementation "com.google.protobuf:protobuf-java:$protobufJavaVersion"
+    implementation "com.google.guava:guava:$guavaVersion"
+    implementation "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -31,6 +36,24 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protocVersion"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$protocGenGrpcJavaVersion"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
     }
 }
 
@@ -47,9 +70,9 @@ jooq {
                 logging = Logging.DEBUG
                 jdbc {
                     driver = 'org.postgresql.Driver'
-                    url = "jdbc:postgresql://localhost:5433/users"
-                    user = "test"
-                    password = "test"
+                    url = "jdbc:postgresql://${System.getenv('POSTGRES_HOST')}:${System.getenv('POSTGRES_PORT_INNER')}/${System.getenv('POSTGRES_DATABASE_USER_NAME')}"
+                    user = "${System.getenv('POSTGRES_USERNAME')}"
+                    password = "${System.getenv('POSTGRES_PASSWORD')}"
                     properties {
                         property {
                             key = 'ssl'

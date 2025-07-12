@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package com.example.grpc.user;
+
+message UserMessage {
+  optional int64 id = 1;
+  string uuid = 2;
+  string email = 3;
+  int64 status_id = 4;
+  int64 registered_at = 5;
+  repeated int64 role_id_list = 6;
+}
+
+message AccountMessage {
+  optional int64 id = 1;
+  string uuid = 2;
+  string user_uuid = 3;
+  int64 status_id = 4;
+  int64 created_at = 5;
+}
+
+message BooleanMessage {
+  bool boolean = 1;
+}
+
+message StringMessage {
+  string string = 1;
+}
+
+service UserProtoService {
+  rpc registerUser(UserMessage) returns (BooleanMessage);
+  rpc registerAccount(AccountMessage) returns (BooleanMessage);
+  rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
+  rpc getUserByUUID(StringMessage) returns (UserMessage);
+  rpc getAccountByUUID(StringMessage) returns (AccountMessage);
+  rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
+}

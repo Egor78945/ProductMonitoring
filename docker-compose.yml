@@ -31,6 +31,15 @@ services:
     ports:
       - ${API_GATEWAY_PORT_OUTER}:${API_GATEWAY_PORT_INNER}
 
+  nginx:
+    image: nginx
+    volumes:
+      - ./configuration/nginx/nginx.conf:/etc/nginx/nginx.conf
+    env_file:
+      - .env
+    ports:
+      - ${NGINX_PORT_OUTER}:${NGINX_PORT_INNER}
+
   postgres:
     container_name: ${POSTGRES_HOST}
     image: postgres

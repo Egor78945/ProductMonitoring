@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: v3-2
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT COUNT(*) FROM user_role"
+      changes:
+        - loadData:
+            tableName: user_role
+            file: db/csv/user_role_table.csv
+            separator: ","
+            usePreparedStatements: true
+            columns:
+              - column:
+                  name: name
+                  type: varchar(30)

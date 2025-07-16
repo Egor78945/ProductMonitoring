@@ -2,3 +2,6 @@ databaseChangeLog:
   - include:
       file: ./v1-create-user-status-table-changelog.yml
       relativeToChangelogFile: true
+  - include:
+      file: ./v1-fill-user-status-table-changelog.yml
+      relativeToChangelogFile: true

@@ -125,3 +125,15 @@ tasks.named('generateJooq').configure {
         languageVersion = JavaLanguageVersion.of(javaVersion)
     }
 }
+
+tasks.register('update', JavaExec) {
+    mainClass = "liquibase.integration.commandline.Main"
+    classpath = sourceSets.main.runtimeClasspath
+    args = [
+            "--changeLogFile=src/main/resources/db/changelog/main/main-changelog.yml",
+            "--url=jdbc:postgresql://localhost:5433/users",
+            "--username=test",
+            "--password=test",
+            "update"
+    ]
+}

@@ -1,6 +1,7 @@
 package com.example.user_database_manager_service.repository.user.role;
 
-import com.example.user_database_manager_service.model.user.role.entity.UserRole;
+import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.service.user.role.mapper.UserRoleMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -18,19 +19,19 @@ public class UserRoleEntityRepositoryManager implements UserRoleEntityRepository
     }
 
     @Override
-    public Optional<UserRole> getById(Long id) {
+    public Optional<UserProtoConfiguration.UserRoleMessage> getById(Long id) {
         return dslContext
                 .select(Tables.USERS_ROLES.ID, Tables.USERS_ROLES.USER_UUID, Tables.USERS_ROLES.ROLE_ID)
                 .from(Tables.USERS_ROLES)
                 .where(Tables.USERS_ROLES.ID.eq(id))
-                .fetchOptionalInto(UserRole.class);
+                .fetchOptional(UserRoleMapper::mapTo);
     }
 
     @Override
-    public void save(UserRole userRole) {
+    public void save(UserProtoConfiguration.UserRoleMessage userRole) {
         dslContext
                 .insertInto(Tables.USERS_ROLES)
-                .set(Tables.USERS_ROLES.USER_UUID, userRole.getUserUUID())
+                .set(Tables.USERS_ROLES.USER_UUID, UUID.fromString(userRole.getUserUUID()))
                 .set(Tables.USERS_ROLES.ROLE_ID, userRole.getRoleId())
                 .execute();
     }
@@ -46,12 +47,12 @@ public class UserRoleEntityRepositoryManager implements UserRoleEntityRepository
     }
 
     @Override
-    public List<UserRole> getUserRolesByUserUUID(UUID userUUID) {
+    public List<UserProtoConfiguration.UserRoleMessage> getUserRolesByUserUUID(UUID userUUID) {
         return dslContext
                 .select(Tables.USERS_ROLES.ID, Tables.USERS_ROLES.USER_UUID, Tables.USERS_ROLES.ROLE_ID)
                 .from(Tables.USERS_ROLES)
                 .where(Tables.USERS_ROLES.USER_UUID.eq(userUUID))
-                .fetchInto(UserRole.class);
+                .fetch(UserRoleMapper::mapTo);
     }
 
     @Override

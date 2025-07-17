@@ -1,18 +1,15 @@
 package com.example.user_database_manager_service.repository.user;
 
-import com.example.user_database_manager_service.model.user.entity.User;
+import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.repository.EntityRepository;
 
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserEntityRepository<ID extends Serializable, U extends User> {
-    Optional<U> getById(ID id);
-    void save(U entity);
-    boolean existsById(ID id);
-    Optional<User> getByUUID(UUID uuid);
+public interface UserEntityRepository extends EntityRepository<Long, UserProtoConfiguration.UserMessage> {
+    Optional<UserProtoConfiguration.UserMessage> getByUUID(UUID uuid);
 
-    Optional<User> getByEmail(String email);
+    Optional<UserProtoConfiguration.UserMessage> getByEmail(String email);
 
     boolean existsByUUID(UUID uuid);
 

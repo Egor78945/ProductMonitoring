@@ -1,8 +1,8 @@
 package com.example.user_database_manager_service.service.user;
 
+import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.model.user.entity.User;
 import com.example.user_database_manager_service.repository.user.UserEntityRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,21 @@ import java.util.UUID;
 
 @Service
 public class UserServiceManager implements UserService {
-    private final UserEntityRepository<Long, User> userEntityRepository;
+    private final UserEntityRepository userEntityRepository;
 
-    public UserServiceManager(UserEntityRepository<Long, User> userEntityRepository) {
+    public UserServiceManager(UserEntityRepository userEntityRepository) {
         this.userEntityRepository = userEntityRepository;
     }
 
     @Override
-    public void save(User user) {
-        if(!existsByEmail(user.getEmail()) && !existsByUUID(user.getUuid())) {
+    public void save(UserProtoConfiguration.UserMessage user) {
+        if(!existsByEmail(user.getEmail()) && !existsByUUID(UUID.fromString(user.getUuid()))) {
             userEntityRepository.save(user);
         } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
     }
 
     @Override
-    public User findById(Long id) {
+    public UserProtoConfiguration.UserMessage findById(Long id) {
         return userEntityRepository.getById(id).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
@@ -34,12 +34,12 @@ public class UserServiceManager implements UserService {
     }
 
     @Override
-    public User findByUUID(UUID uuid) {
+    public UserProtoConfiguration.UserMessage findByUUID(UUID uuid) {
         return userEntityRepository.getByUUID(uuid).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
-    public User findByEmail(String email) {
+    public UserProtoConfiguration.UserMessage findByEmail(String email) {
         return userEntityRepository.getByEmail(email).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 

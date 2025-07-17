@@ -1,9 +1,9 @@
 package com.example.user_database_manager_service.service.account;
 
+import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.exception.NotFoundException;
-import com.example.user_database_manager_service.model.account.entity.Account;
 import com.example.user_database_manager_service.repository.account.AccountEntityRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,29 +18,34 @@ public class AccountServiceManager implements AccountService {
     }
 
     @Override
-    public Account findByUUID(UUID uuid) {
+    public UserProtoConfiguration.AccountMessage findByUUID(UUID uuid) {
         return accountEntityRepository.getByUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
-    public Account findByUserUUID(UUID uuid) {
+    public UserProtoConfiguration.AccountMessage findByUserUUID(UUID uuid) {
         return accountEntityRepository.getByUserUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
-    public void save(Account account) {
-        if(!existsById(account.getId()) && !existsByUserUUID(account.getUuid())) {
+    public void save(UserProtoConfiguration.AccountMessage account) {
+        if(!existsById(account.getId()) && !existsByUUID(UUID.fromString(account.getUuid())) && !existsByUserUUID(UUID.fromString(account.getUuid()))) {
             accountEntityRepository.save(account);
         } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
     }
 
     @Override
-    public Account findById(Long id) {
+    public UserProtoConfiguration.AccountMessage findById(Long id) {
         return accountEntityRepository.getById(id).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
     public boolean existsByUserUUID(UUID uuid) {
+        return accountEntityRepository.existsByUserUUID(uuid);
+    }
+
+    @Override
+    public boolean existsByUUID(UUID uuid) {
         return accountEntityRepository.existsByUserUUID(uuid);
     }
 

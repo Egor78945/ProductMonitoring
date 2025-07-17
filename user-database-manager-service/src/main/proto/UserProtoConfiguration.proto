@@ -8,7 +8,6 @@ message UserMessage {
   string email = 3;
   int64 status_id = 4;
   int64 registered_at = 5;
-  repeated int64 role_id_list = 6;
 }
 
 message AccountMessage {
@@ -19,9 +18,15 @@ message AccountMessage {
   int64 created_at = 5;
 }
 
+message UserRoleMessage {
+  string userUUID = 1;
+  int64 roleId = 2;
+}
+
 message UserRegistrationMessage {
   UserMessage user = 1;
   AccountMessage account = 2;
+  repeated UserRoleMessage userRoles = 3;
 }
 
 message BooleanMessage {

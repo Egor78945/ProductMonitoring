@@ -53,4 +53,8 @@ public class AccountServiceManager implements AccountService {
     public boolean existsById(Long id) {
         return accountEntityRepository.existsById(id);
     }
+
+    public boolean canBeSaved(UserProtoConfiguration.AccountMessage account) {
+        return account.getId() == 0 && !existsByUUID(UUID.fromString(account.getUuid())) && !existsByUserUUID(UUID.fromString(account.getUserUuid()));
+    }
 }

@@ -39,9 +39,12 @@ message StringMessage {
 
 service UserProtoService {
   rpc registerUser(UserRegistrationMessage) returns (BooleanMessage);
-  rpc registerAccount(AccountMessage) returns (BooleanMessage);
   rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
+}
+
+service AccountProtoService {
+  rpc registerAccount(AccountMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
 }

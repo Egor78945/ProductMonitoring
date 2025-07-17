@@ -52,4 +52,8 @@ public class UserServiceManager implements UserService {
     public boolean existsByEmail(String email) {
         return userEntityRepository.existsByEmail(email);
     }
+
+    public boolean canBeSaved(UserProtoConfiguration.UserMessage user) {
+        return user.getId() == 0 && !existsByEmail(user.getEmail()) && !existsByUUID(UUID.fromString(user.getUuid()));
+    }
 }

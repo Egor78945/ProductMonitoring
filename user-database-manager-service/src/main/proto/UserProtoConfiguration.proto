@@ -19,6 +19,11 @@ message AccountMessage {
   int64 created_at = 5;
 }
 
+message UserRegistrationMessage {
+  UserMessage user = 1;
+  AccountMessage account = 2;
+}
+
 message BooleanMessage {
   bool boolean = 1;
 }
@@ -28,7 +33,7 @@ message StringMessage {
 }
 
 service UserProtoService {
-  rpc registerUser(UserMessage) returns (BooleanMessage);
+  rpc registerUser(UserRegistrationMessage) returns (BooleanMessage);
   rpc registerAccount(AccountMessage) returns (BooleanMessage);
   rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);

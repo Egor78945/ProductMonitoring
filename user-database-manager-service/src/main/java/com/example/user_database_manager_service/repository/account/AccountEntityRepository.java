@@ -10,4 +10,5 @@ public interface AccountEntityRepository extends EntityRepository<Long, Account>
     Optional<Account> getByUUID(UUID uuid);
     Optional<Account> getByUserUUID(UUID uuid);
     boolean existsByUUID(UUID uuid);
+    boolean existsByUserUUID(UUID uuid);
 }

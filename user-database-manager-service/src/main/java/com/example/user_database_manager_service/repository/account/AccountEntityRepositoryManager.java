@@ -45,6 +45,16 @@ public class AccountEntityRepositoryManager implements AccountEntityRepository {
     }
 
     @Override
+    public boolean existsByUserUUID(UUID uuid) {
+        return dslContext
+                .fetchExists(
+                        dslContext.selectOne()
+                                .from(Tables.ACCOUNT)
+                                .where(Tables.ACCOUNT.USER_UUID.eq(uuid))
+                );
+    }
+
+    @Override
     public Optional<Account> getById(Long id) {
         return dslContext
                 .select(Tables.ACCOUNT.ID, Tables.ACCOUNT.UUID, Tables.ACCOUNT.USER_UUID, Tables.ACCOUNT.STATUS_ID, Tables.ACCOUNT.CREATED_AT)

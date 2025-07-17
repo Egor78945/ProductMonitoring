@@ -2,3 +2,6 @@ databaseChangeLog:
   - include:
       file: ./v5-create-account-status-table-changelog.yml
       relativeToChangelogFile: true
+  - include:
+      file: ./v5-fill-account-status-table-changelog.yml
+      relativeToChangelogFile: true

@@ -87,3 +87,13 @@ services:
     depends_on:
       - service-discovery
       - postgres
+
+  authentication-service:
+    container_name: ${AUTHENTICATION_SERVICE_HOST}
+    build:
+      context: ./authentication-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    env_file:
+      - .env

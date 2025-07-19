@@ -15,5 +15,35 @@ grpc:
       address: discovery:///${USER_DATABASE_MANAGER_SERVICE}
       negotiation-type: plaintext
 
+keycloak:
+  server:
+    host: ${KEYCLOAK_HOST}
+    port: ${KEYCLOAK_PORT_INNER}
+  realm:
+    authentication:
+      name: authentication
+      group:
+        user-roles:
+          name: USER_ROLES
+          role-mapping:
+            user: ROLE_USER
+        admin-roles:
+          name: ADMIN_ROLES
+          role-mapping:
+            admin: ROLE_ADMIN
+      client:
+        authentication-service:
+          id: authentication-service
+    master:
+      name: master
+      client:
+        admin:
+          id: admin-cli
+
+  admin:
+    name: ${KEYCLOAK_ADMIN_NAME}
+    password: ${KEYCLOAK_ADMIN_PASSWORD}
+
+
 server:
   port: ${AUTHENTICATION_SERVICE_PORT}

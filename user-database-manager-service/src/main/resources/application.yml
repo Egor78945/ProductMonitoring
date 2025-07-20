@@ -21,3 +21,7 @@ eureka:
 
 server:
   port: ${USER_DATABASE_MANAGER_SERVICE_PORT}
+
+grpc:
+  server:
+    port: ${USER_DATABASE_MANAGER_SERVICE_GRPC_PORT}

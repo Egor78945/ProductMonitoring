@@ -33,6 +33,19 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     }
 
     @Override
+    public void existsUserByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
+        try {
+            responseObserver.onNext(UserProtoConfiguration.BooleanMessage
+                    .newBuilder()
+                    .setBoolean(userService.existsByUUID(UUID.fromString(request.getString())))
+                    .build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
+    }
+
+    @Override
     public void getUserByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.UserMessage> responseObserver) {
         try {
             responseObserver.onNext(userService.findByUUID(UUID.fromString(request.getString())));
@@ -43,12 +56,11 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     }
 
     @Override
-    public void registerUser(UserProtoConfiguration.UserRegistrationMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
+    public void registerUser(UserProtoConfiguration.UserRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             authenticationService.register(request);
-            responseObserver.onNext(UserProtoConfiguration.BooleanMessage
+            responseObserver.onNext(UserProtoConfiguration.EmptyMessage
                     .newBuilder()
-                    .setBoolean(true)
                     .build());
             responseObserver.onCompleted();
         } catch (Exception e) {

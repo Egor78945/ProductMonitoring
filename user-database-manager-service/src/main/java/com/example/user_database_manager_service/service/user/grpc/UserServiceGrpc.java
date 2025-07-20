@@ -2,7 +2,7 @@ package com.example.user_database_manager_service.service.user.grpc;
 
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.grpc.user.UserProtoServiceGrpc;
-import com.example.user_database_manager_service.service.authentication.user.UserAuthenticationService;
+import com.example.user_database_manager_service.service.user.authentication.UserAuthenticationService;
 import com.example.user_database_manager_service.service.user.UserService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;

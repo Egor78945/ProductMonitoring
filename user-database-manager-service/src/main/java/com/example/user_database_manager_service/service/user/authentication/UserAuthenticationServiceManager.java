@@ -4,7 +4,6 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.account.AccountService;
-import com.example.user_database_manager_service.service.authentication.user.UserAuthenticationService;
 import com.example.user_database_manager_service.service.user.UserService;
 import com.example.user_database_manager_service.service.user.role.UserRoleService;
 import org.springframework.stereotype.Service;

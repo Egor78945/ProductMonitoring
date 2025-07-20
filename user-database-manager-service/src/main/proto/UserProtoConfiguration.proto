@@ -8,6 +8,7 @@ message UserMessage {
   string email = 3;
   int64 status_id = 4;
   int64 registered_at = 5;
+  repeated UserRoleMessage userRoles = 6;
 }
 
 message AccountMessage {
@@ -26,7 +27,6 @@ message UserRoleMessage {
 message UserRegistrationMessage {
   UserMessage user = 1;
   AccountMessage account = 2;
-  repeated UserRoleMessage userRoles = 3;
 }
 
 message BooleanMessage {

@@ -11,5 +11,5 @@ public abstract class AccountGrpcClientService extends GrpcClientService<Account
 
     public abstract UserProtoConfiguration.AccountMessage getAccountByUUID(UserProtoConfiguration.StringMessage accountUUID);
     public abstract UserProtoConfiguration.AccountMessage getAccountByUserUUID(UserProtoConfiguration.StringMessage userUUID);
-    public abstract UserProtoConfiguration.BooleanMessage registerAccount(UserProtoConfiguration.AccountMessage account);
+    public abstract void registerAccount(UserProtoConfiguration.AccountMessage account);
 }

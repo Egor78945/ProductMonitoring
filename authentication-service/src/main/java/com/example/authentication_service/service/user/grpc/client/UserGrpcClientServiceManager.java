@@ -16,8 +16,8 @@ public class UserGrpcClientServiceManager extends UserGrpcClientService {
     }
 
     @Override
-    public UserProtoConfiguration.BooleanMessage registerUser(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage) {
-        return stub.registerUser(userRegistrationMessage);
+    public void registerUser(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage) {
+        stub.registerUser(userRegistrationMessage);
     }
 
     @Override

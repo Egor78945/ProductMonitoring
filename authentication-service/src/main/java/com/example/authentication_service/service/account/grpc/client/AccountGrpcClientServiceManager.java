@@ -21,7 +21,7 @@ public class AccountGrpcClientServiceManager extends AccountGrpcClientService {
     }
 
     @Override
-    public UserProtoConfiguration.BooleanMessage registerAccount(UserProtoConfiguration.AccountMessage account) {
-        return stub.registerAccount(account);
+    public void registerAccount(UserProtoConfiguration.AccountMessage account) {
+        stub.registerAccount(account);
     }
 }

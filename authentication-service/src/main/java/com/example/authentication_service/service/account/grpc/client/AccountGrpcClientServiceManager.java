@@ -24,4 +24,9 @@ public class AccountGrpcClientServiceManager extends AccountGrpcClientService {
     public void registerAccount(UserProtoConfiguration.AccountMessage account) {
         stub.registerAccount(account);
     }
+
+    @Override
+    public UserProtoConfiguration.BooleanMessage existsAccountByUUID(UserProtoConfiguration.StringMessage accountUUID) {
+        return stub.existsAccountByUUID(accountUUID);
+    }
 }

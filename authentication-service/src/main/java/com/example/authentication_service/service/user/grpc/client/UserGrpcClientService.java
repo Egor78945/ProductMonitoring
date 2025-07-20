@@ -12,4 +12,5 @@ public abstract class UserGrpcClientService extends GrpcClientService<UserProtoS
     public abstract UserProtoConfiguration.UserMessage getUserByUUID(UserProtoConfiguration.StringMessage uuid);
     public abstract void registerUser(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage);
     public abstract UserProtoConfiguration.BooleanMessage existsUserByEmail(UserProtoConfiguration.StringMessage email);
+    public abstract UserProtoConfiguration.BooleanMessage existsUserByUUID(UserProtoConfiguration.StringMessage uuid);
 }

@@ -25,5 +25,10 @@ public class UserGrpcClientServiceManager extends UserGrpcClientService {
         return stub.existsUserByEmail(email);
     }
 
+    @Override
+    public UserProtoConfiguration.BooleanMessage existsUserByUUID(UserProtoConfiguration.StringMessage uuid) {
+        return stub.existsUserByUUID(uuid);
+    }
+
 
 }

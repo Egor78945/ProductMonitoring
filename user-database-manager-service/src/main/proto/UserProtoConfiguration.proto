@@ -37,14 +37,18 @@ message StringMessage {
   string string = 1;
 }
 
+message EmptyMessage {}
+
 service UserProtoService {
-  rpc registerUser(UserRegistrationMessage) returns (BooleanMessage);
+  rpc registerUser(UserRegistrationMessage) returns (EmptyMessage);
   rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
+  rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
 }
 
 service AccountProtoService {
-  rpc registerAccount(AccountMessage) returns (BooleanMessage);
+  rpc registerAccount(AccountMessage) returns (EmptyMessage);
+  rpc existsAccountByUUID(StringMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
 }

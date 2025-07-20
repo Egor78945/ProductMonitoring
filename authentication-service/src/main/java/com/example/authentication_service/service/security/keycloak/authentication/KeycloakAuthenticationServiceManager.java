@@ -6,11 +6,8 @@ import com.example.authentication_service.exception.message.ExceptionMessage;
 import com.example.authentication_service.service.security.keycloak.KeycloakService;
 import com.example.authentication_service.service.security.keycloak.builder.KeycloakItemBuilder;
 import com.example.authentication_service.service.web.WebClientService;
-import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
-import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.GroupResource;
-import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -20,7 +17,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +34,8 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
 
     @Override
     public void createUser(UserRepresentation user) {
-        try (Response response = keycloakService.getUsersResource(keycloakEnvironment.getKeycloakRealmAuthenticationName()).create(user)){
-            if(response.getStatus()/100 != 2) {
+        try (Response response = keycloakService.getUsersResource(keycloakEnvironment.getKeycloakRealmAuthenticationName()).create(user)) {
+            if (response.getStatus() / 100 != 2) {
                 throw new KeycloakException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
             }
         }
@@ -53,7 +49,7 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
     @Override
     public void joinGroup(String realmName, String userId, String groupName) {
         GroupResource groupResource = keycloakService.getGroupsResource(groupName).group(groupName);
-        if(groupResource != null) {
+        if (groupResource != null) {
             keycloakService.getUsersResource(realmName).get(userId).joinGroup(groupName);
         } else {
             throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
@@ -76,9 +72,9 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
 
         ResponseEntity<Map> responseEntity = webClientService.post(url, Map.class, new HttpEntity<>(httpBody, httpHeaders));
 
-        if(responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
+        if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
             Object token = responseEntity.getBody().get("access_token");
-            if(token != null) {
+            if (token != null) {
                 return token.toString();
             }
         }
@@ -87,7 +83,7 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
 
     private String getClientSecret(String realmName, String clientId) {
         List<ClientRepresentation> clientRepresentation = keycloakService.getClientsResource(realmName).findByClientId(clientId);
-        if(!clientRepresentation.isEmpty()) {
+        if (!clientRepresentation.isEmpty()) {
             return clientRepresentation.get(0).getSecret();
         }
         throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());

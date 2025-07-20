@@ -17,12 +17,24 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     }
 
     @Override
-    public void registerAccount(UserProtoConfiguration.AccountMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
+    public void registerAccount(UserProtoConfiguration.AccountMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             accountService.save(request);
+            responseObserver.onNext(UserProtoConfiguration.EmptyMessage
+                    .newBuilder()
+                    .build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
+    }
+
+    @Override
+    public void existsAccountByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
+        try {
             responseObserver.onNext(UserProtoConfiguration.BooleanMessage
                     .newBuilder()
-                    .setBoolean(true)
+                    .setBoolean(accountService.existsByUUID(UUID.fromString(request.getString())))
                     .build());
             responseObserver.onCompleted();
         } catch (Exception e) {

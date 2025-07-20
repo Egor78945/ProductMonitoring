@@ -27,7 +27,10 @@ public class UserAuthenticationServiceManager implements UserAuthenticationServi
         if (canBeSaved(registerModel.getUser()) && canBeSaved(registerModel.getAccount())) {
             userService.save(registerModel.getUser());
             accountService.save(registerModel.getAccount());
-            for (UserProtoConfiguration.UserRoleMessage role : registerModel.getUser().getUserRolesList()) {
+            for (long roleId : registerModel.getUser().getUserRolesList()) {
+                UserProtoConfiguration.UserRoleMessage role = UserProtoConfiguration.UserRoleMessage
+                        .newBuilder()
+                        .build();
                 userRoleService.save(role);
             }
         } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());

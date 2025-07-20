@@ -2,14 +2,14 @@ package com.example.user_database_manager_service.service.user.grpc;
 
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.grpc.user.UserProtoServiceGrpc;
-import com.example.user_database_manager_service.service.user.authentication.UserAuthenticationService;
 import com.example.user_database_manager_service.service.user.UserService;
+import com.example.user_database_manager_service.service.user.authentication.UserAuthenticationService;
 import io.grpc.stub.StreamObserver;
-import org.springframework.stereotype.Service;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.UUID;
 
-@Service
+@GrpcService
 public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBase {
     private final UserAuthenticationService<UserProtoConfiguration.UserRegistrationMessage> authenticationService;
     private final UserService userService;

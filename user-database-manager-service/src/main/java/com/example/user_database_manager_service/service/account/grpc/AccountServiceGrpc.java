@@ -4,11 +4,11 @@ import com.example.grpc.user.AccountProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.service.account.AccountService;
 import io.grpc.stub.StreamObserver;
-import org.springframework.stereotype.Service;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.UUID;
 
-@Service
+@GrpcService
 public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServiceImplBase {
     private final AccountService accountService;
 

@@ -22,6 +22,7 @@ public class UserGrpcClientServiceManager extends UserGrpcClientService {
 
     @Override
     public UserProtoConfiguration.BooleanMessage existsUserByEmail(UserProtoConfiguration.StringMessage email) {
+        System.out.println(stub.toString());
         return stub.existsUserByEmail(email);
     }
 

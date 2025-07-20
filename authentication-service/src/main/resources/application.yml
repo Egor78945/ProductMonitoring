@@ -12,7 +12,7 @@ eureka:
 grpc:
   client:
     user-database-grpc-service:
-      address: discovery:///${USER_DATABASE_MANAGER_SERVICE}
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
       negotiation-type: plaintext
 
 keycloak:

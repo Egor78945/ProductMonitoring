@@ -1,10 +1,10 @@
-package com.example.authentication_service.model.security.role;
+package com.example.authentication_service.model.user.role;
 
-public enum RoleEnumeration {
+public enum UserRoleEnumeration {
     ROLE_USER(1), ROLE_ADMIN(2);
     private final long id;
 
-    RoleEnumeration(long id) {
+    UserRoleEnumeration(long id) {
         this.id = id;
     }
 

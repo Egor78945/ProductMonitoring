@@ -14,7 +14,7 @@ public class GrpcClientConfiguration {
     }
 
     @Bean
-    public AccountProtoServiceGrpc.AccountProtoServiceBlockingStub userServiceBlockingStub(@GrpcClient("user-database-grpc-service") AccountProtoServiceGrpc.AccountProtoServiceBlockingStub stub){
+    public AccountProtoServiceGrpc.AccountProtoServiceBlockingStub accountServiceBlockingStub(@GrpcClient("user-database-grpc-service") AccountProtoServiceGrpc.AccountProtoServiceBlockingStub stub){
         return stub;
     }
 }

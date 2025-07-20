@@ -1,33 +1,89 @@
 package com.example.authentication_service.service.security.keycloak;
 
-import com.example.authentication_service.configuration.keycloak.KeycloakConfiguration;
-import org.keycloak.admin.client.resource.ClientsResource;
-import org.keycloak.admin.client.resource.GroupsResource;
-import org.keycloak.admin.client.resource.RolesResource;
-import org.keycloak.admin.client.resource.UsersResource;
+import com.example.authentication_service.configuration.keycloak.environment.KeycloakEnvironment;
+import com.example.authentication_service.exception.KeycloakException;
+import com.example.authentication_service.exception.message.ExceptionMessage;
+import com.example.authentication_service.service.security.keycloak.builder.KeycloakItemBuilder;
+import com.example.authentication_service.service.web.WebClientService;
+import jakarta.ws.rs.core.Response;
+import org.keycloak.admin.client.resource.*;
+import org.keycloak.representations.idm.ClientRepresentation;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class KeycloakServiceManager implements KeycloakService {
-    private final KeycloakConfiguration keycloakConfiguration;
+    private final KeycloakRealmResourceService keycloakRealmResourceService;
+    private final KeycloakEnvironment keycloakEnvironment;
+    private final WebClientService webClientService;
 
-    public KeycloakServiceManager(KeycloakConfiguration keycloakConfiguration) {
-        this.keycloakConfiguration = keycloakConfiguration;
+    public KeycloakServiceManager(KeycloakRealmResourceService keycloakRealmResourceService, KeycloakEnvironment keycloakEnvironment, WebClientService webClientService) {
+        this.keycloakRealmResourceService = keycloakRealmResourceService;
+        this.keycloakEnvironment = keycloakEnvironment;
+        this.webClientService = webClientService;
     }
 
-    public UsersResource getUsersResource(String realmName) {
-        return keycloakConfiguration.getKeycloak().realm(realmName).users();
+    @Override
+    public void createUser(UserRepresentation user, String realmName) {
+        try (Response response = keycloakRealmResourceService.getUsersResource(realmName).create(user)) {
+            if (response.getStatus() / 100 != 2) {
+                throw new KeycloakException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
+            }
+        }
     }
 
-    public RolesResource getRolesResource(String realmName) {
-        return keycloakConfiguration.getKeycloak().realm(realmName).roles();
+    @Override
+    public void resetPassword(String realmName, String userId, String password) {
+        keycloakRealmResourceService.getUsersResource(realmName).get(userId).resetPassword(KeycloakItemBuilder.buildCredentialRepresentation(password, CredentialRepresentation.PASSWORD));
     }
 
-    public GroupsResource getGroupsResource(String realmName) {
-        return keycloakConfiguration.getKeycloak().realm(realmName).groups();
+    @Override
+    public void joinGroup(String realmName, String userId, String groupName) {
+        GroupResource groupResource = keycloakRealmResourceService.getGroupsResource(groupName).group(groupName);
+        if (groupResource != null) {
+            keycloakRealmResourceService.getUsersResource(realmName).get(userId).joinGroup(groupName);
+        } else {
+            throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
+        }
     }
 
-    public ClientsResource getClientsResource(String realmName) {
-        return keycloakConfiguration.getKeycloak().realm(realmName).clients();
+    @Override
+    public String getToken(String username, String password, String realmName, String clientId) {
+        URI uri = URI.create(String.format("http://%s:%s/realms/%s/protocol/openid-connect/token", keycloakEnvironment.getKeycloakServerHost(), keycloakEnvironment.getKeycloakServerPort(), realmName));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> httpBody = new LinkedMultiValueMap<>();
+        httpBody.add("grant_type", "password");
+        httpBody.add("username", username);
+        httpBody.add("password", password);
+        httpBody.add("client_secret", getClientSecret(realmName, clientId));
+        httpBody.add("client_id", clientId);
+
+        ResponseEntity<Map> responseEntity = webClientService.post(uri, Map.class, new HttpEntity<>(httpBody, httpHeaders));
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
+            Object token = responseEntity.getBody().get("access_token");
+            if (token != null) {
+                return token.toString();
+            }
+        }
+        throw new KeycloakException(responseEntity.getBody().toString());
+    }
+    private String getClientSecret(String realmName, String clientId) {
+        List<ClientRepresentation> clientRepresentation = keycloakRealmResourceService.getClientsResource(realmName).findByClientId(clientId);
+        if (!clientRepresentation.isEmpty()) {
+            return clientRepresentation.get(0).getSecret();
+        }
+        throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
     }
 }

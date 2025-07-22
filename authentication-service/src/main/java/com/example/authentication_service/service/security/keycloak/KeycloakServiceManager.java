@@ -50,16 +50,13 @@ public class KeycloakServiceManager implements KeycloakService {
 
     @Override
     public void joinGroup(String realmName, String userId, String groupName) {
-        GroupRepresentation groupRepresentation = keycloakRealmResourceService
-                .getGroupsResource(realmName)
-                        .groups()
-                                .stream()
-                                        .filter(g -> g.getName().equals(keycloakEnvironment.getKeycloakRealmAuthenticationGroupUserRolesName()))
-                                                .findFirst()
-                                                        .get();
-        System.out.println(groupRepresentation);
-        if (groupRepresentation != null) {
-            keycloakRealmResourceService.getUsersResource(realmName).get(userId).joinGroup(groupRepresentation.getId());
+        List<GroupRepresentation> groupRepresentations = keycloakRealmResourceService.getGroupRepresentation(realmName, groupName);
+        if (!groupRepresentations.isEmpty()) {
+            groupRepresentations
+                    .forEach(groupRepresentation -> keycloakRealmResourceService
+                            .getUsersResource(realmName)
+                            .get(userId)
+                            .joinGroup(groupRepresentation.getName()));
         } else {
             throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
         }
@@ -79,8 +76,6 @@ public class KeycloakServiceManager implements KeycloakService {
         httpBody.add("client_secret", getClientSecret(realmName, clientId));
         httpBody.add("client_id", clientId);
 
-        System.out.println("HTTP BODY = " + httpBody);
-
         ResponseEntity<Map> responseEntity = webClientService.post(uri, Map.class, new HttpEntity<>(httpBody, httpHeaders));
 
         if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
@@ -91,6 +86,7 @@ public class KeycloakServiceManager implements KeycloakService {
         }
         throw new KeycloakException(responseEntity.getBody().toString());
     }
+
     private String getClientSecret(String realmName, String clientId) {
         List<ClientRepresentation> clientRepresentation = keycloakRealmResourceService.getClientsResource(realmName).findByClientId(clientId);
         if (!clientRepresentation.isEmpty()) {

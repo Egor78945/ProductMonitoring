@@ -1,5 +1,7 @@
 package com.example.authentication_service.service.security.authentication.user;
 
+import com.example.authentication_service.exception.AuthenticationException;
+import com.example.authentication_service.exception.message.ExceptionMessage;
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
@@ -36,11 +38,15 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
         if(!userService.existsByEmail(registerModel.getEmail())) {
             UserProtoConfiguration.UserMessage userMessage = GrpcMessageBuilder.buildFrom(registerModel.getEmail(), UserStatusEnumeration.STATUS_ACTIVE, List.of(UserRoleEnumeration.ROLE_USER.getId()));
             UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(AccountStatusEnumeration.STATUS_ACTIVE);
-            UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage = GrpcMessageBuilder.buildFrom(userMessage, accountMessage);
-            System.out.println("KEYCLOAAAK");
-            keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
-            System.out.println("GRPCCCCCCCCCCC");
-            userGrpcClientService.registerUser(userRegistrationMessage);
+
+            userGrpcClientService.registerUser(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
+            try {
+                keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
+            } catch (Exception e) {
+                // rollback grpc create
+            }
+        } else {
+            throw new AuthenticationException(ExceptionMessage.ALREADY_EXISTS.getMessage());
         }
     }
 }

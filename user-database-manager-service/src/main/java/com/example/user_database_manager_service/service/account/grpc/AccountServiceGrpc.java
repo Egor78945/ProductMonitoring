@@ -3,6 +3,7 @@ package com.example.user_database_manager_service.service.account.grpc;
 import com.example.grpc.user.AccountProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.service.account.AccountService;
+import com.example.user_database_manager_service.service.grpc.builder.GrpcItemBuilder;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -20,9 +21,7 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     public void registerAccount(UserProtoConfiguration.AccountMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             accountService.save(request);
-            responseObserver.onNext(UserProtoConfiguration.EmptyMessage
-                    .newBuilder()
-                    .build());
+            responseObserver.onNext(GrpcItemBuilder.buildEmpty());
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -32,10 +31,7 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     @Override
     public void existsAccountByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(UserProtoConfiguration.BooleanMessage
-                    .newBuilder()
-                    .setBoolean(accountService.existsByUUID(UUID.fromString(request.getString())))
-                    .build());
+            responseObserver.onNext(GrpcItemBuilder.buildFrom(accountService.existsByUUID(UUID.fromString(request.getString()))));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);

@@ -6,10 +6,9 @@ import com.example.user_database_manager_service.repository.EntityRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AccountEntityRepository extends EntityRepository<Long, UserProtoConfiguration.AccountMessage> {
-    Optional<UserProtoConfiguration.AccountMessage> getByUUID(UUID uuid);
-    Optional<UserProtoConfiguration.AccountMessage> getByUserUUID(UUID uuid);
-    boolean existsByUUID(UUID uuid);
-    boolean existsByUserUUID(UUID uuid);
-    UUID save(UserProtoConfiguration.AccountMessage entity);
+public abstract class AccountEntityRepository extends EntityRepository<Long, UserProtoConfiguration.AccountMessage> {
+    public abstract Optional<UserProtoConfiguration.AccountMessage> getByUUID(UUID uuid);
+    public abstract Optional<UserProtoConfiguration.AccountMessage> getByUserUUID(UUID uuid);
+    public abstract boolean existsByUserUUID(UUID uuid);
+    public abstract UUID save(UserProtoConfiguration.AccountMessage entity);
 }

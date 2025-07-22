@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class UserEntityRepositoryManager implements UserEntityRepository {
+public class UserEntityRepositoryManager extends UserEntityRepository {
     private final DSLContext dslContext;
 
     public UserEntityRepositoryManager(DSLContext dslContext) {
@@ -85,17 +85,5 @@ public class UserEntityRepositoryManager implements UserEntityRepository {
                 .set(Tables.USERS.REGISTERED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(user.getRegisteredAt()), ZoneId.systemDefault()))
                 .returning(Tables.USERS.UUID)
                 .fetchOne(Tables.USERS.UUID, UUID.class);
-    }
-
-    private UUID generateUnbusyUUID() {
-        int lap = 0;
-        UUID uuid = UUID.randomUUID();
-        while(lap < 10){
-            if(!existsByUUID(uuid)) {
-                return uuid;
-            }
-            lap++;
-        }
-        throw new ProcessingException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
     }
 }

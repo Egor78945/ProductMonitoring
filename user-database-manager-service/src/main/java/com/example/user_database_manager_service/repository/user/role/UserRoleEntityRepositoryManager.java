@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class UserRoleEntityRepositoryManager implements UserRoleEntityRepository {
+public class UserRoleEntityRepositoryManager extends UserRoleEntityRepository {
     private final DSLContext dslContext;
 
     public UserRoleEntityRepositoryManager(DSLContext dslContext) {

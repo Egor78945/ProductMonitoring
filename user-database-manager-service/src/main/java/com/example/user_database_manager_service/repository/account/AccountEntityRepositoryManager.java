@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class AccountEntityRepositoryManager implements AccountEntityRepository {
+public class AccountEntityRepositoryManager extends AccountEntityRepository {
     private final DSLContext dslContext;
 
     public AccountEntityRepositoryManager(DSLContext dslContext) {
@@ -89,17 +89,5 @@ public class AccountEntityRepositoryManager implements AccountEntityRepository {
                                 .from(Tables.ACCOUNT)
                                 .where(Tables.ACCOUNT.ID.eq(id))
                 );
-    }
-
-    private UUID generateUnbusyUUID() {
-        int lap = 0;
-        UUID uuid = UUID.randomUUID();
-        while(lap < 10){
-            if(!existsByUUID(uuid)) {
-                return uuid;
-            }
-            lap++;
-        }
-        throw new ProcessingException("failed to generate unique UUID");
     }
 }

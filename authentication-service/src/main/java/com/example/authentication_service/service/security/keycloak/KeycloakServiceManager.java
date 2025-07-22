@@ -33,12 +33,21 @@ public class KeycloakServiceManager implements KeycloakService {
     }
 
     @Override
-    public String createUser(UserRepresentation user, String realmName) {
+    public String createUser(String realmName, UserRepresentation user) {
         try (Response response = keycloakRealmResourceService.getUsersResource(realmName).create(user)) {
             if (response.getStatus() / 100 != 2) {
                 throw new KeycloakException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
             } else {
                 return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+            }
+        }
+    }
+
+    @Override
+    public void deleteUser(String realmName, String userid) {
+        try (Response response = keycloakRealmResourceService.getUsersResource(realmName).delete(userid)) {
+            if (response.getStatus() / 100 != 2) {
+                throw new KeycloakException(ExceptionMessage.FAILED_TO_DELETE.getMessage());
             }
         }
     }

@@ -8,6 +8,7 @@ import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
+import com.example.authentication_service.service.security.keycloak.KeycloakService;
 import com.example.authentication_service.service.security.keycloak.authentication.KeycloakAuthenticationService;
 import com.example.authentication_service.service.user.UserService;
 import com.example.authentication_service.service.user.grpc.client.UserGrpcClientService;
@@ -35,16 +36,12 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
 
     @Override
     public void register(UserRegistrationModel registerModel) {
-        if(!userService.existsByEmail(registerModel.getEmail())) {
+        if (!userService.existsByEmail(registerModel.getEmail())) {
             UserProtoConfiguration.UserMessage userMessage = GrpcMessageBuilder.buildFrom(registerModel.getEmail(), UserStatusEnumeration.STATUS_ACTIVE, List.of(UserRoleEnumeration.ROLE_USER.getId()));
             UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(AccountStatusEnumeration.STATUS_ACTIVE);
 
+            keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
             userGrpcClientService.registerUser(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
-            try {
-                keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
-            } catch (Exception e) {
-                // rollback grpc create
-            }
         } else {
             throw new AuthenticationException(ExceptionMessage.ALREADY_EXISTS.getMessage());
         }

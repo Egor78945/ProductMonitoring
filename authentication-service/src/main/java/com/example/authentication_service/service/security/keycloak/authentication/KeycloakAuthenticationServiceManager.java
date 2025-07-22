@@ -20,10 +20,11 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
     }
 
     @Override
-    public void register(String username, String password) {
-        String userId = keycloakService.createUser(KeycloakItemBuilder.buildUserRepresentation(username), keycloakEnvironment.getKeycloakRealmAuthenticationName());
+    public String register(String username, String password) {
+        String userId = keycloakService.createUser(keycloakEnvironment.getKeycloakRealmAuthenticationName(), KeycloakItemBuilder.buildUserRepresentation(username));
         keycloakService.resetPassword(keycloakEnvironment.getKeycloakRealmAuthenticationName(), userId, password);
         keycloakService.joinGroup(keycloakEnvironment.getKeycloakRealmAuthenticationName(), userId, keycloakEnvironment.getKeycloakRealmAuthenticationGroupUserRolesName());
+        return userId;
     }
 
     @Override

@@ -28,9 +28,9 @@ public class AccountServiceManager implements AccountService {
     }
 
     @Override
-    public void save(UserProtoConfiguration.AccountMessage account) {
-        if(!existsById(account.getId()) && !existsByUUID(UUID.fromString(account.getUuid())) && !existsByUserUUID(UUID.fromString(account.getUuid()))) {
-            accountEntityRepository.save(account);
+    public UUID save(UserProtoConfiguration.AccountMessage account) {
+        if(!existsByUserUUID(UUID.fromString(account.getUserUuid()))) {
+            return accountEntityRepository.save(account);
         } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
     }
 
@@ -46,15 +46,11 @@ public class AccountServiceManager implements AccountService {
 
     @Override
     public boolean existsByUUID(UUID uuid) {
-        return accountEntityRepository.existsByUserUUID(uuid);
+        return accountEntityRepository.existsByUUID(uuid);
     }
 
     @Override
     public boolean existsById(Long id) {
         return accountEntityRepository.existsById(id);
-    }
-
-    public boolean canBeSaved(UserProtoConfiguration.AccountMessage account) {
-        return account.getId() == 0 && !existsByUUID(UUID.fromString(account.getUuid())) && !existsByUserUUID(UUID.fromString(account.getUserUuid()));
     }
 }

@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface UserRoleEntityRepository extends EntityRepository<Long, UserProtoConfiguration.UserRoleMessage> {
     List<UserProtoConfiguration.UserRoleMessage> getUserRolesByUserUUID(UUID userUUID);
     boolean existsByUserUUIDAndRoleId(UUID userUUID, Long roleId);
+    void save(UserProtoConfiguration.UserRoleMessage userRoleMessage);
 }

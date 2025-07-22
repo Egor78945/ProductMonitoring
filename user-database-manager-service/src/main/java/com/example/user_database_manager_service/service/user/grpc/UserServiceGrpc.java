@@ -22,6 +22,7 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     @Override
     public void existsUserByEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
+            System.out.println("HEREEEEEEEE");
             responseObserver.onNext(UserProtoConfiguration.BooleanMessage
                     .newBuilder()
                     .setBoolean(userService.existsByEmail(request.getString()))
@@ -57,14 +58,11 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
 
     @Override
     public void registerUser(UserProtoConfiguration.UserRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
-        try {
+            System.out.println("REGISTEEEEEER");
             authenticationService.register(request);
             responseObserver.onNext(UserProtoConfiguration.EmptyMessage
                     .newBuilder()
                     .build());
             responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onError(e);
-        }
     }
 }

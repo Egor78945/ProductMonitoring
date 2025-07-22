@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.resource.*;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,12 @@ public class KeycloakServiceManager implements KeycloakService {
     }
 
     @Override
-    public void createUser(UserRepresentation user, String realmName) {
+    public String createUser(UserRepresentation user, String realmName) {
         try (Response response = keycloakRealmResourceService.getUsersResource(realmName).create(user)) {
             if (response.getStatus() / 100 != 2) {
                 throw new KeycloakException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
+            } else {
+                return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
             }
         }
     }
@@ -47,9 +50,16 @@ public class KeycloakServiceManager implements KeycloakService {
 
     @Override
     public void joinGroup(String realmName, String userId, String groupName) {
-        GroupResource groupResource = keycloakRealmResourceService.getGroupsResource(groupName).group(groupName);
-        if (groupResource != null) {
-            keycloakRealmResourceService.getUsersResource(realmName).get(userId).joinGroup(groupName);
+        GroupRepresentation groupRepresentation = keycloakRealmResourceService
+                .getGroupsResource(realmName)
+                        .groups()
+                                .stream()
+                                        .filter(g -> g.getName().equals(keycloakEnvironment.getKeycloakRealmAuthenticationGroupUserRolesName()))
+                                                .findFirst()
+                                                        .get();
+        System.out.println(groupRepresentation);
+        if (groupRepresentation != null) {
+            keycloakRealmResourceService.getUsersResource(realmName).get(userId).joinGroup(groupRepresentation.getId());
         } else {
             throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
         }
@@ -68,6 +78,8 @@ public class KeycloakServiceManager implements KeycloakService {
         httpBody.add("password", password);
         httpBody.add("client_secret", getClientSecret(realmName, clientId));
         httpBody.add("client_id", clientId);
+
+        System.out.println("HTTP BODY = " + httpBody);
 
         ResponseEntity<Map> responseEntity = webClientService.post(uri, Map.class, new HttpEntity<>(httpBody, httpHeaders));
 

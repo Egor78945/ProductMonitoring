@@ -11,4 +11,5 @@ public interface AccountEntityRepository extends EntityRepository<Long, UserProt
     Optional<UserProtoConfiguration.AccountMessage> getByUserUUID(UUID uuid);
     boolean existsByUUID(UUID uuid);
     boolean existsByUserUUID(UUID uuid);
+    UUID save(UserProtoConfiguration.AccountMessage entity);
 }

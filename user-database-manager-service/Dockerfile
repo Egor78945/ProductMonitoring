@@ -2,6 +2,9 @@ ARG JAVA_VERSION
 
 FROM openjdk:${JAVA_VERSION}
 
-COPY build/libs/user-database-manager-service-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
+
+COPY build/libs/user-database-manager-service-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY build/generated-src/jooq /app/generated-src/jooq
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

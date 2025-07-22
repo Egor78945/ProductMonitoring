@@ -6,7 +6,7 @@ import com.example.user_database_manager_service.repository.EntityRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserEntityRepository extends EntityRepository<Long, UserProtoConfiguration.UserMessage> {
+public interface UserEntityRepository extends EntityRepository<Long, UserProtoConfiguration.UserMessage>{
     Optional<UserProtoConfiguration.UserMessage> getByUUID(UUID uuid);
 
     Optional<UserProtoConfiguration.UserMessage> getByEmail(String email);
@@ -14,4 +14,6 @@ public interface UserEntityRepository extends EntityRepository<Long, UserProtoCo
     boolean existsByUUID(UUID uuid);
 
     boolean existsByEmail(String email);
+
+    UUID save(UserProtoConfiguration.UserMessage entity);
 }

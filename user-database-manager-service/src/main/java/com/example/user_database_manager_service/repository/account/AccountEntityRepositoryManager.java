@@ -1,6 +1,8 @@
 package com.example.user_database_manager_service.repository.account;
 
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.exception.ProcessingException;
+import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.account.mapper.AccountMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
@@ -68,15 +70,15 @@ public class AccountEntityRepositoryManager implements AccountEntityRepository {
     }
 
     @Override
-    public void save(UserProtoConfiguration.AccountMessage entity) {
-        dslContext
+    public UUID save(UserProtoConfiguration.AccountMessage entity) {
+        return dslContext
                 .insertInto(Tables.ACCOUNT)
-                .set(Tables.ACCOUNT.ID, entity.getId())
-                .set(Tables.ACCOUNT.UUID, UUID.fromString(entity.getUuid()))
+                .set(Tables.ACCOUNT.UUID, generateUnbusyUUID())
                 .set(Tables.ACCOUNT.USER_UUID, UUID.fromString(entity.getUserUuid()))
                 .set(Tables.ACCOUNT.STATUS_ID, entity.getStatusId())
                 .set(Tables.ACCOUNT.CREATED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(entity.getCreatedAt()), ZoneId.systemDefault()))
-                .execute();
+                .returning(Tables.ACCOUNT.UUID)
+                .fetchOne(Tables.ACCOUNT.UUID, UUID.class);
     }
 
     @Override
@@ -87,5 +89,17 @@ public class AccountEntityRepositoryManager implements AccountEntityRepository {
                                 .from(Tables.ACCOUNT)
                                 .where(Tables.ACCOUNT.ID.eq(id))
                 );
+    }
+
+    private UUID generateUnbusyUUID() {
+        int lap = 0;
+        UUID uuid = UUID.randomUUID();
+        while(lap < 10){
+            if(!existsByUUID(uuid)) {
+                return uuid;
+            }
+            lap++;
+        }
+        throw new ProcessingException("failed to generate unique UUID");
     }
 }

@@ -1,6 +1,8 @@
 package com.example.user_database_manager_service.repository.user;
 
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.exception.ProcessingException;
+import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.user.mapper.UserMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
@@ -74,14 +76,26 @@ public class UserEntityRepositoryManager implements UserEntityRepository {
     }
 
     @Override
-    public void save(UserProtoConfiguration.UserMessage user) {
-        dslContext
+    public UUID save(UserProtoConfiguration.UserMessage user) {
+        return dslContext
                 .insertInto(Tables.USERS)
-                .set(Tables.USERS.UUID, UUID.fromString(user.getUuid()))
+                .set(Tables.USERS.UUID, generateUnbusyUUID())
                 .set(Tables.USERS.EMAIL, user.getEmail())
                 .set(Tables.USERS.STATUS_ID, user.getStatusId())
                 .set(Tables.USERS.REGISTERED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(user.getRegisteredAt()), ZoneId.systemDefault()))
-                .execute();
+                .returning(Tables.USERS.UUID)
+                .fetchOne(Tables.USERS.UUID, UUID.class);
+    }
 
+    private UUID generateUnbusyUUID() {
+        int lap = 0;
+        UUID uuid = UUID.randomUUID();
+        while(lap < 10){
+            if(!existsByUUID(uuid)) {
+                return uuid;
+            }
+            lap++;
+        }
+        throw new ProcessingException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
     }
 }

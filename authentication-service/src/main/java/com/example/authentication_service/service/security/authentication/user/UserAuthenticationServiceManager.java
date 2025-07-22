@@ -37,7 +37,9 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
             UserProtoConfiguration.UserMessage userMessage = GrpcMessageBuilder.buildFrom(registerModel.getEmail(), UserStatusEnumeration.STATUS_ACTIVE, List.of(UserRoleEnumeration.ROLE_USER.getId()));
             UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(AccountStatusEnumeration.STATUS_ACTIVE);
             UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage = GrpcMessageBuilder.buildFrom(userMessage, accountMessage);
+            System.out.println("KEYCLOAAAK");
             keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
+            System.out.println("GRPCCCCCCCCCCC");
             userGrpcClientService.registerUser(userRegistrationMessage);
         }
     }

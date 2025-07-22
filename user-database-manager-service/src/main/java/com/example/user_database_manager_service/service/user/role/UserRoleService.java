@@ -7,5 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserRoleService extends EntityService<Long, UserProtoConfiguration.UserRoleMessage> {
+    void save(UserProtoConfiguration.UserRoleMessage entity);
     List<UserProtoConfiguration.UserRoleMessage> findByUserUUID(UUID userUUID);
 }

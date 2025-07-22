@@ -17,9 +17,9 @@ public class UserServiceManager implements UserService {
     }
 
     @Override
-    public void save(UserProtoConfiguration.UserMessage user) {
-        if(!existsByEmail(user.getEmail()) && !existsByUUID(UUID.fromString(user.getUuid()))) {
-            userEntityRepository.save(user);
+    public UUID save(UserProtoConfiguration.UserMessage user) {
+        if(!existsByEmail(user.getEmail())) {
+            return userEntityRepository.save(user);
         } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
     }
 
@@ -51,9 +51,5 @@ public class UserServiceManager implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return userEntityRepository.existsByEmail(email);
-    }
-
-    public boolean canBeSaved(UserProtoConfiguration.UserMessage user) {
-        return user.getId() == 0 && !existsByEmail(user.getEmail()) && !existsByUUID(UUID.fromString(user.getUuid()));
     }
 }

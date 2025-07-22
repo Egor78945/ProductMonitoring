@@ -6,6 +6,7 @@ import com.example.user_database_manager_service.service.EntityService;
 import java.util.UUID;
 
 public interface UserService extends EntityService<Long, UserProtoConfiguration.UserMessage> {
+    UUID save(UserProtoConfiguration.UserMessage entity);
     UserProtoConfiguration.UserMessage findByUUID(UUID uuid);
     UserProtoConfiguration.UserMessage findByEmail(String email);
     boolean existsByUUID(UUID uuid);

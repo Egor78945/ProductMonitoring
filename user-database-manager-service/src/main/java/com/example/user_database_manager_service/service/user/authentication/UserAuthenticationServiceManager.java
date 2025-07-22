@@ -24,23 +24,19 @@ public class UserAuthenticationServiceManager implements UserAuthenticationServi
 
     @Override
     public void register(UserProtoConfiguration.UserRegistrationMessage registerModel) {
-        if (canBeSaved(registerModel.getUser()) && canBeSaved(registerModel.getAccount())) {
-            userService.save(registerModel.getUser());
-            accountService.save(registerModel.getAccount());
+            String savedUserUuid = userService.save(registerModel.getUser()).toString();
+            UserProtoConfiguration.AccountMessage accountMessage = registerModel.getAccount();
+            accountMessage = accountMessage.toBuilder()
+                    .setUserUuid(savedUserUuid)
+                    .build();
+            accountService.save(accountMessage);
             for (long roleId : registerModel.getUser().getUserRolesList()) {
                 UserProtoConfiguration.UserRoleMessage role = UserProtoConfiguration.UserRoleMessage
                         .newBuilder()
+                        .setRoleId(roleId)
+                        .setUserUUID(savedUserUuid)
                         .build();
                 userRoleService.save(role);
             }
-        } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
-    }
-
-    public boolean canBeSaved(UserProtoConfiguration.AccountMessage account) {
-        return account.getId() == 0 && !accountService.existsByUUID(UUID.fromString(account.getUuid())) && !accountService.existsByUserUUID(UUID.fromString(account.getUserUuid()));
-    }
-
-    public boolean canBeSaved(UserProtoConfiguration.UserMessage user) {
-        return user.getId() == 0 && !userService.existsByEmail(user.getEmail()) && !userService.existsByUUID(UUID.fromString(user.getUuid()));
     }
 }

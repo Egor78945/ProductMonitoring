@@ -96,6 +96,11 @@ public class KeycloakServiceManager implements KeycloakService {
         throw new KeycloakException(responseEntity.getBody().toString());
     }
 
+    @Override
+    public UserRepresentation getUserByUsername(String realmName, String username) {
+        return keycloakRealmResourceService.getUsersResource(realmName).searchByUsername(username, true).get(0);
+    }
+
     private String getClientSecret(String realmName, String clientId) {
         List<ClientRepresentation> clientRepresentation = keycloakRealmResourceService.getClientsResource(realmName).findByClientId(clientId);
         if (!clientRepresentation.isEmpty()) {

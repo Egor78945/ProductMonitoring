@@ -3,18 +3,15 @@ package com.example.authentication_service.service.security.keycloak.authenticat
 import com.example.authentication_service.configuration.keycloak.environment.KeycloakEnvironment;
 import com.example.authentication_service.service.security.keycloak.KeycloakService;
 import com.example.authentication_service.service.security.keycloak.builder.KeycloakItemBuilder;
-import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticationService<String> {
+public class KeycloakAuthenticationRealmAuthenticationServiceManager implements KeycloakAuthenticationService<String> {
     private final KeycloakService keycloakService;
     private final KeycloakEnvironment keycloakEnvironment;
 
-    public KeycloakAuthenticationServiceManager(KeycloakService keycloakService, KeycloakEnvironment keycloakEnvironment) {
+    public KeycloakAuthenticationRealmAuthenticationServiceManager(KeycloakService keycloakService, KeycloakEnvironment keycloakEnvironment) {
         this.keycloakService = keycloakService;
         this.keycloakEnvironment = keycloakEnvironment;
     }
@@ -30,5 +27,11 @@ public class KeycloakAuthenticationServiceManager implements KeycloakAuthenticat
     @Override
     public String login(String username, String password) {
         return keycloakService.getToken(username, password, keycloakEnvironment.getKeycloakRealmAuthenticationName(), keycloakEnvironment.getKeycloakRealmAuthenticationClientAuthenticationServiceId());
+    }
+
+    @Override
+    public void delete(String username) {
+        UserRepresentation user = keycloakService.getUserByUsername(keycloakEnvironment.getKeycloakRealmAuthenticationName(), username);
+        keycloakService.deleteUser(keycloakEnvironment.getKeycloakRealmAuthenticationName(), user.getId());
     }
 }

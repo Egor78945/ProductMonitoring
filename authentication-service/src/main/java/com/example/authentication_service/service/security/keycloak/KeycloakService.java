@@ -4,8 +4,9 @@ import org.keycloak.representations.idm.UserRepresentation;
 
 public interface KeycloakService {
     String createUser(String realmName, UserRepresentation user);
-    void deleteUser(String realmName, String userid);
-    void resetPassword(String realmName, String userId, String password);
-    void joinGroup(String realmName, String userId, String groupName);
+    void deleteUser(String realmName, String username);
+    void resetPassword(String realmName, String username, String password);
+    void joinGroup(String realmName, String username, String groupName);
     String getToken(String username, String password, String realmName, String clientId);
+    UserRepresentation getUserByUsername(String realmName, String username);
 }

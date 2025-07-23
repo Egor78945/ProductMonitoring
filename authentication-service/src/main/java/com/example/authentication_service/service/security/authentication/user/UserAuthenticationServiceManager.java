@@ -41,7 +41,11 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
             UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(AccountStatusEnumeration.STATUS_ACTIVE);
 
             keycloakAuthenticationService.register(registerModel.getEmail(), registerModel.getPassword());
-            userGrpcClientService.registerUser(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
+            try {
+                userGrpcClientService.registerUser(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
+            } catch (Exception e) {
+                keycloakAuthenticationService.delete(registerModel.getEmail());
+            }
         } else {
             throw new AuthenticationException(ExceptionMessage.ALREADY_EXISTS.getMessage());
         }

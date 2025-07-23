@@ -36,7 +36,7 @@ public class KeycloakServiceManager implements KeycloakService {
     public String createUser(String realmName, UserRepresentation user) {
         try (Response response = keycloakRealmResourceService.getUsersResource(realmName).create(user)) {
             if (response.getStatus() / 100 != 2) {
-                throw new KeycloakException(ExceptionMessage.FAILED_TO_CREATE.getMessage());
+                throw new KeycloakException(ExceptionMessage.buildMessage(ExceptionMessage.FAILED_TO_CREATE, user.toString()));
             } else {
                 return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
             }
@@ -47,7 +47,7 @@ public class KeycloakServiceManager implements KeycloakService {
     public void deleteUser(String realmName, String userid) {
         try (Response response = keycloakRealmResourceService.getUsersResource(realmName).delete(userid)) {
             if (response.getStatus() / 100 != 2) {
-                throw new KeycloakException(ExceptionMessage.FAILED_TO_DELETE.getMessage());
+                throw new KeycloakException(ExceptionMessage.buildMessage(ExceptionMessage.FAILED_TO_DELETE, userid));
             }
         }
     }
@@ -65,9 +65,9 @@ public class KeycloakServiceManager implements KeycloakService {
                     .forEach(groupRepresentation -> keycloakRealmResourceService
                             .getUsersResource(realmName)
                             .get(userId)
-                            .joinGroup(groupRepresentation.getName()));
+                            .joinGroup(groupRepresentation.getId()));
         } else {
-            throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
+            throw new KeycloakException(ExceptionMessage.buildMessage(ExceptionMessage.NOT_FOUND, groupName));
         }
     }
 
@@ -93,7 +93,7 @@ public class KeycloakServiceManager implements KeycloakService {
                 return token.toString();
             }
         }
-        throw new KeycloakException(responseEntity.getBody().toString());
+        throw new KeycloakException(ExceptionMessage.buildMessage(ExceptionMessage.AUTHENTICATION_ERROR, username));
     }
 
     @Override
@@ -106,6 +106,6 @@ public class KeycloakServiceManager implements KeycloakService {
         if (!clientRepresentation.isEmpty()) {
             return clientRepresentation.get(0).getSecret();
         }
-        throw new KeycloakException(ExceptionMessage.NOT_FOUND.getMessage());
+        throw new KeycloakException(ExceptionMessage.buildMessage(ExceptionMessage.NOT_FOUND, clientId));
     }
 }

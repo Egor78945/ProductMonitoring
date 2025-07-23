@@ -47,7 +47,7 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
                 keycloakAuthenticationService.delete(registerModel.getEmail());
             }
         } else {
-            throw new AuthenticationException(ExceptionMessage.ALREADY_EXISTS.getMessage());
+            throw new AuthenticationException(ExceptionMessage.buildMessage(ExceptionMessage.ALREADY_EXISTS, registerModel.getEmail()));
         }
     }
 }

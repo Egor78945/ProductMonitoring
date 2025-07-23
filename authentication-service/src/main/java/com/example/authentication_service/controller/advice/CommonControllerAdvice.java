@@ -26,13 +26,13 @@ public class CommonControllerAdvice {
     }
 
     @ExceptionHandler(StatusRuntimeException.class)
-    public ResponseEntity<Map<String, String>> statusRuntimeExceptionHandler(StatusRuntimeException e) {
-        return new ResponseEntity<>(Map.of(ExceptionMessage.GRPC_ERROR.getMessage(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Map<String, Object>> statusRuntimeExceptionHandler(StatusRuntimeException e) {
+        return new ResponseEntity<>(Map.of(ExceptionMessage.GRPC_ERROR.getMessage(), e.getMessage(), "stack trace", e.getStackTrace()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Map<String, String>> runtimeExceptionHandler(RuntimeException e) {
+    public ResponseEntity<Map<String, Object>> runtimeExceptionHandler(RuntimeException e) {
         String message = e.getMessage() == null ? Arrays.toString(e.getStackTrace()) : e.getMessage();
-        return new ResponseEntity<>(Map.of(ExceptionMessage.UNKNOWN.getMessage(), message), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Map.of(ExceptionMessage.UNKNOWN.getMessage(), message, "stack trace", e.getStackTrace()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

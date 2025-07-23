@@ -10,4 +10,7 @@ public enum ExceptionMessage {
     public String getMessage() {
         return message;
     }
+    public static String buildMessage(ExceptionMessage exceptionMessage, String message) {
+        return String.format("%s: %s", exceptionMessage.getMessage(), message);
+    }
 }

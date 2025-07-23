@@ -13,7 +13,7 @@ import java.util.Map;
 @ControllerAdvice(annotations = AuthenticationControllerExceptionHandler.class)
 public class AuthenticationControllerAdvice {
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Map<String, String>> authenticationExceptionHandler(AuthenticationException e) {
-        return new ResponseEntity<>(Map.of(ExceptionMessage.AUTHENTICATION_ERROR.getMessage(), e.getMessage()), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Map<String, Object>> authenticationExceptionHandler(AuthenticationException e) {
+        return new ResponseEntity<>(Map.of(ExceptionMessage.AUTHENTICATION_ERROR.getMessage(), e.getMessage(), "stack trace", e.getStackTrace()), HttpStatus.UNAUTHORIZED);
     }
 }

@@ -1,8 +1,19 @@
 version: '3.9'
 
+networks:
+  service-management:
+    driver: bridge
+  internal-service:
+    driver: bridge
+  external-service:
+    driver: bridge
+
 services:
   service-discovery:
     container_name: ${SERVICE_DISCOVERY_HOST}
+    networks:
+      - service-management
+      - internal-service
     build:
       context: ./service-discovery
       dockerfile: Dockerfile
@@ -17,6 +28,9 @@ services:
 
   api-gateway:
     container_name: ${API_GATEWAY_HOST}
+    networks:
+      - service-management
+      - internal-service
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
@@ -33,6 +47,8 @@ services:
 
   nginx:
     image: nginx
+    networks:
+      - service-management
     volumes:
       - ./configuration/nginx/nginx.conf:/etc/nginx/nginx.conf
     env_file:
@@ -42,6 +58,9 @@ services:
 
   postgres:
     container_name: ${POSTGRES_HOST}
+    networks:
+      - external-service
+      - internal-service
     image: postgres
     environment:
       - POSTGRES_DB=${POSTGRES_DATABASE_USER_NAME}
@@ -55,6 +74,9 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+    networks:
+      - external-service
+      - internal-service
     container_name: ${KEYCLOAK_HOST}
     command:
       - start-dev
@@ -76,6 +98,8 @@ services:
 
   user-database-manager-service:
     container_name: ${USER_DATABASE_MANAGER_SERVICE_HOST}
+    networks:
+      - internal-service
     build:
       context: ./user-database-manager-service
       dockerfile: Dockerfile
@@ -90,6 +114,8 @@ services:
 
   authentication-service:
     container_name: ${AUTHENTICATION_SERVICE_HOST}
+    networks:
+      - internal-service
     build:
       context: ./authentication-service
       dockerfile: Dockerfile

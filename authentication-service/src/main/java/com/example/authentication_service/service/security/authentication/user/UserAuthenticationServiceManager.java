@@ -6,6 +6,7 @@ import com.example.authentication_service.model.account.status.AccountStatusEnum
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
+import com.example.authentication_service.service.concurrency.AsyncTaskExecutorService;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
 import com.example.authentication_service.service.security.keycloak.KeycloakService;
@@ -22,11 +23,13 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
     private final UserService userService;
     private final UserGrpcClientService userGrpcClientService;
     private final KeycloakAuthenticationService<String> keycloakAuthenticationService;
+    private final AsyncTaskExecutorService asyncTaskExecutorService;
 
-    public UserAuthenticationServiceManager(UserService userService, UserGrpcClientService userGrpcClientService, KeycloakAuthenticationService<String> keycloakAuthenticationService) {
+    public UserAuthenticationServiceManager(UserService userService, UserGrpcClientService userGrpcClientService, KeycloakAuthenticationService<String> keycloakAuthenticationService, AsyncTaskExecutorService asyncTaskExecutorService) {
         this.userService = userService;
         this.userGrpcClientService = userGrpcClientService;
         this.keycloakAuthenticationService = keycloakAuthenticationService;
+        this.asyncTaskExecutorService = asyncTaskExecutorService;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
             try {
                 userGrpcClientService.registerUser(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
             } catch (Exception e) {
-                keycloakAuthenticationService.delete(registerModel.getEmail());
+                asyncTaskExecutorService.run(() -> keycloakAuthenticationService.delete(registerModel.getEmail()));
             }
         } else {
             throw new AuthenticationException(ExceptionMessage.buildMessage(ExceptionMessage.ALREADY_EXISTS, registerModel.getEmail()));

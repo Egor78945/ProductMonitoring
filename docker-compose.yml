@@ -30,6 +30,7 @@ services:
     container_name: ${API_GATEWAY_HOST}
     networks:
       - service-management
+      - external-service
       - internal-service
     build:
       context: ./api-gateway

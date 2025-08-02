@@ -1,15 +1,14 @@
 package com.example.authentication_service.service.security.authentication.user;
 
+import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsyncTaskExecutorService;
 import com.example.authentication_service.exception.AuthenticationException;
 import com.example.authentication_service.exception.message.ExceptionMessage;
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
-import com.example.authentication_service.service.concurrency.AsyncTaskExecutorService;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
-import com.example.authentication_service.service.security.keycloak.KeycloakService;
 import com.example.authentication_service.service.security.keycloak.authentication.KeycloakAuthenticationService;
 import com.example.authentication_service.service.user.UserService;
 import com.example.authentication_service.service.user.grpc.client.UserGrpcClientService;
@@ -23,9 +22,9 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
     private final UserService userService;
     private final UserGrpcClientService userGrpcClientService;
     private final KeycloakAuthenticationService<String> keycloakAuthenticationService;
-    private final AsyncTaskExecutorService asyncTaskExecutorService;
+    private final AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService;
 
-    public UserAuthenticationServiceManager(UserService userService, UserGrpcClientService userGrpcClientService, KeycloakAuthenticationService<String> keycloakAuthenticationService, AsyncTaskExecutorService asyncTaskExecutorService) {
+    public UserAuthenticationServiceManager(UserService userService, UserGrpcClientService userGrpcClientService, KeycloakAuthenticationService<String> keycloakAuthenticationService, AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService) {
         this.userService = userService;
         this.userGrpcClientService = userGrpcClientService;
         this.keycloakAuthenticationService = keycloakAuthenticationService;

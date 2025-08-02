@@ -1,7 +1,11 @@
 spring:
   application:
     name: ${API_GATEWAY_HOST}
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT_INNER}/realms/authentication
   cloud:
     gateway:
       routes:

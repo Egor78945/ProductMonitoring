@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,7 +24,7 @@ public class AsyncStarterExecutorConfiguration {
     @Bean
     public ExecutorService asyncStarterFixedThreadPoolExecutor() {
         return Executors.newFixedThreadPool(asyncStarterEnvironment.getThreadPoolSize(), r -> new Thread(() -> {
-            Thread.currentThread().setContextClassLoader(AsyncStarterExecutorConfiguration.class.getClassLoader());
+            Thread.currentThread().setContextClassLoader(getMainClassLoader());
             r.run();
         }));
     }
@@ -31,5 +32,16 @@ public class AsyncStarterExecutorConfiguration {
     @Bean
     public AsyncStarterAsyncTaskExecutorService asyncStarterAsyncTaskExecutorServiceManager(@Qualifier("asyncStarterFixedThreadPoolExecutor") ExecutorService executorService) {
         return new AsyncStarterAsyncTaskExecutorServiceManager(executorService);
+    }
+
+    private ClassLoader getMainClassLoader() {
+        try {
+            Class<?> springApplicationClass = Class.forName("org.springframework.boot.SpringApplication");
+            Method getMainAppMethod = springApplicationClass.getDeclaredMethod("getMainApplicationClass");
+            Class<?> mainApplicationClass = (Class<?>) getMainAppMethod.invoke(null);
+            return mainApplicationClass.getClassLoader();
+        } catch (Exception e) {
+            return getClass().getClassLoader();
+        }
     }
 }

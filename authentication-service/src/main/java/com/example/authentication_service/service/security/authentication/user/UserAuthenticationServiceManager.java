@@ -9,7 +9,6 @@ import com.example.authentication_service.model.user.status.UserStatusEnumeratio
 import com.example.authentication_service.service.concurrency.AsyncTaskExecutorService;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
-import com.example.authentication_service.service.security.keycloak.KeycloakService;
 import com.example.authentication_service.service.security.keycloak.authentication.KeycloakAuthenticationService;
 import com.example.authentication_service.service.user.UserService;
 import com.example.authentication_service.service.user.grpc.client.UserGrpcClientService;

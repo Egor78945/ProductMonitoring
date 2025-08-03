@@ -1,0 +1,2 @@
+com.example.aop_spring_boot_starter.configuration.redis.AopStarterRedisConfiguration
+com.example.aop_spring_boot_starter.configuration.aop.AopConfiguration

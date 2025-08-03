@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: ./v8-create-account-products-table-changelog.yml
+      relativeToChangelogFile: true

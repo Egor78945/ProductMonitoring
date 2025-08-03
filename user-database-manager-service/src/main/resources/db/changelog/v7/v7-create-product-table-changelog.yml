@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: v7-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: product
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: url
+                  type: varchar(300)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: actual_price
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: past_price
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false

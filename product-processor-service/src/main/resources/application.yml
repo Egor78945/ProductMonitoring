@@ -19,6 +19,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+product:
+  read:
+    count: 30
+
 server:
   port: ${PRODUCT_PROCESSOR_SERVICE_PORT}
 

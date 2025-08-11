@@ -18,7 +18,7 @@ public class AccountProductRepositoryManager extends AccountProductRepository<Pr
     }
 
     @Override
-    public List<Product> getAllByAccountUuidAndPageAndPageSize(UUID uuid, int page, int pageSize) {
+    public List<Product> getAllByAccountUuid(UUID uuid, int page, int pageSize) {
         return dslContext.select(Tables.PRODUCT)
                 .from(Tables.ACCOUNT
                         .join(Tables.ACCOUNT_PRODUCTS)

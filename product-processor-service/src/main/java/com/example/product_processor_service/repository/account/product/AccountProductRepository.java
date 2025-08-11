@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class AccountProductRepository<P extends Product> {
-    public abstract List<P> getAllByAccountUuidAndPageAndPageSize(UUID uuid, int page, int pageSize);
+    public abstract List<P> getAllByAccountUuid(UUID uuid, int page, int pageSize);
     public abstract Optional<P> getByAccountUuidAndProductUrl(UUID accountUuid, String productUrl);
     public abstract boolean existsByAccountUuidAndProductUrl(UUID accountUuid, String productUrl);
 }

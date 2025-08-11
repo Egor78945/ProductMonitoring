@@ -11,6 +11,6 @@ public abstract class ProductRepository<P extends Product> {
     public abstract void save(P product);
     public abstract void saveAll(List<P> products);
     public abstract Optional<P> getByUrl(String url);
-    public abstract List<P> getExpired(Timestamp now, int limit, DatePart datePart);
+    public abstract List<P> getAllExpired(int timeLimit, DatePart datePart, int count);
     public abstract boolean existsByUrl(String url);
 }

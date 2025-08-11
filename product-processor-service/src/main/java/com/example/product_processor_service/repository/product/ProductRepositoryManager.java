@@ -46,10 +46,11 @@ public class ProductRepositoryManager extends ProductRepository<Product> {
     }
 
     @Override
-    public List<Product> getExpired(Timestamp now, int limit, DatePart datePart) {
+    public List<Product> getAllExpired(int limit, DatePart datePart, int count) {
         return dslContext
                 .selectFrom(Tables.PRODUCT)
-                .where(DSL.extract(DSL.timestamp(now).minus(Tables.PRODUCT.UPDATED_AT), datePart).greaterThan(limit))
+                .where(DSL.extract(DSL.currentTimestamp().minus(Tables.PRODUCT.UPDATED_AT), datePart).greaterThan(limit))
+                .limit(count)
                 .fetchInto(Product.class);
     }
 

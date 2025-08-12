@@ -1,55 +1,39 @@
 package com.example.product_processor_service.repository.account.product;
 
+import com.example.product_processor_service.exception.AlreadyExistsException;
+import com.example.product_processor_service.model.account.entity.Account;
+import com.example.product_processor_service.model.account.product.entity.AccountProduct;
 import com.example.product_processor_service.model.product.entity.Product;
+import com.example.product_processor_service.repository.account.AccountRepository;
+import com.example.product_processor_service.repository.product.ProductRepository;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 @Repository
-public class AccountProductRepositoryManager extends AccountProductRepository<Product> {
+public class AccountProductRepositoryManager extends AccountProductRepository<AccountProduct> {
     private final DSLContext dslContext;
+    private final ProductRepository<Product> productRepository;
+    private final AccountRepository<Account> accountRepository;
 
-    public AccountProductRepositoryManager(DSLContext dslContext) {
+    public AccountProductRepositoryManager(DSLContext dslContext, ProductRepository<Product> productRepository, AccountRepository<Account> accountRepository) {
         this.dslContext = dslContext;
+        this.productRepository = productRepository;
+        this.accountRepository = accountRepository;
     }
 
-    @Override
-    public List<Product> getAllByAccountUuid(UUID uuid, int page, int pageSize) {
-        return dslContext.select(Tables.PRODUCT)
-                .from(Tables.ACCOUNT
-                        .join(Tables.ACCOUNT_PRODUCTS)
-                        .on(Tables.ACCOUNT.UUID.eq(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID))
-                        .join(Tables.PRODUCT)
-                        .on(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(Tables.PRODUCT.URL)))
-                .limit(pageSize)
-                .offset((page - 1) * pageSize)
-                .fetchInto(Product.class);
-
-    }
 
     @Override
-    public Optional<Product> getByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
-        return dslContext
-                .select(Tables.PRODUCT)
-                .from(Tables.ACCOUNT
-                        .join(Tables.ACCOUNT_PRODUCTS)
-                        .on(Tables.ACCOUNT.UUID.eq(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID))
-                        .join(Tables.PRODUCT)
-                        .on(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(Tables.PRODUCT.URL)))
-                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl)))
-                .fetchOptionalInto(Product.class);
-    }
+    public void save(AccountProduct product) {
+        if(!productRepository.existsByAccountUuidAndProductUrl(product.getAccountUuid(), product.getUrl()) && accountRepository.existsByUuid(product.getAccountUuid())) {
+            dslContext
+                    .insertInto(Tables.ACCOUNT_PRODUCTS)
+                    .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, product.getAccountUuid())
+                    .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, product.getUrl())
+                    .execute();
 
-    @Override
-    public boolean existsByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
-        return dslContext
-                .fetchExists(dslContext
-                        .selectOne()
-                        .from(Tables.ACCOUNT_PRODUCTS)
-                        .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl))));
+        } else {
+            throw new AlreadyExistsException("account is not exists or already has the product");
+        }
     }
 }

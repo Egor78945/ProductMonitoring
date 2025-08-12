@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class ProductRepositoryManager extends ProductRepository<Product> {
@@ -62,5 +63,37 @@ public class ProductRepositoryManager extends ProductRepository<Product> {
                                 .from(Tables.PRODUCT)
                                 .where(Tables.PRODUCT.URL.eq(url))
                 );
+    }
+
+    @Override
+    public List<Product> getAllByAccountUuid(UUID uuid, int page, int pageSize) {
+        return dslContext
+                .selectFrom(Tables.PRODUCT.join(Tables.ACCOUNT_PRODUCTS).on(Tables.PRODUCT.URL.eq(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL)))
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(uuid))
+                .limit(pageSize)
+                .offset((page - 1) * pageSize)
+                .fetchInto(Product.class);
+    }
+
+    @Override
+    public Optional<Product> getByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
+        return dslContext
+                .select(Tables.PRODUCT)
+                .from(Tables.ACCOUNT
+                        .join(Tables.ACCOUNT_PRODUCTS)
+                        .on(Tables.ACCOUNT.UUID.eq(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID))
+                        .join(Tables.PRODUCT)
+                        .on(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(Tables.PRODUCT.URL)))
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl)))
+                .fetchOptionalInto(Product.class);
+    }
+
+    @Override
+    public boolean existsByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
+        return dslContext
+                .fetchExists(dslContext
+                        .selectOne()
+                        .from(Tables.ACCOUNT_PRODUCTS)
+                        .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl))));
     }
 }

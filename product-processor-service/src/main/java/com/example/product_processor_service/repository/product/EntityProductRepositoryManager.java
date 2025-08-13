@@ -7,16 +7,15 @@ import org.jooq.DatePart;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ProductRepositoryManager extends ProductRepository<Product> {
+public class EntityProductRepositoryManager extends EntityProductRepository<Product> {
     private final DSLContext dslContext;
 
-    public ProductRepositoryManager(DSLContext dslContext) {
+    public EntityProductRepositoryManager(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 

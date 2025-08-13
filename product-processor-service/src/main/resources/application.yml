@@ -8,10 +8,6 @@ spring:
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
 
-  liquibase:
-    change-log: db/changelog/main/main-changelog.yml
-    enabled: true
-
 eureka:
   client:
     service-url:

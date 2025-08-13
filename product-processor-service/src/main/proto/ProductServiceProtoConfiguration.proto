@@ -5,13 +5,21 @@ package com.example.grpc.product;
 message AccountProductMessage {
   string url = 1;
   string accountUuid = 2;
+  int32 actualPrice = 3;
+  int32 pastPrice = 4;
+  int64 updatedAt = 5;
 }
 
 message ProductMessage {
   string url = 1;
-  int32 actualPrice = 2;
-  int32 pastPrice = 3;
-  int64 updatedAt = 4;
+  int32 actualPrice = 3;
+  int32 pastPrice = 4;
+  int64 updatedAt = 5;
+}
+
+message StringIntMessage {
+  string string = 1;
+  int32 int = 2;
 }
 
 message StringMessage {
@@ -29,5 +37,5 @@ message BooleanMessage {
 service ProductProtoService {
   rpc save(AccountProductMessage) returns (BooleanMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
-  rpc getAllByUrlAndAccountUuid(AccountProductMessage) returns (ProductListMessage);
+  rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
 }

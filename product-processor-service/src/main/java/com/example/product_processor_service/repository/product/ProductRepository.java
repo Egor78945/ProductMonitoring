@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ProductRepository<P extends Product> {
+public abstract class ProductRepository<P> {
     public abstract void save(P product);
     public abstract void saveAll(List<P> products);
     public abstract Optional<P> getByUrl(String url);

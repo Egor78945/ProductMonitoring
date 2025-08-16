@@ -21,4 +21,4 @@ databaseChangeLog:
                   type: bigint
               - column:
                   name: base_url
-                  type: varchar(100)
+                  type: varchar(500)

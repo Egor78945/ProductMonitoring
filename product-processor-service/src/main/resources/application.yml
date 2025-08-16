@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: product-processor-service
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT_INNER}/${POSTGRES_DATABASE_USER_NAME}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+product:
+  read:
+    count: 30
+
+server:
+  port: ${PRODUCT_PROCESSOR_SERVICE_PORT}
+
+grpc:
+  server:
+    port: ${PRODUCT_PROCESSOR_SERVICE_GRPC_PORT}

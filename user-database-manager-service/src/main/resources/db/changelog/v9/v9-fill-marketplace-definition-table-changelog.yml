@@ -21,4 +21,4 @@ databaseChangeLog:
                   type: varchar(30)
               - column:
                   name: processor_class_name
-                  type: varchar(100)
+                  type: varchar(500)

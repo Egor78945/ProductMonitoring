@@ -57,6 +57,8 @@ protobuf {
     }
 }
 
+
+import org.gradle.api.tasks.JavaExec
 import org.jooq.meta.jaxb.Logging
 
 jooq {
@@ -113,6 +115,18 @@ jooq {
             }
         }
     }
+}
+
+tasks.register('update', JavaExec) {
+    mainClass = "liquibase.integration.commandline.Main"
+    classpath = sourceSets.main.runtimeClasspath
+    args = [
+            "--changeLogFile=src/main/resources/db/changelog/main/main-changelog.yml",
+            "--url=jdbc:postgresql://${System.getenv('POSTGRES_HOST')}:${System.getenv('POSTGRES_PORT_INNER')}/${System.getenv('POSTGRES_DATABASE_USER_NAME')}",
+            "--username=${System.getenv('POSTGRES_USERNAME')}",
+            "--password=${System.getenv('POSTGRES_PASSWORD')}",
+            "update"
+    ]
 }
 
 tasks.named('test') {

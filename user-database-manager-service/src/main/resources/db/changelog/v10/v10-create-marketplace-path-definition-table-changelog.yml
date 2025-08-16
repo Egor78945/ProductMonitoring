@@ -29,7 +29,7 @@ databaseChangeLog:
                     foreignKeyName: marketplace_path_definition_id
               - column:
                   name: base_url
-                  type: varchar(100)
+                  type: varchar(500)
                   constraints:
                     nullable: false
                     unique: true

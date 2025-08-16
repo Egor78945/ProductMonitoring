@@ -27,7 +27,7 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: processor_class_name
-                  type: varchar(100)
+                  type: varchar(500)
                   constraints:
                     nullable: false
                     unique: true

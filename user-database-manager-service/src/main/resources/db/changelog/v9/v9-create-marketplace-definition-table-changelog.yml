@@ -26,7 +26,7 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
-                  name: processor_class_path
+                  name: processor_class_name
                   type: varchar(100)
                   constraints:
                     nullable: false

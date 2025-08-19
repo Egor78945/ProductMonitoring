@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: v11-2
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: marketplace_selector
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT COUNT(*) FROM marketplace_selector"
+      changes:
+        - loadData:
+            tableName: marketplace_selector
+            file: db/csv/marketplace_selector_table.csv
+            separator: ","
+            usePreparedStatements: false
+            columns:
+              - column:
+                  name: marketplace_id
+                  type: bigint
+              - column:
+                  name: product_name
+                  type: varchar(300)
+              - column:
+                  name: product_price
+                  type: varchar(300)

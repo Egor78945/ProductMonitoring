@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: v11-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: marketplace_selector
+      changes:
+        - createTable:
+            tableName: marketplace_selector
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+                  autoIncrement: true
+              - column:
+                  name: marketplace_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    unique: true
+                    foreignKeyName: marketplace_selector_marketplace_definition_id
+                    referencedTableName: marketplace_definition
+                    referencedColumnNames: id
+              - column:
+                  name: product_name
+                  type: varchar(300)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_price
+                  type: varchar(300)
+                  constraints:
+                    nullable: false

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: ./v11-create-marketplace-selector-table-changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./v11-fill-marketplace-selector-table-changelog.yml
+      relativeToChangelogFile: true

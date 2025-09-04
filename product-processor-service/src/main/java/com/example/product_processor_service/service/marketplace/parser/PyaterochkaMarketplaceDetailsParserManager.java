@@ -1,15 +1,14 @@
 package com.example.product_processor_service.service.marketplace.parser;
 
-import com.microsoft.playwright.Page;
 
-public class PyaterochkaMarketplaceDetailsParserManager implements MarketplaceDetailsParser<Page> {
+public class PyaterochkaMarketplaceDetailsParserManager implements MarketplaceDetailsParser<String> {
     @Override
-    public String parseName(Page page) {
+    public String parseName(String page) {
         return "";
     }
 
     @Override
-    public int parsePrice(Page page) {
+    public int parsePrice(String page) {
         return 0;
     }
 }

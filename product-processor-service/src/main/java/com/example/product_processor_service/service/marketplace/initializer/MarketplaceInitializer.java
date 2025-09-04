@@ -1,6 +1,5 @@
 package com.example.product_processor_service.service.marketplace.initializer;
 
-import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.service.marketplace.manager.MarketplaceManagerService;
 
 import java.util.Map;

@@ -19,6 +19,14 @@ product:
   read:
     count: 30
 
+web:
+  context:
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36
+    view:
+      size:
+        width: 1920
+        height: 1080
+
 server:
   port: ${PRODUCT_PROCESSOR_SERVICE_PORT}
 

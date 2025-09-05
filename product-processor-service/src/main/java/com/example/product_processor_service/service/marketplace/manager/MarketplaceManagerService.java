@@ -5,5 +5,5 @@ import com.example.product_processor_service.model.product.ProductDTO;
 import java.net.URI;
 
 public interface MarketplaceManagerService {
-    ProductDTO getProductDetails(URI url);
+    void loadProduct(URI url);
 }

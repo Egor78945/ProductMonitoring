@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 
+//TO DELETE
 @Service
 public class PlaywrightWebBrowserContextManagerService implements PlaywrightWebBrowserContextManager {
     private final ReloadablePlaywrightWebBrowserPageContext playwrightWebBrowserPageContext;
@@ -14,7 +15,7 @@ public class PlaywrightWebBrowserContextManagerService implements PlaywrightWebB
     }
 
     @Override
-    public String loadPage(URI uri, String waitSelector) {
-        return playwrightWebBrowserPageContext.getPageAsString(uri, waitSelector);
+    public String loadPage(URI uri) {
+        return null;
     }
 }

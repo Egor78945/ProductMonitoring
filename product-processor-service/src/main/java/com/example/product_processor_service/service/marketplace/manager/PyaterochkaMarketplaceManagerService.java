@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 
 @Service
-public class PyaterochkaMarketplaceManagerService implements MarketplaceManagerService {
+public class PyaterochkaMarketplaceManagerService implements MarketplaceManagerService<ProductDTO> {
     private final ReloadablePlaywrightWebBrowserPageContext pageContext;
     private final PyaterochkaPlaywrightWebBrowserPageParser<ProductDTO> parser;
 
@@ -18,7 +18,7 @@ public class PyaterochkaMarketplaceManagerService implements MarketplaceManagerS
     }
 
     @Override
-    public void loadProduct(URI uri) {
-        ProductDTO productDTO = pageContext.getAndParse(uri, parser);
+    public ProductDTO loadProduct(URI uri) {
+        return pageContext.getAndParse(uri, parser);
     }
 }

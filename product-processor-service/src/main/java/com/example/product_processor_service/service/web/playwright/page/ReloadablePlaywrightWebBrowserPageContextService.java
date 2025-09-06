@@ -55,8 +55,11 @@ public class ReloadablePlaywrightWebBrowserPageContextService extends Reloadable
             return parsed;
         } finally {
             pageWrapper.terminate();
-            cleanup(page);
-            pagePoolManager.reloadPage(page);
+            if(cleanup(page)) {
+                pagePoolManager.reloadPage(page);
+            } else {
+                pagePoolManager.reloadPage();
+            }
         }
     }
 }

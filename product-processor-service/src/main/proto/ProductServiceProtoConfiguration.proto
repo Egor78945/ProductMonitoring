@@ -12,6 +12,7 @@ message AccountProductMessage {
 
 message ProductMessage {
   string url = 1;
+  string name = 2;
   int32 actualPrice = 3;
   int32 pastPrice = 4;
   int64 updatedAt = 5;

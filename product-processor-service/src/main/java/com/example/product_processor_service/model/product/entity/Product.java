@@ -4,15 +4,15 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Product {
-    private long id;
     private String url;
+    private String name;
     private int actualPrice;
     private int pastPrice;
     private Timestamp updatedAt;
 
-    public Product(long id, String url, int actualPrice, int pastPrice, Timestamp updatedAt) {
-        this.id = id;
+    public Product(String url, String name, int actualPrice, int pastPrice, Timestamp updatedAt) {
         this.url = url;
+        this.name = name;
         this.actualPrice = actualPrice;
         this.pastPrice = pastPrice;
         this.updatedAt = updatedAt;
@@ -21,20 +21,20 @@ public class Product {
     public Product() {
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getActualPrice() {
@@ -76,8 +76,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
-                ", url='" + url + '\'' +
+                "url='" + url + '\'' +
+                ", name='" + name + '\'' +
                 ", actualPrice=" + actualPrice +
                 ", pastPrice=" + pastPrice +
                 ", updatedAt=" + updatedAt +

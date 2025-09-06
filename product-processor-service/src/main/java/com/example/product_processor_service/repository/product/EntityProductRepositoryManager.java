@@ -24,6 +24,7 @@ public class EntityProductRepositoryManager extends EntityProductRepository<Prod
         dslContext
                 .insertInto(Tables.PRODUCT)
                 .set(Tables.PRODUCT.URL, product.getUrl())
+                .set(Tables.PRODUCT.NAME, product.getName())
                 .set(Tables.PRODUCT.ACTUAL_PRICE, product.getActualPrice())
                 .set(Tables.PRODUCT.PAST_PRICE, product.getPastPrice())
                 .set(Tables.PRODUCT.UPDATED_AT, product.getUpdatedAt().toLocalDateTime())

@@ -122,6 +122,8 @@ services:
       dockerfile: Dockerfile
       args:
         JAVA_VERSION: ${JAVA_VERSION}
+    volumes:
+      - ./configuration/playwright/ms-playwright:/root/.cache/ms-playwright
     restart: on-failure
     env_file:
       - .env

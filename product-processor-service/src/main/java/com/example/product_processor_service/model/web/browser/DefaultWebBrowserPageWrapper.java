@@ -10,7 +10,7 @@ public class DefaultWebBrowserPageWrapper extends WebBrowserPageWrapper {
 
     @Override
     public String locator(String selector) {
-        if(page == null) {
+        if(page != null) {
             return page.locator(selector).first().textContent();
         }
         throw new SessionTerminatedException();

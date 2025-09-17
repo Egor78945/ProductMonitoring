@@ -35,7 +35,6 @@ public class ReloadablePlaywrightWebBrowserPageContextService extends Reloadable
                 }
             """);
             page.context().clearCookies();
-            page.evaluate("localStorage.clear(); sessionStorage.clear();");
             return true;
         } catch (Exception e) {
             pagePoolManager.reloadPage();
@@ -46,6 +45,7 @@ public class ReloadablePlaywrightWebBrowserPageContextService extends Reloadable
     @Override
     public <P> P getAndParse(URI uri, PlaywrightWebBrowserPageParser<P> parser) {
         Page page = pagePoolManager.getPage();
+        page.navigate(uri.toString());
 
         WebBrowserPageWrapper pageWrapper = new DefaultWebBrowserPageWrapper(page);
 

@@ -1,0 +1,6 @@
+package com.example.security_manager_spring_boot_starter.service.keycloak.token;
+
+import com.example.security_manager_spring_boot_starter.service.token.SecurityManagerTokenParser;
+
+public interface SecurityManagerKeycloakTokenParser extends SecurityManagerTokenParser {
+}

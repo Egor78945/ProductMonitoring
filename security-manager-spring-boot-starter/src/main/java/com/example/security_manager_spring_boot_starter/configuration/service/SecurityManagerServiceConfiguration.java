@@ -7,11 +7,13 @@ import com.example.security_manager_spring_boot_starter.service.keycloak.token.S
 import com.example.security_manager_spring_boot_starter.service.keycloak.token.SecurityManagerKeycloakTokenParserManager;
 import com.example.security_manager_spring_boot_starter.service.web.SecurityManagerWebClientService;
 import com.example.security_manager_spring_boot_starter.service.web.SecurityManagerWebClientServiceManager;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
+@EnableConfigurationProperties(SecurityManagerKeycloakEnvironment.class)
 public class SecurityManagerServiceConfiguration {
     @Bean
     public SecurityManagerWebClientService securityManagerWebClientService(RestTemplate restTemplate) {

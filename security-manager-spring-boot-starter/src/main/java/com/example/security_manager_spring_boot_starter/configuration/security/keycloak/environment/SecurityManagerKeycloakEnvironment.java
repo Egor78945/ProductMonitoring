@@ -2,56 +2,33 @@ package com.example.security_manager_spring_boot_starter.configuration.security.
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.Objects;
-
-@ConfigurationProperties("keycloak")
+@ConfigurationProperties(prefix = "keycloak")
 public class SecurityManagerKeycloakEnvironment {
-    private String realm;
-    private String host;
-    private int port;
+    private String serverHost;
+    private int serverPort;
+    private String realmAuthenticationName;
 
-    public String getRealm() {
-        return realm;
+    public String getServerHost() {
+        return serverHost;
     }
 
-    public void setRealm(String realm) {
-        this.realm = realm;
+    public void setServerHost(String serverHost) {
+        this.serverHost = serverHost;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public int getServerPort() {
+        return serverPort;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
-    public String getHost() {
-        return host;
+    public String getRealmAuthenticationName() {
+        return realmAuthenticationName;
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        SecurityManagerKeycloakEnvironment that = (SecurityManagerKeycloakEnvironment) o;
-        return port == that.port && Objects.equals(realm, that.realm) && Objects.equals(host, that.host);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(realm, host, port);
-    }
-
-    @Override
-    public String toString() {
-        return "SecurityManagerKeycloakEnvironment{" +
-                "realm='" + realm + '\'' +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                '}';
+    public void setRealmAuthenticationName(String realmAuthenticationName) {
+        this.realmAuthenticationName = realmAuthenticationName;
     }
 }

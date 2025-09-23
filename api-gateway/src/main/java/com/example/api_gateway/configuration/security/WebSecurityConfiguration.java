@@ -4,13 +4,20 @@ import com.example.api_gateway.configuration.security.converter.JwtAuthoritiesCo
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -19,7 +26,7 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http, Converter<Jwt, Mono<AbstractAuthenticationToken>> authenticationConverter) {
         return http.authorizeExchange(exchange ->
-                        exchange.pathMatchers("/api/v1/auth/test").authenticated())
+                        exchange.pathMatchers("/api/v1/test").authenticated())
                 .authorizeExchange(exchange ->
                         exchange.pathMatchers("/api/v1/auth/**").permitAll()
                                 .anyExchange().authenticated())
@@ -27,6 +34,16 @@ public class WebSecurityConfiguration {
                         oa2.jwt(jwt -> jwt.jwtAuthenticationConverter(authenticationConverter)))
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
+                .addFilterAfter((exchange, chain) -> {
+                    System.out.println("Add FILTER BEFORE");
+                    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+                        System.out.println("Add FILTER AFFTEEEEEER");
+                        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+                        ServerHttpRequest request = exchange.getRequest();
+                        request.getHeaders().set("X-User-Email", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+                    }
+                    return chain.filter(exchange);
+                }, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
     }
 

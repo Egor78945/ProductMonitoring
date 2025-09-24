@@ -12,7 +12,7 @@ spring:
       retries: 10
 
 kafka:
-  replicas: ${KAFKA_TOPIC_REPLICATION_FACTOR}
+  replicas: 2
   topic:
     product:
       save:

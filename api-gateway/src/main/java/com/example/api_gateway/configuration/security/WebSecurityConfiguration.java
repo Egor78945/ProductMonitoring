@@ -35,10 +35,7 @@ public class WebSecurityConfiguration {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .addFilterAfter((exchange, chain) -> {
-                    System.out.println("Add FILTER BEFORE");
                     if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                        System.out.println("Add FILTER AFFTEEEEEER");
-                        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
                         ServerHttpRequest request = exchange.getRequest();
                         request.getHeaders().set("X-User-Email", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
                     }

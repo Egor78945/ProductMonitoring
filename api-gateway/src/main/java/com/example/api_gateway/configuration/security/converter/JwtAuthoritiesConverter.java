@@ -19,7 +19,6 @@ public class JwtAuthoritiesConverter  implements Converter<Jwt, Collection<Grant
         Map<String, Object> claims = source.getClaims();
         Map<String, Object> realmAccess = (Map<String, Object>) claims.get("realm_access");
         if(realmAccess != null && realmAccess.containsKey("roles") && claims.containsKey("email")){
-            System.out.println("FILTEEEEEEER " + claims.get("email"));
             Collection<GrantedAuthority> authorities = ((Collection<String>) realmAccess.get("roles")).stream().filter(r -> r.startsWith("ROLE_")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(claims.get("email"), null, authorities));
             return authorities;

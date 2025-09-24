@@ -1,6 +1,7 @@
 package com.example.security_manager_spring_boot_starter.configuration.security;
 
 import com.example.security_manager_spring_boot_starter.configuration.security.filter.SecurityManagerJwtEmailExtractRequestFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,11 +18,12 @@ public class SecurityManagerSecurityConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
-                        .anyRequest().permitAll() // или .authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityManagerJwtEmailExtractRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

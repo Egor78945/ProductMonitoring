@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: product-manager-service
+
+server:
+  port: ${PRODUCT_MANAGER_SERVICE_PORT}

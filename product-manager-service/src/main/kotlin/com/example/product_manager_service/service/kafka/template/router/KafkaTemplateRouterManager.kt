@@ -12,7 +12,9 @@ class KafkaTemplateRouterManager(private val productPublisherKafkaTemplate: Kafk
     private val routerMap = mutableMapOf<KClass<*>, KafkaTemplate<*, *>>()
 
     init {
-        routerMap[productPublisherKafkaTemplate::class] = productPublisherKafkaTemplate
+        println("$productPublisherKafkaTemplate class = ${productPublisherKafkaTemplate::class}")
+        routerMap[ProductPublisherDto::class] = productPublisherKafkaTemplate
+        println("map = $routerMap")
     }
 
     override fun <T : Serializable> route(valueClass: KClass<T>): KafkaTemplate<String, T> =

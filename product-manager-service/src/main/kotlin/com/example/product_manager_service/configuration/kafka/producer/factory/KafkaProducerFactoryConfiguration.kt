@@ -15,22 +15,27 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 @Configuration
 class KafkaProducerFactoryConfiguration(private val kafkaEnvironment: KafkaEnvironment) {
     @Bean
-    fun productPublisherProducerFactory(objectMapper: ObjectMapper): ProducerFactory<String, ProductPublisherDto> =
-        DefaultKafkaProducerFactory(buildAtLeastOnceProducerProperties(objectMapper))
+    fun productPublisherProducerFactory(objectMapper: ObjectMapper): ProducerFactory<String, ProductPublisherDto> {
+        val cfg = DefaultKafkaProducerFactory<String, ProductPublisherDto>(buildAtLeastOnceProducerProperties())
+        cfg.valueSerializer = JsonSerializer(objectMapper)
+        return cfg
+    }
 
     @Bean
     fun objectMapper(): ObjectMapper = ObjectMapper()
 
-    private fun buildAtLeastOnceProducerProperties(objectMapper: ObjectMapper): Map<String, Any> {
+    private fun buildAtLeastOnceProducerProperties(): Map<String, *> {
         val producerProperties: MutableMap<String, Any> = HashMap()
-
-        producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer())
+        producerProperties.put(
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+            "org.apache.kafka.common.serialization.StringSerializer"
+        )
         producerProperties.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-            JsonSerializer<ProductPublisherDto>(objectMapper)
+            JsonSerializer::class
         )
         producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaEnvironment.KAFKA_BOOTSTRAP_SERVERS)
-        producerProperties.put(ProducerConfig.ACKS_CONFIG, 1)
+        producerProperties.put(ProducerConfig.ACKS_CONFIG, "1")
         producerProperties.put(ProducerConfig.RETRIES_CONFIG, kafkaEnvironment.KAFKA_PRODUCER_RETRIES)
 
         return producerProperties

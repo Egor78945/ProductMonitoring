@@ -146,6 +146,9 @@ services:
     image: confluentinc/cp-zookeeper:${ZOOKEEPER_VERSION}
     hostname: ${ZOOKEEPER_HOST}
     container_name: ${ZOOKEEPER_HOST}
+    networks:
+      - external-service
+      - internal-service
     ports:
       - ${ZOOKEEPER_PORT_OUTER}:${ZOOKEEPER_PORT_INNER}
     environment:
@@ -156,6 +159,9 @@ services:
     image: confluentinc/cp-kafka:${KAFKA_VERSION}
     hostname: ${KAFKA1_HOST}
     container_name: ${KAFKA1_HOST}
+    networks:
+      - external-service
+      - internal-service
     depends_on:
       - zookeeper
     ports:
@@ -175,6 +181,9 @@ services:
     image: confluentinc/cp-kafka:${KAFKA_VERSION}
     hostname: ${KAFKA2_HOST}
     container_name: ${KAFKA2_HOST}
+    networks:
+      - external-service
+      - internal-service
     depends_on:
       - kafka1
     ports:

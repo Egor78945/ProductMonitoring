@@ -28,7 +28,7 @@ class KafkaProducerFactoryConfiguration(private val kafkaEnvironment: KafkaEnvir
         val producerProperties: MutableMap<String, Any> = HashMap()
         producerProperties.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-            "org.apache.kafka.common.serialization.StringSerializer"
+            StringSerializer().javaClass.name
         )
         producerProperties.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,

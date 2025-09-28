@@ -208,7 +208,6 @@ services:
       dockerfile: Dockerfile
       args:
         JAVA_VERSION: ${JAVA_VERSION}
-    restart: on-failure
     env_file:
       - .env
     depends_on:

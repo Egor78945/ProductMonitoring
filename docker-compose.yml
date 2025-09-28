@@ -189,3 +189,19 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+  product-manager-service:
+    container_name: ${PRODUCT_MANAGER_SERVICE_HOST}
+    networks:
+      - internal-service
+    build:
+      context: ./product-manager-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - kafka1
+      - kafka2

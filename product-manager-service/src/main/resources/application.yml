@@ -2,6 +2,13 @@ spring:
   application:
     name: product-manager-service
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
   kafka:
     bootstrap-servers: ${KAFKA1_HOST}:${KAFKA1_PORT_PLAINTEXT_INNER}, ${KAFKA2_HOST}:${KAFKA2_PORT_PLAINTEXT_INNER}
     listener:

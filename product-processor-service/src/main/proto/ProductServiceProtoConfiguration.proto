@@ -40,3 +40,7 @@ service ProductProtoService {
   rpc getByUrl(StringMessage) returns (ProductMessage);
   rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
 }
+
+service MarketplaceProtoService {
+  rpc isMarketplaceSupports(StringMessage) returns (BooleanMessage);
+}

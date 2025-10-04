@@ -1,4 +1,4 @@
-package com.example.product_processor_service.service.grpc.mapper;
+package com.example.product_processor_service.service.common.grpc.mapper;
 
 import com.example.grpc.product.ProductServiceProtoConfiguration;
 

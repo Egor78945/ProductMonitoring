@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.spring' version "$kotlinVersion"
     id 'org.springframework.boot' version "$springBootVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id 'com.google.protobuf' version "$protobufVersion"
 }
 
 group = "com.example"
@@ -27,6 +28,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.example:security-manager-spring-boot-starter:$springBootVersion")
+    implementation "net.devh:grpc-client-spring-boot-starter:$grpcClientSpringBootStarterVersion"
+    implementation "com.google.protobuf:protobuf-java:$protobufJavaVersion"
+    implementation "com.google.guava:guava:$guavaVersion"
+    implementation "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -38,6 +43,25 @@ kotlin {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protocVersion"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$protocGenGrpcJavaVersion"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")

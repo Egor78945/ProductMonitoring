@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.4.1"
-    id("io.spring.dependency-management") version "1.1.7"
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.plugin.spring' version "$kotlinVersion"
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 }
-val springCloudVersion by extra("2024.0.1")
+
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
@@ -12,7 +12,7 @@ description = "product-manager-service"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of("17")
+        languageVersion = JavaLanguageVersion.of("$javaVersion")
     }
 }
 
@@ -26,7 +26,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("com.example:security-manager-spring-boot-starter:3.4.1")
+    implementation("com.example:security-manager-spring-boot-starter:$springBootVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -44,6 +44,6 @@ dependencyManagement {
     }
 }
 
-tasks.withType<Test> {
+tasks.named('test') {
     useJUnitPlatform()
 }

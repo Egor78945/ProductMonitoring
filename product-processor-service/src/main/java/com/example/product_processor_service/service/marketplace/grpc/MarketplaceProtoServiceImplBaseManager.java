@@ -21,6 +21,8 @@ public class MarketplaceProtoServiceImplBaseManager extends MarketplaceProtoServ
             responseObserver.onNext(GrpcProtoMapper.mapTo(marketplaceService.isMarketplaceSupported(request.getString())));
         } catch (Exception ex) {
             responseObserver.onError(ex);
+            return;
         }
+        responseObserver.onCompleted();
     }
 }

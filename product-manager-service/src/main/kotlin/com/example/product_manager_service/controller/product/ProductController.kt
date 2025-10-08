@@ -13,6 +13,8 @@ import java.net.URI
 class ProductController(private val productService: ProductService<URI>) {
     @PostMapping("/add")
     fun addProduct(@RequestParam("url") productUrl: String?) {
+        val cl = Thread.currentThread()
+        println("CONTROLLER CLASS THREAD = ${cl.name}, CONTROLLER CLASS CL NAME = ${cl.contextClassLoader.name}, has = ${cl.contextClassLoader.loadClass("com.example.product_manager_service.exception.GrpcHandlerException")}")
         val senderEmail: String? = SecurityContextHolder.getContext()?.authentication?.principal.toString()
         productService.save(
             senderEmail ?: throw IllegalArgumentException("sender email is missing"),

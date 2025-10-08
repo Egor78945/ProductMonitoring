@@ -1,15 +1,17 @@
 package com.example.product_processor_service.service.marketplace;
 
 import com.example.product_processor_service.model.marketplace.definition.entity.MarketplaceDefinition;
+import com.example.product_processor_service.model.marketplace.definition.path.entity.MarketplacePathDefinition;
 import com.example.product_processor_service.repository.marketplace.definition.MarketplaceDefinitionRepository;
+import com.example.product_processor_service.repository.marketplace.definition.path.MarketplacePathDefinitionRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MarketplaceServiceManager implements MarketplaceService {
-    private final MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository;
+    private final MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository;
 
-    public MarketplaceServiceManager(MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository) {
-        this.marketplaceDefinitionRepository = marketplaceDefinitionRepository;
+    public MarketplaceServiceManager(MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository) {
+        this.marketplacePathDefinitionRepository = marketplacePathDefinitionRepository;
     }
 
     @Override
@@ -17,6 +19,6 @@ public class MarketplaceServiceManager implements MarketplaceService {
         if(marketplaceDomain.isBlank()) {
             throw new IllegalArgumentException("marketplaceDomain cannot be blank");
         }
-        return marketplaceDefinitionRepository.isMarketplaceSupported(marketplaceDomain);
+        return marketplacePathDefinitionRepository.existsByPath(marketplaceDomain);
     }
 }

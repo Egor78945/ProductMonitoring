@@ -10,6 +10,12 @@ spring:
     producer:
       retries: 10
 
+grpc:
+  client:
+    product-grpc-service:
+      address: discovery:///${PRODUCT_PROCESSOR_SERVICE_HOST}
+      negotiation-type: plaintext
+
 eureka:
   client:
     service-url:

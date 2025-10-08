@@ -31,14 +31,4 @@ public class EntityMarketplaceDefinitionRepositoryManager extends EntityMarketpl
                 .from(Tables.MARKETPLACE_DEFINITION.join(Tables.MARKETPLACE_PATH_DEFINITION).on(Tables.MARKETPLACE_DEFINITION.ID.eq(Tables.MARKETPLACE_PATH_DEFINITION.MARKETPLACE_ID)))
                 .fetchInto(String.class);
     }
-
-    @Override
-    public boolean isMarketplaceSupported(String marketplaceDomain) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.MARKETPLACE_DEFINITION)
-                                .where(Tables.MARKETPLACE_DEFINITION.NAME.eq(marketplaceDomain))
-                );
-    }
 }

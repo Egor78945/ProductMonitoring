@@ -7,5 +7,7 @@ class GrpcMapperService {
         fun mapTo(booleanMessage: ProductServiceProtoConfiguration.BooleanMessage) = booleanMessage.boolean
         fun mapTo(string: String) =
             ProductServiceProtoConfiguration.StringMessage.newBuilder().setString(string).build()
+
+        fun mapTo(stringList: ProductServiceProtoConfiguration.StringListMessage) = stringList.stringsList.toSet()
     }
 }

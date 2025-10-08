@@ -10,6 +10,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Aspect
 public class AopStarterCacheableAspect {
@@ -19,29 +21,22 @@ public class AopStarterCacheableAspect {
         this.cacheService = cacheService;
     }
 
-    @Around("@annotation(cacheable)")
-    public Object getCachedData(ProceedingJoinPoint joinPoint, Cacheable cacheable) throws Throwable {
-        String cacheKey = cacheable.name().isEmpty() ? ((MethodSignature) joinPoint.getSignature()).getReturnType().getSimpleName() : cacheable.name();
-        String hashKey = buildHashKey(joinPoint);
+    @Around("@annotation(com.example.aop_spring_boot_starter.service.cache.annotation.Cacheable)")
+    public Object getCachedData(ProceedingJoinPoint joinPoint) throws Throwable {
+        String cacheKey = ((MethodSignature) joinPoint.getSignature()).getReturnType().getName();
+        String hashKey = String.valueOf(Objects.hash(joinPoint.getSignature(), Arrays.hashCode(joinPoint.getArgs())));
+
         Object cachedObject = cacheService.opsForHash().get(cacheKey, hashKey);
         if (cachedObject != null) {
             return cachedObject;
         }
+
         Object originalObject = joinPoint.proceed();
         if (!(originalObject instanceof Serializable)) {
             throw new AopStarterCacheManagementException(String.format("cacheable object is not serializable: %s", originalObject.getClass().getSimpleName()));
         }
+
         cacheService.opsForHash().put(cacheKey, hashKey, originalObject);
         return originalObject;
-    }
-
-    private String buildHashKey(JoinPoint joinPoint) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(joinPoint.getSignature().toShortString());
-        for (Object sub : joinPoint.getArgs()) {
-            String subString = sub == null ? "null" : sub.toString();
-            sb.append(subString);
-        }
-        return sb.toString();
     }
 }

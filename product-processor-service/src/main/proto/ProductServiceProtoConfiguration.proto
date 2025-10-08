@@ -23,6 +23,10 @@ message StringIntMessage {
   int32 int = 2;
 }
 
+message StringListMessage {
+  repeated string strings = 1;
+}
+
 message StringMessage {
   string string = 1;
 }
@@ -35,6 +39,10 @@ message BooleanMessage {
   bool boolean = 1;
 }
 
+message EmptyMessage {
+
+}
+
 service ProductProtoService {
   rpc save(AccountProductMessage) returns (BooleanMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
@@ -43,4 +51,5 @@ service ProductProtoService {
 
 service MarketplaceProtoService {
   rpc isMarketplaceSupports(StringMessage) returns (BooleanMessage);
+  rpc getSupportedMarketplaces(EmptyMessage) returns (StringListMessage);
 }

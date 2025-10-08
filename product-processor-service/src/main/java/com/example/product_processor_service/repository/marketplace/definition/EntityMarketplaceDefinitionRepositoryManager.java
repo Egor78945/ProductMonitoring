@@ -3,6 +3,7 @@ package com.example.product_processor_service.repository.marketplace.definition;
 import com.example.product_processor_service.model.marketplace.definition.entity.MarketplaceDefinition;
 import jakarta.annotation.PostConstruct;
 import nu.studer.sample.Tables;
+import org.jooq.Case;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 

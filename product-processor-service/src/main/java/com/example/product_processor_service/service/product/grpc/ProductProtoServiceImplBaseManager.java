@@ -4,7 +4,7 @@ import com.example.grpc.product.ProductProtoServiceGrpc;
 import com.example.grpc.product.ProductServiceProtoConfiguration;
 import com.example.product_processor_service.model.account.product.entity.AccountProduct;
 import com.example.product_processor_service.service.account.product.AccountProductService;
-import com.example.product_processor_service.service.grpc.mapper.GrpcProtoMapper;
+import com.example.product_processor_service.service.common.grpc.mapper.GrpcProtoMapper;
 import com.example.product_processor_service.service.product.ProductService;
 import com.example.product_processor_service.service.product.mapper.ProductProtoMapper;
 import io.grpc.stub.StreamObserver;

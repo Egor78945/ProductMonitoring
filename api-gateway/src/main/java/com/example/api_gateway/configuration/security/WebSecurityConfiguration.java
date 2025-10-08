@@ -25,8 +25,7 @@ import reactor.core.publisher.Mono;
 public class WebSecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http, Converter<Jwt, Mono<AbstractAuthenticationToken>> authenticationConverter) {
-        return http.authorizeExchange(exchange ->
-                        exchange.pathMatchers("/api/v1/test").authenticated())
+        return http
                 .authorizeExchange(exchange ->
                         exchange.pathMatchers("/api/v1/auth/**").permitAll()
                                 .anyExchange().authenticated())

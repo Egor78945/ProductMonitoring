@@ -31,6 +31,11 @@ public class ProtoProductServiceManager implements ProtoProductService<ProductSe
     }
 
     @Override
+    public void register(ProductServiceProtoConfiguration.ProductMessage product, UUID accountUuid) {
+
+    }
+
+    @Override
     public ProductServiceProtoConfiguration.ProductMessage getByUrl(String url) {
         return productRepository.getByUrl(url).orElseThrow(() -> new NotFoundException("product not found"));
     }
@@ -43,6 +48,11 @@ public class ProtoProductServiceManager implements ProtoProductService<ProductSe
     @Override
     public boolean existsByUrl(String url) {
         return productRepository.existsByUrl(url);
+    }
+
+    @Override
+    public boolean existsByUrlAndUserEmail(String url, String userEmail) {
+        return false;
     }
 
     @Override

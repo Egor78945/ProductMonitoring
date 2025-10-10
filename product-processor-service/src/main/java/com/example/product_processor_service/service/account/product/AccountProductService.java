@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface AccountProductService <P extends AccountProduct>{
     void save(P product);
+    boolean existsByUuid(UUID uuid);
 }

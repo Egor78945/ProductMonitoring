@@ -1,9 +1,7 @@
 package com.example.product_processor_service.repository.product;
 
-import com.example.product_processor_service.model.product.entity.Product;
 import org.jooq.DatePart;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

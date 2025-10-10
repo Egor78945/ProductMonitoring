@@ -1,6 +1,7 @@
 package com.example.product_processor_service.service.marketplace.initializer;
 
 import com.example.product_processor_service.model.marketplace.definition.entity.MarketplaceDefinition;
+import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.repository.marketplace.definition.MarketplaceDefinitionRepository;
 import com.example.product_processor_service.service.marketplace.manager.MarketplaceManagerService;
 import org.springframework.context.ApplicationContext;
@@ -15,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MarketplaceInitializerManager implements MarketplaceInitializer<String, MarketplaceManagerService> {
+public class MarketplaceInitializerManager implements MarketplaceInitializer<String, MarketplaceManagerService<ProductDTO>> {
     private final MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository;
     private final ApplicationContext applicationContext;
-    private final Map<String, MarketplaceManagerService> marketplaceManagerServiceMap;
+    private final Map<String, MarketplaceManagerService<ProductDTO>> marketplaceManagerServiceMap;
 
     public MarketplaceInitializerManager(MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository, ApplicationContext applicationContext) {
         this.marketplaceDefinitionRepository = marketplaceDefinitionRepository;
@@ -27,7 +28,7 @@ public class MarketplaceInitializerManager implements MarketplaceInitializer<Str
     }
 
     @Override
-    public Map<String, MarketplaceManagerService> getMarketplaces() {
+    public Map<String, MarketplaceManagerService<ProductDTO>> getMarketplaces() {
         return marketplaceManagerServiceMap;
     }
 
@@ -40,7 +41,7 @@ public class MarketplaceInitializerManager implements MarketplaceInitializer<Str
                     try {
                         Class<?> managerServiceClass = Class.forName(marketplaceDefinition.getProcessorClassName());
                         if (MarketplaceManagerService.class.isAssignableFrom(managerServiceClass) && AnnotationUtils.findAnnotation(managerServiceClass, Component.class) != null) {
-                            MarketplaceManagerService marketplaceManagerService = (MarketplaceManagerService) applicationContext.getBean(managerServiceClass);
+                            MarketplaceManagerService<ProductDTO> marketplaceManagerService = (MarketplaceManagerService) applicationContext.getBean(managerServiceClass);
                             marketplaceManagerServiceMap.put(url, marketplaceManagerService);
                         }
                     } catch (ClassNotFoundException e) {

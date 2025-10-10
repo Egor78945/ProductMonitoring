@@ -10,6 +10,8 @@ import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public class AccountProductRepositoryManager extends AccountProductRepository<AccountProduct> {
     private final DSLContext dslContext;
@@ -35,5 +37,29 @@ public class AccountProductRepositoryManager extends AccountProductRepository<Ac
         } else {
             throw new AlreadyExistsException("account is not exists or already has the product");
         }
+    }
+    @Override
+    public boolean existsByUrlAndUserEmail(String url, String userEmail) {
+        return dslContext
+                .fetchExists(
+                        dslContext.selectOne()
+                                .from(Tables.ACCOUNT_PRODUCTS
+                                        .join(Tables.ACCOUNT)
+                                        .on(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(Tables.ACCOUNT.UUID))
+                                        .join(Tables.USERS).on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID)))
+                                .where(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(url)
+                                        .and(Tables.USERS.EMAIL.eq(userEmail)))
+                );
+    }
+
+    @Override
+    public boolean existsByUrlAndAccountUuid(String url, UUID accountUuid) {
+        return dslContext
+                .fetchExists(
+                        dslContext.selectOne()
+                                .from(Tables.ACCOUNT_PRODUCTS)
+                                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid)
+                                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(url)))
+                );
     }
 }

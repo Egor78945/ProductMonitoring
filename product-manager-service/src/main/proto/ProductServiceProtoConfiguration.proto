@@ -31,6 +31,11 @@ message StringMessage {
   string string = 1;
 }
 
+message String2Message {
+  string string1 = 1;
+  string string2 = 2;
+}
+
 message ProductListMessage {
   repeated ProductMessage products = 1;
 }

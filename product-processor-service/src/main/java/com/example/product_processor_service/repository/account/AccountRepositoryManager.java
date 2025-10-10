@@ -11,21 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class AccountRepositoryManager extends AccountRepository<Account> {
-    private final DSLContext dslContext;
-
-    public AccountRepositoryManager(DSLContext dsl) {
-        this.dslContext = dsl;
-    }
-
-    @Override
-    public boolean existsByUuid(UUID uuid) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.ACCOUNT)
-                                .where(Tables.ACCOUNT.UUID.eq(uuid))
-                );
+public class AccountRepositoryManager extends AccountRepository {
+    public AccountRepositoryManager(DSLContext dslContext) {
+        super(dslContext);
     }
 
     @Override

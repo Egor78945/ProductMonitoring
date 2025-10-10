@@ -1,4 +1,4 @@
-package com.example.product_processor_service.service.web.playwright.browser.factory;
+package com.example.product_processor_service.service.common.web.playwright.browser.factory;
 
 import com.example.product_processor_service.configuration.playwright.PlaywrightConfiguration;
 import com.microsoft.playwright.Browser;

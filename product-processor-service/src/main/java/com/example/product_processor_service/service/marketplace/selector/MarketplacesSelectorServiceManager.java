@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MarketplacesSelectorServiceManager implements MarketplaceSelectorService<MarketplaceSelector>{
-    private final MarketplaceSelectorRepository<MarketplaceSelector> marketplaceSelectorRepository;
+    private final MarketplaceSelectorRepository marketplaceSelectorRepository;
 
-    public MarketplacesSelectorServiceManager(MarketplaceSelectorRepository<MarketplaceSelector> marketplaceSelectorRepository) {
+    public MarketplacesSelectorServiceManager(MarketplaceSelectorRepository marketplaceSelectorRepository) {
         this.marketplaceSelectorRepository = marketplaceSelectorRepository;
     }
 

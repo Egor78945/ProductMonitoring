@@ -5,7 +5,6 @@ import com.example.product_processor_service.model.marketplace.selector.entity.M
 import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.model.web.browser.WebBrowserPageWrapper;
 import com.example.product_processor_service.service.marketplace.selector.MarketplaceSelectorService;
-import com.example.product_processor_service.service.web.page.parser.PlaywrightWebBrowserPageParser;
 import org.springframework.stereotype.Service;
 
 @Service

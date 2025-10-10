@@ -17,10 +17,8 @@ import java.util.UUID;
 
 @Repository
 public class ProtoProductRepositoryManager extends ProtoProductRepository<ProductServiceProtoConfiguration.ProductMessage>{
-    private final DSLContext dslContext;
-
     public ProtoProductRepositoryManager(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     @Override
@@ -80,24 +78,5 @@ public class ProtoProductRepositoryManager extends ProtoProductRepository<Produc
                 .fetchStreamInto(Tables.PRODUCT)
                 .map(ProductProtoMapper::mapTo)
                 .toList();
-    }
-
-    @Override
-    public boolean existsByUrl(String url) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.PRODUCT)
-                                .where(Tables.PRODUCT.URL.eq(url))
-                );
-    }
-
-    @Override
-    public boolean existsByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
-        return dslContext
-                .fetchExists(dslContext
-                        .selectOne()
-                        .from(Tables.ACCOUNT_PRODUCTS)
-                        .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl))));
     }
 }

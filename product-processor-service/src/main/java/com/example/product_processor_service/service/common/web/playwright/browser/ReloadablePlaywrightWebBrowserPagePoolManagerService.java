@@ -1,4 +1,4 @@
-package com.example.product_processor_service.service.web.playwright.browser;
+package com.example.product_processor_service.service.common.web.playwright.browser;
 
 import com.microsoft.playwright.Page;
 import org.springframework.stereotype.Service;

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public class MarketplaceServiceManager implements MarketplaceService {
-    private final MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository;
+    private final MarketplacePathDefinitionRepository marketplacePathDefinitionRepository;
 
-    public MarketplaceServiceManager(MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository) {
+    public MarketplaceServiceManager(MarketplacePathDefinitionRepository marketplacePathDefinitionRepository) {
         this.marketplacePathDefinitionRepository = marketplacePathDefinitionRepository;
     }
 

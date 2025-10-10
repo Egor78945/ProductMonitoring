@@ -13,11 +13,11 @@ import java.util.UUID;
 
 @Service
 public class AccountProductServiceManager implements AccountProductService<AccountProduct> {
-    private final AccountProductRepository<AccountProduct> accountProductRepository;
+    private final AccountProductRepository accountProductRepository;
     private final ProductRepository<Product> productRepository;
-    private final AccountRepository<Account> accountRepository;
+    private final AccountRepository accountRepository;
 
-    public AccountProductServiceManager(AccountProductRepository<AccountProduct> accountProductRepository, ProductRepository<Product> productRepository, AccountRepository<Account> accountRepository) {
+    public AccountProductServiceManager(AccountProductRepository accountProductRepository, ProductRepository<Product> productRepository, AccountRepository accountRepository) {
         this.accountProductRepository = accountProductRepository;
         this.productRepository = productRepository;
         this.accountRepository = accountRepository;

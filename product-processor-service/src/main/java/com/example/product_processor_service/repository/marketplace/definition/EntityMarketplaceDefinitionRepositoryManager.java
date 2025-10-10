@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class EntityMarketplaceDefinitionRepositoryManager extends EntityMarketplaceDefinitionRepository<MarketplaceDefinition> {
-    private final DSLContext dslContext;
-
+public class EntityMarketplaceDefinitionRepositoryManager extends EntityMarketplaceDefinitionRepository {
     public EntityMarketplaceDefinitionRepositoryManager(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     @Override

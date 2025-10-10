@@ -1,4 +1,4 @@
-package com.example.product_processor_service.service.web.playwright.page;
+package com.example.product_processor_service.service.common.web.playwright.page;
 
 import com.microsoft.playwright.Page;
 

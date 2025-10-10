@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class MarketplaceSelectorRepositoryManager extends MarketplaceSelectorRepository<MarketplaceSelector> {
-    private final DSLContext dslContext;
-
+public class MarketplaceSelectorRepositoryManager extends MarketplaceSelectorRepository {
     public MarketplaceSelectorRepositoryManager(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     @Override

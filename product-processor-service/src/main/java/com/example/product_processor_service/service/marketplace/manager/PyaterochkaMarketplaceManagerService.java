@@ -2,7 +2,7 @@ package com.example.product_processor_service.service.marketplace.manager;
 
 import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.service.marketplace.parser.PyaterochkaPlaywrightWebBrowserPageParser;
-import com.example.product_processor_service.service.web.playwright.page.ReloadablePlaywrightWebBrowserPageContext;
+import com.example.product_processor_service.service.common.web.playwright.page.ReloadablePlaywrightWebBrowserPageContext;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;

@@ -1,4 +1,4 @@
-package com.example.product_processor_service.service.web.page.parser;
+package com.example.product_processor_service.service.common.web.page.parser;
 
 import com.example.product_processor_service.model.web.browser.WebBrowserPageWrapper;
 

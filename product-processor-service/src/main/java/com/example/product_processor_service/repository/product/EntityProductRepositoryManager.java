@@ -13,10 +13,8 @@ import java.util.UUID;
 
 @Repository
 public class EntityProductRepositoryManager extends EntityProductRepository<Product> {
-    private final DSLContext dslContext;
-
     public EntityProductRepositoryManager(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     @Override
@@ -56,16 +54,6 @@ public class EntityProductRepositoryManager extends EntityProductRepository<Prod
     }
 
     @Override
-    public boolean existsByUrl(String url) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.PRODUCT)
-                                .where(Tables.PRODUCT.URL.eq(url))
-                );
-    }
-
-    @Override
     public List<Product> getAllByAccountUuid(UUID uuid, int page, int pageSize) {
         return dslContext
                 .selectFrom(Tables.PRODUCT.join(Tables.ACCOUNT_PRODUCTS).on(Tables.PRODUCT.URL.eq(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL)))
@@ -86,14 +74,5 @@ public class EntityProductRepositoryManager extends EntityProductRepository<Prod
                         .on(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(Tables.PRODUCT.URL)))
                 .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl)))
                 .fetchOptionalInto(Product.class);
-    }
-
-    @Override
-    public boolean existsByAccountUuidAndProductUrl(UUID accountUuid, String productUrl) {
-        return dslContext
-                .fetchExists(dslContext
-                        .selectOne()
-                        .from(Tables.ACCOUNT_PRODUCTS)
-                        .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl))));
     }
 }

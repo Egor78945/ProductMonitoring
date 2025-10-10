@@ -1,6 +1,9 @@
 package com.example.product_processor_service.repository.marketplace.definition;
 
-import com.example.product_processor_service.model.marketplace.definition.entity.MarketplaceDefinition;
+import org.jooq.DSLContext;
 
-public abstract class EntityMarketplaceDefinitionRepository<M extends MarketplaceDefinition> extends MarketplaceDefinitionRepository<M> {
+public abstract class EntityMarketplaceDefinitionRepository extends MarketplaceDefinitionRepository {
+    protected EntityMarketplaceDefinitionRepository(DSLContext dslContext) {
+        super(dslContext);
+    }
 }

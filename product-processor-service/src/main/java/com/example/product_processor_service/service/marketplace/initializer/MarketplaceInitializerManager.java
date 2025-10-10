@@ -17,11 +17,11 @@ import java.util.Map;
 
 @Service
 public class MarketplaceInitializerManager implements MarketplaceInitializer<String, MarketplaceManagerService<ProductDTO>> {
-    private final MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository;
+    private final MarketplaceDefinitionRepository marketplaceDefinitionRepository;
     private final ApplicationContext applicationContext;
     private final Map<String, MarketplaceManagerService<ProductDTO>> marketplaceManagerServiceMap;
 
-    public MarketplaceInitializerManager(MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository, ApplicationContext applicationContext) {
+    public MarketplaceInitializerManager(MarketplaceDefinitionRepository marketplaceDefinitionRepository, ApplicationContext applicationContext) {
         this.marketplaceDefinitionRepository = marketplaceDefinitionRepository;
         this.applicationContext = applicationContext;
         this.marketplaceManagerServiceMap = new HashMap<>();

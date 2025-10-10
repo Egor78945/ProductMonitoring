@@ -1,6 +1,9 @@
 package com.example.product_processor_service.repository.marketplace.definition.path;
 
-import com.example.product_processor_service.model.marketplace.definition.path.entity.MarketplacePathDefinition;
+import org.jooq.DSLContext;
 
-public abstract class EntityMarketplacePathDefinitionRepository extends MarketplacePathDefinitionRepository<MarketplacePathDefinition> {
+public abstract class EntityMarketplacePathDefinitionRepository extends MarketplacePathDefinitionRepository {
+    public EntityMarketplacePathDefinitionRepository(DSLContext dslContext) {
+        super(dslContext);
+    }
 }

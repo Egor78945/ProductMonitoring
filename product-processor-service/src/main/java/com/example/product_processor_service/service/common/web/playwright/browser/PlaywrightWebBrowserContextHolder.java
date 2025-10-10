@@ -1,6 +1,6 @@
-package com.example.product_processor_service.service.web.playwright.browser;
+package com.example.product_processor_service.service.common.web.playwright.browser;
 
-import com.example.product_processor_service.service.web.playwright.browser.factory.PlaywrightWebBrowserContextFactory;
+import com.example.product_processor_service.service.common.web.playwright.browser.factory.PlaywrightWebBrowserContextFactory;
 import com.microsoft.playwright.BrowserContext;
 
 import javax.annotation.PostConstruct;

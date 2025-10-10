@@ -18,11 +18,11 @@ import java.util.UUID;
 @Service
 public class EntityProductServiceManager implements EntityProductService<Product> {
     private final ProductRepository<Product> productRepository;
-    private final AccountProductRepository<AccountProduct> accountProductRepository;
-    private final AccountRepository<Account> accountRepository;
+    private final AccountProductRepository accountProductRepository;
+    private final AccountRepository accountRepository;
     private final ProductEnvironment productEnvironment;
 
-    public EntityProductServiceManager(ProductRepository<Product> productRepository, AccountProductRepository<AccountProduct> accountProductRepository, AccountRepository<Account> accountRepository, ProductEnvironment productEnvironment) {
+    public EntityProductServiceManager(ProductRepository<Product> productRepository, AccountProductRepository accountProductRepository, AccountRepository accountRepository, ProductEnvironment productEnvironment) {
         this.productRepository = productRepository;
         this.accountProductRepository = accountProductRepository;
         this.accountRepository = accountRepository;

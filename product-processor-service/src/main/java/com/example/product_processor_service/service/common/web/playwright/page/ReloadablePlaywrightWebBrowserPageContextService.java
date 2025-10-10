@@ -1,9 +1,9 @@
-package com.example.product_processor_service.service.web.playwright.page;
+package com.example.product_processor_service.service.common.web.playwright.page;
 
 import com.example.product_processor_service.model.web.browser.DefaultWebBrowserPageWrapper;
 import com.example.product_processor_service.model.web.browser.WebBrowserPageWrapper;
-import com.example.product_processor_service.service.web.page.parser.PlaywrightWebBrowserPageParser;
-import com.example.product_processor_service.service.web.playwright.browser.PlaywrightWebBrowserPagePoolManager;
+import com.example.product_processor_service.service.common.web.page.parser.PlaywrightWebBrowserPageParser;
+import com.example.product_processor_service.service.common.web.playwright.browser.PlaywrightWebBrowserPagePoolManager;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitUntilState;
 import org.springframework.stereotype.Service;

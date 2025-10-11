@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ProtoProductRepositoryManager extends ProtoProductRepository<ProductServiceProtoConfiguration.ProductMessage>{
+public class ProtoProductRepositoryManager extends ProtoProductRepository{
     public ProtoProductRepositoryManager(DSLContext dslContext) {
         super(dslContext);
     }

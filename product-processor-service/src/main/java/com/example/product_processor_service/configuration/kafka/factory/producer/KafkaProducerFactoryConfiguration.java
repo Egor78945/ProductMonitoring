@@ -22,16 +22,15 @@ public class KafkaProducerFactoryConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, String> productUrlProducerFactory(ObjectMapper objectMapper) {
+    public ProducerFactory<String, String> productUrlProducerFactory() {
         DefaultKafkaProducerFactory<String, String> cfg = new DefaultKafkaProducerFactory<>(buildAtLeastOnceProducerProperties());
-        cfg.setValueSerializer(new JsonSerializer<>(objectMapper));
+        cfg.setKeySerializer(new StringSerializer());
+        cfg.setValueSerializer(new StringSerializer());
         return cfg;
     }
 
     private Map<String, Object> buildAtLeastOnceProducerProperties() {
         Map<String, Object> producerProperties = new HashMap<>();
-        producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaEnvironment.getKAFKA_BOOTSTRAP_SERVERS());
         producerProperties.put(ProducerConfig.ACKS_CONFIG, "1");
         producerProperties.put(ProducerConfig.RETRIES_CONFIG, kafkaEnvironment.getKAFKA_PRODUCER_RETRY());

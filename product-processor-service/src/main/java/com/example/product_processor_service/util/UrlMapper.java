@@ -1,13 +1,11 @@
-package com.example.product_processor_service.service.common;
+package com.example.product_processor_service.util;
 
-import java.util.function.Function;
-
-public class MarketplaceUrlMapper {
-    public static final Function<String, String> baseUrlExtractor = t -> {
+public class UrlMapper {
+    public static String extractBaseUrl(String url) {
         int c = 0;
         int i = 0;
-        while (i < t.length()) {
-            if (t.charAt(i) == '/') {
+        while (i < url.length()) {
+            if (url.charAt(i) == '/') {
                 c++;
             }
             if (c == 3) {
@@ -15,6 +13,6 @@ public class MarketplaceUrlMapper {
             }
             i++;
         }
-        return t.substring(0, i);
-    };
+        return url.substring(0, i);
+    }
 }

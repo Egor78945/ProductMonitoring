@@ -3,12 +3,9 @@ package com.example.product_processor_service.service.product;
 import com.example.product_processor_service.configuration.product.environment.ProductEnvironment;
 import com.example.product_processor_service.exception.AlreadyExistsException;
 import com.example.product_processor_service.exception.NotFoundException;
-import com.example.product_processor_service.model.account.entity.Account;
-import com.example.product_processor_service.model.account.product.entity.AccountProduct;
 import com.example.product_processor_service.model.product.entity.Product;
-import com.example.product_processor_service.repository.account.AccountRepository;
-import com.example.product_processor_service.repository.account.product.AccountProductRepository;
 import com.example.product_processor_service.repository.product.ProductRepository;
+import com.example.product_processor_service.util.function.Scrypt;
 import org.jooq.DatePart;
 import org.springframework.stereotype.Service;
 
@@ -16,40 +13,29 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class EntityProductServiceManager implements EntityProductService<Product> {
+public class EntityProductServiceManager implements EntityProductService {
     private final ProductRepository<Product> productRepository;
-    private final AccountProductRepository accountProductRepository;
-    private final AccountRepository accountRepository;
     private final ProductEnvironment productEnvironment;
 
-    public EntityProductServiceManager(ProductRepository<Product> productRepository, AccountProductRepository accountProductRepository, AccountRepository accountRepository, ProductEnvironment productEnvironment) {
+    public EntityProductServiceManager(ProductRepository<Product> productRepository, ProductEnvironment productEnvironment) {
         this.productRepository = productRepository;
-        this.accountProductRepository = accountProductRepository;
-        this.accountRepository = accountRepository;
         this.productEnvironment = productEnvironment;
     }
 
     @Override
-    public void save(Product product) {
+    public Product save(Product product) {
         if (!existsByUrl(product.getUrl())) {
-            productRepository.save(product);
-        } else {
-            throw new AlreadyExistsException("product already exists");
+            return productRepository.save(product);
         }
+        throw new AlreadyExistsException(String.format("product with url %s already exists", product.getUrl()));
     }
 
     @Override
-    public void register(Product product, UUID accountUuid) {
-        if (accountRepository.existsByUuid(accountUuid)) {
-            if (!productRepository.existsByUrl(product.getUrl())) {
-                save(product);
-            }
-            if(!accountProductRepository.existsByUrlAndAccountUuid(product.getUrl(), accountUuid)){
-                accountProductRepository.save(new AccountProduct(product.getUrl(), accountUuid));
-            }
-        } else {
-            throw new NotFoundException("account not found");
+    public Product update(Product product) {
+        if (productRepository.existsByUrl(product.getUrl())) {
+            return productRepository.update(product);
         }
+        throw new NotFoundException(String.format("product not found with url %s", product.getUrl()));
     }
 
     @Override
@@ -68,8 +54,9 @@ public class EntityProductServiceManager implements EntityProductService<Product
     }
 
     @Override
-    public boolean existsByUrlAndUserEmail(String url, String userEmail) {
-        return false;
+    public void transactional(Scrypt scrypt) {
+        System.out.println("in service transactional");
+        productRepository.transactional(scrypt);
     }
 
     @Override

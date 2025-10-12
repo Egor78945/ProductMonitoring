@@ -17,4 +17,12 @@ public class KafkaListenerContainerFactoryConfiguration {
 
         return factory;
     }
+
+    @Bean
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> stringListenerContainerFactory(ConsumerFactory<String, String> consumerFactory) {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
+        factory.setConsumerFactory(consumerFactory);
+
+        return factory;
+    }
 }

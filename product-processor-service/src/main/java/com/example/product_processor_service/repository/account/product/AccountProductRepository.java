@@ -1,19 +1,45 @@
 package com.example.product_processor_service.repository.account.product;
 
 import com.example.product_processor_service.model.account.product.entity.AccountProduct;
+import com.example.product_processor_service.repository.JooqRepository;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
+import java.util.List;
 import java.util.UUID;
 
-public abstract class AccountProductRepository {
-    protected final DSLContext dslContext;
-
+public abstract class AccountProductRepository extends JooqRepository<AccountProduct> {
     public AccountProductRepository(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
-    public abstract void save(AccountProduct product);
+    @Override
+    public AccountProduct save(AccountProduct accountProduct) {
+        return dslContext
+                .insertInto(Tables.ACCOUNT_PRODUCTS)
+                .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, accountProduct.getAccountUuid())
+                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, accountProduct.getUrl())
+                .returning()
+                .fetchOneInto(AccountProduct.class);
+
+    }
+
+    @Override
+    public AccountProduct update(AccountProduct accountProduct) {
+        return dslContext
+                .update(Tables.ACCOUNT_PRODUCTS)
+                .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, accountProduct.getAccountUuid())
+                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, accountProduct.getUrl())
+                .returning()
+                .fetchOneInto(AccountProduct.class);
+    }
+
+    @Override
+    public void saveAll(List<AccountProduct> products) {
+        for (AccountProduct ap : products) {
+            save(ap);
+        }
+    }
 
     public boolean existsByUrlAndUserEmail(String url, String userEmail) {
         return dslContext

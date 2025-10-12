@@ -1,5 +1,6 @@
 package com.example.product_processor_service.repository.product;
 
+import com.example.product_processor_service.repository.JooqRepository;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
@@ -8,16 +9,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ProductRepository<P> {
-    protected final DSLContext dslContext;
-
+public abstract class ProductRepository<P> extends JooqRepository<P> {
     public ProductRepository(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
-
-    public abstract void save(P product);
-
-    public abstract void saveAll(List<P> products);
 
     public abstract Optional<P> getByUrl(String url);
 

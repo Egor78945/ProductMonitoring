@@ -25,4 +25,10 @@ public class MarketplaceProtoServiceImplBaseManager extends MarketplaceProtoServ
         }
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void getSupportedMarketplaces(ProductServiceProtoConfiguration.EmptyMessage request, StreamObserver<ProductServiceProtoConfiguration.StringListMessage> responseObserver) {
+        responseObserver.onNext(GrpcProtoMapper.mapTo(marketplaceService.getSupportedMarketplaces()));
+        responseObserver.onCompleted();
+    }
 }

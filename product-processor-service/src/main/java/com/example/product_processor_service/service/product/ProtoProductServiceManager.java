@@ -5,6 +5,7 @@ import com.example.product_processor_service.configuration.product.environment.P
 import com.example.product_processor_service.exception.AlreadyExistsException;
 import com.example.product_processor_service.exception.NotFoundException;
 import com.example.product_processor_service.repository.product.ProductRepository;
+import com.example.product_processor_service.util.function.Scrypt;
 import org.jooq.DatePart;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ProtoProductServiceManager implements ProtoProductService<ProductServiceProtoConfiguration.ProductMessage> {
+public class ProtoProductServiceManager implements ProtoProductService {
     private final ProductRepository<ProductServiceProtoConfiguration.ProductMessage> productRepository;
     private final ProductEnvironment productEnvironment;
 
@@ -22,12 +23,19 @@ public class ProtoProductServiceManager implements ProtoProductService<ProductSe
     }
 
     @Override
-    public void save(ProductServiceProtoConfiguration.ProductMessage product) {
-        if(!existsByUrl(product.getUrl())) {
-            productRepository.save(product);
-        } else {
-            throw new AlreadyExistsException("product already exists");
+    public ProductServiceProtoConfiguration.ProductMessage save(ProductServiceProtoConfiguration.ProductMessage product) {
+        if (!existsByUrl(product.getUrl())) {
+            return productRepository.save(product);
         }
+        throw new AlreadyExistsException("product already exists");
+    }
+
+    @Override
+    public ProductServiceProtoConfiguration.ProductMessage update(ProductServiceProtoConfiguration.ProductMessage product) {
+        if (productRepository.existsByUrl(product.getUrl())) {
+            return productRepository.update(product);
+        }
+        throw new NotFoundException(String.format("product not found with url %s", product.getUrl()));
     }
 
     @Override
@@ -43,6 +51,11 @@ public class ProtoProductServiceManager implements ProtoProductService<ProductSe
     @Override
     public boolean existsByUrl(String url) {
         return productRepository.existsByUrl(url);
+    }
+
+    @Override
+    public void transactional(Scrypt scrypt) {
+        productRepository.transactional(scrypt);
     }
 
     @Override

@@ -17,6 +17,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -28,6 +29,8 @@ dependencies {
     implementation "com.google.guava:guava:$guavaVersion"
     implementation "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
     implementation "com.microsoft.playwright:playwright:$playwrightVersion"
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

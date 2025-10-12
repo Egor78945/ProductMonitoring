@@ -1,6 +1,15 @@
 spring:
   application:
     name: product-processor-service
+  kafka:
+    bootstrap-servers: ${KAFKA1_HOST}:${KAFKA1_PORT_PLAINTEXT_INNER}, ${KAFKA2_HOST}:${KAFKA2_PORT_PLAINTEXT_INNER}
+    listener:
+      ack-mode: record
+    consumer:
+      auto-offset-reset: earliest
+      group-id: product
+    producer:
+      retries: 10
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -14,6 +23,15 @@ eureka:
       defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
     register-with-eureka: true
     fetch-registry: true
+
+kafka:
+  replicas: 2
+  topic:
+    product:
+      save:
+        name: ${KAFKA_TOPIC_PRODUCT_SAVE}
+      update:
+        name: ${KAFKA_TOPIC_PRODUCT_UPDATE}
 
 product:
   read:

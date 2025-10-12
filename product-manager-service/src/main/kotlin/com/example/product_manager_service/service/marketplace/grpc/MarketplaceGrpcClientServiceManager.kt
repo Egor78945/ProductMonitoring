@@ -15,4 +15,14 @@ class MarketplaceGrpcClientServiceManager(stub: MarketplaceProtoServiceGrpc.Mark
             throw GrpcHandlerException(e)
         }
     }
+
+    override fun getSupportedMarketplaces(): ProductServiceProtoConfiguration.StringListMessage {
+        try {
+            return stub?.getSupportedMarketplaces(ProductServiceProtoConfiguration.EmptyMessage.newBuilder().build())
+                ?: throw GrpcHandlerException("message is null")
+        } catch (e: Exception) {
+            throw GrpcHandlerException(e)
+        }
+    }
+
 }

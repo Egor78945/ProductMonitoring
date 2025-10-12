@@ -5,6 +5,7 @@ import com.example.product_processor_service.exception.AlreadyExistsException;
 import com.example.product_processor_service.exception.NotFoundException;
 import com.example.product_processor_service.model.product.entity.Product;
 import com.example.product_processor_service.repository.product.ProductRepository;
+import com.example.product_processor_service.util.function.Scrypt;
 import org.jooq.DatePart;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class EntityProductServiceManager implements EntityProductService<Product> {
+public class EntityProductServiceManager implements EntityProductService {
     private final ProductRepository<Product> productRepository;
     private final ProductEnvironment productEnvironment;
 
@@ -22,12 +23,19 @@ public class EntityProductServiceManager implements EntityProductService<Product
     }
 
     @Override
-    public void save(Product product) {
-        if(!existsByUrl(product.getUrl())) {
-            productRepository.save(product);
-        } else {
-            throw new AlreadyExistsException("product already exists");
+    public Product save(Product product) {
+        if (!existsByUrl(product.getUrl())) {
+            return productRepository.save(product);
         }
+        throw new AlreadyExistsException(String.format("product with url %s already exists", product.getUrl()));
+    }
+
+    @Override
+    public Product update(Product product) {
+        if (productRepository.existsByUrl(product.getUrl())) {
+            return productRepository.update(product);
+        }
+        throw new NotFoundException(String.format("product not found with url %s", product.getUrl()));
     }
 
     @Override
@@ -43,6 +51,12 @@ public class EntityProductServiceManager implements EntityProductService<Product
     @Override
     public boolean existsByUrl(String url) {
         return productRepository.existsByUrl(url);
+    }
+
+    @Override
+    public void transactional(Scrypt scrypt) {
+        System.out.println("in service transactional");
+        productRepository.transactional(scrypt);
     }
 
     @Override

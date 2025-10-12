@@ -1,6 +1,0 @@
-package com.example.product_processor_service.repository.marketplace.definition.path;
-
-import com.example.product_processor_service.model.marketplace.definition.path.entity.MarketplacePathDefinition;
-
-public abstract class EntityMarketplacePathDefinitionRepository extends MarketplacePathDefinitionRepository<MarketplacePathDefinition> {
-}

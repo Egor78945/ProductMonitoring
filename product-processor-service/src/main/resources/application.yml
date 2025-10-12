@@ -8,6 +8,8 @@ spring:
     consumer:
       auto-offset-reset: earliest
       group-id: product
+    producer:
+      retries: 10
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -28,6 +30,8 @@ kafka:
     product:
       save:
         name: ${KAFKA_TOPIC_PRODUCT_SAVE}
+      update:
+        name: ${KAFKA_TOPIC_PRODUCT_UPDATE}
 
 product:
   read:

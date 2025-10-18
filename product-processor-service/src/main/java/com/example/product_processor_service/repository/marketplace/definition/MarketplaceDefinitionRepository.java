@@ -22,6 +22,7 @@ public abstract class MarketplaceDefinitionRepository extends JooqRepository<Mar
         return dslContext
                 .select(Tables.MARKETPLACE_PATH_DEFINITION.BASE_URL)
                 .from(Tables.MARKETPLACE_DEFINITION.join(Tables.MARKETPLACE_PATH_DEFINITION).on(Tables.MARKETPLACE_DEFINITION.ID.eq(Tables.MARKETPLACE_PATH_DEFINITION.MARKETPLACE_ID)))
+                .where(Tables.MARKETPLACE_DEFINITION.ID.eq(id))
                 .fetchInto(String.class);
     }
 

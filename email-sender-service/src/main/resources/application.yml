@@ -18,12 +18,12 @@ spring:
       ack-mode: record
     consumer:
       auto-offset-reset: earliest
+      group-id: user
 
 kafka:
   replicas: 2
   topic:
     user:
-      group-id: user
       notification:
         name: ${KAFKA_TOPIC_USER_NOTIFICATION}
 

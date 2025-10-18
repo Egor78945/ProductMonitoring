@@ -1,6 +1,8 @@
 package com.example.email_sender_service.model.mail.dto
 
-class MailMessage {
+import java.io.Serializable
+
+class MailMessage : Serializable{
     private lateinit var receiver: String
     private lateinit var messageText: String get set
 

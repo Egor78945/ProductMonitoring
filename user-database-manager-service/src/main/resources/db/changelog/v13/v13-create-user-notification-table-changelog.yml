@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: v13-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: user_notification
+      changes:
+        - createTable:
+            tableName: user_notification
+            columns:
+              - column:
+                  name: user_uuid
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: user_notification_user_uuid
+                    referencedTableName: users
+                    referencedColumnNames: uuid
+              - column:
+                  name: notification_type_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_notification_notification_type_id
+                    referencedTableName: user_notification_type
+                    referencedColumnNames: id
+              - column:
+                  name: notifiedAt
+                  type: timestamp
+                  constraints:
+                    nullable: false

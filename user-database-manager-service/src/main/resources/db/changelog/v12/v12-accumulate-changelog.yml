@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: ./v12-create-user-notification-type-table-changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./v12-fill-user-notification-type-table-changelog.yml
+      relativeToChangelogFile: true

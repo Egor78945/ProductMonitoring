@@ -6,6 +6,7 @@ import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class UserRepository extends JooqRepository<User> {
@@ -44,11 +45,11 @@ public abstract class UserRepository extends JooqRepository<User> {
         }
     }
 
-    public User getByUuid(UUID uuid) {
+    public Optional<User> getByUuid(UUID uuid) {
         return dslContext
                 .selectFrom(Tables.USERS)
                 .where(Tables.USERS.UUID.eq(uuid))
-                .fetchOneInto(User.class);
+                .fetchOptionalInto(User.class);
     }
 
     public List<User> findAllByProductUrl(String url) {

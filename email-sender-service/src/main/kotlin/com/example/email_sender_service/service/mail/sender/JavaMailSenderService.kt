@@ -6,8 +6,10 @@ import org.springframework.mail.javamail.JavaMailSender
 
 abstract class JavaMailSenderService(val javaMailSender: JavaMailSender) : MailSenderService<MailMessage> {
     override fun send(message: MailMessage) {
+        print("Sender: $javaMailSender")
         val smm = SimpleMailMessage()
         smm.setTo(message.getReceiver())
+        smm.subject = "ProductMonitoringService"
         smm.text = message.getMessageText()
         javaMailSender.send(smm)
     }

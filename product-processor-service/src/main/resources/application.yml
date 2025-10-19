@@ -32,6 +32,9 @@ kafka:
         name: ${KAFKA_TOPIC_PRODUCT_SAVE}
       update:
         name: ${KAFKA_TOPIC_PRODUCT_UPDATE}
+    user:
+      notification:
+        name: ${KAFKA_TOPIC_USER_NOTIFICATION}
 
 product:
   read:

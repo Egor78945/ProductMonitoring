@@ -11,9 +11,10 @@ class MailMessageKafkaListenerServiceManager(private val mailSenderService: Mail
     @KafkaListener(
         topics = ["\${kafka.topic.user.notification.name}"],
         groupId = "\${spring.kafka.consumer.group-id}",
-        containerFactory = "productPublisherListenerContainerFactory"
+        containerFactory = "mailMessageListenerContainerFactory"
     )
     override fun listen(consumerRecord: ConsumerRecord<String, MailMessage>) {
+        println("Consumer record: ${consumerRecord.value()}")
         mailSenderService.send(consumerRecord.value())
     }
 }

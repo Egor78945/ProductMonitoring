@@ -39,7 +39,7 @@ public class KafkaConsumerFactoryConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, String> stringConsumerFactory(ObjectMapper objectMapper) {
+    public ConsumerFactory<String, String> stringConsumerFactory() {
         var kafkaConsumerFactory = new DefaultKafkaConsumerFactory<String, String>(buildKafkaConsumerProperties("com.example.product_manager_service.model.product.dto.ProductPublisherDto", "com.example.product_processor_service.model.product.ProductPublisherDTO", kafkaEnvironment.getKAFKA_GROUP_ID()));
         kafkaConsumerFactory.setKeyDeserializer(new StringDeserializer());
         kafkaConsumerFactory.setValueDeserializer(new StringDeserializer());

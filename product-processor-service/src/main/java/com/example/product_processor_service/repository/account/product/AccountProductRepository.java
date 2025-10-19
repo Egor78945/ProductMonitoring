@@ -63,4 +63,11 @@ public abstract class AccountProductRepository extends JooqRepository<AccountPro
                                         .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(url)))
                 );
     }
+
+    public List<AccountProduct> findAllByUrl(String url) {
+        return dslContext
+                .selectFrom(Tables.ACCOUNT_PRODUCTS)
+                .where(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(url))
+                .fetchInto(AccountProduct.class);
+    }
 }

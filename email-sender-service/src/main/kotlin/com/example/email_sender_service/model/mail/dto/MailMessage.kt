@@ -31,4 +31,7 @@ class MailMessage : Serializable{
         this.messageText = messageText
     }
 
+    override fun toString(): String {
+        return "MailMessage(receiver='$receiver', messageText='$messageText')"
+    }
 }

@@ -29,7 +29,7 @@ databaseChangeLog:
                     referencedTableName: user_notification_type
                     referencedColumnNames: id
               - column:
-                  name: notifiedAt
+                  name: notified_at
                   type: timestamp
                   constraints:
                     nullable: false

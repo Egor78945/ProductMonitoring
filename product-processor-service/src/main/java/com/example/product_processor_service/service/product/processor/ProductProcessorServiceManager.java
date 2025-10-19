@@ -1,25 +1,30 @@
 package com.example.product_processor_service.service.product.processor;
 
+import com.example.product_processor_service.enumeration.UserNotificationMessageEnumeration;
+import com.example.product_processor_service.enumeration.UserNotificationTypeEnumeration;
 import com.example.product_processor_service.model.account.entity.Account;
 import com.example.product_processor_service.model.account.product.entity.AccountProduct;
 import com.example.product_processor_service.model.mail.dto.MailMessage;
+import com.example.product_processor_service.model.notification.user.UserNotification;
 import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.model.product.ProductPublisherDTO;
 import com.example.product_processor_service.model.product.entity.Product;
 import com.example.product_processor_service.model.user.entity.User;
 import com.example.product_processor_service.service.account.AccountService;
 import com.example.product_processor_service.service.account.product.AccountProductService;
-import com.example.product_processor_service.service.common.notification.NotificationService;
+import com.example.product_processor_service.service.common.messaging.MessagingService;
 import com.example.product_processor_service.service.marketplace.manager.router.MarketplaceManagerRouterService;
+import com.example.product_processor_service.service.notification.user.UserNotificationService;
 import com.example.product_processor_service.service.product.EntityProductService;
 import com.example.product_processor_service.service.user.UserService;
+import com.example.product_processor_service.service.user.messaging.UserMailMessagingService;
 import com.example.product_processor_service.util.UrlMapper;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,15 +35,17 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
     private final AccountProductService<AccountProduct> accountProductService;
     private final EntityProductService entityProductService;
     private final UserService<User> userService;
-    private final NotificationService<MailMessage> notificationService;
+    private final UserMailMessagingService messagingService;
+    private final UserNotificationService<UserNotification> userNotificationService;
 
-    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountService<Account> accountService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, UserService<User> userService, NotificationService<MailMessage> notificationService) {
+    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountService<Account> accountService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, UserService<User> userService, UserMailMessagingService messagingService, UserNotificationService<UserNotification> userNotificationService) {
         this.marketplaceManagerRouterService = marketplaceManagerRouterService;
         this.accountService = accountService;
         this.accountProductService = accountProductService;
         this.entityProductService = entityProductService;
         this.userService = userService;
-        this.notificationService = notificationService;
+        this.messagingService = messagingService;
+        this.userNotificationService = userNotificationService;
     }
 
 
@@ -72,7 +79,28 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
             entityProductService.update(product);
             List<User> users = userService.getAllByProductUrl(URI.create(productUrl));
             for (User user : users) {
-                notificationService.sendMessage(new MailMessage(user.getEmail(), String.format("Product price is changed! Product name: %s, old price: %s, new price: %s", product.getName(), product.getPastPrice(), product.getActualPrice())));
+                UserNotification userNotification;
+                System.out.println("USER -> " + user);
+                if(userNotificationService.existsByUserUuidAndNotificationTypeId(user.getUuid(), UserNotificationTypeEnumeration.PRODUCT_UPDATED.getId())) {
+                    System.out.println("EXISTS");
+                    userNotification = userNotificationService.findByUserUuidAndNotificationTypeId(user.getUuid(), UserNotificationTypeEnumeration.PRODUCT_UPDATED.getId());
+                    System.out.println("USER NOTIFICATION -> " + userNotification);
+                    if(LocalDateTime.now().minusHours(userNotification.getNotifiedAt().toLocalDateTime().getHour()).getHour() > 12) {
+                        userNotification.setNotifiedAt(Timestamp.from(Instant.now()));
+                        System.out.println("UPDATING USER NOTIFICATION -> " + userNotification);
+                        userNotificationService.update(userNotification);
+                        System.out.println("UPDATED USER NOTIFICATION -> " + userNotification);
+                        messagingService.sendMessage(new MailMessage(user.getEmail(), UserNotificationMessageEnumeration.PRODUCT_UPDATED.getMessage()));
+                        System.out.println("SENT TO TOPIC");
+                    }
+                } else {
+                    userNotification = new UserNotification(user.getUuid(), UserNotificationTypeEnumeration.PRODUCT_UPDATED.getId(), Timestamp.from(Instant.now()));
+                    System.out.println("SAVING USER NOTIFICATION -> " + userNotification);
+                    userNotificationService.save(userNotification);
+                    System.out.println("SAVED USER NOTIFICATION -> " + userNotification);
+                    messagingService.sendMessage(new MailMessage(user.getEmail(), UserNotificationMessageEnumeration.PRODUCT_UPDATED.getMessage()));
+                    System.out.println("SENT TO TOPIC");
+                }
             }
 //        }
     }

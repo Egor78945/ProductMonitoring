@@ -2,20 +2,25 @@ package com.example.product_processor_service.service.product.processor;
 
 import com.example.product_processor_service.model.account.entity.Account;
 import com.example.product_processor_service.model.account.product.entity.AccountProduct;
+import com.example.product_processor_service.model.mail.dto.MailMessage;
 import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.model.product.ProductPublisherDTO;
 import com.example.product_processor_service.model.product.entity.Product;
+import com.example.product_processor_service.model.user.entity.User;
 import com.example.product_processor_service.service.account.AccountService;
 import com.example.product_processor_service.service.account.product.AccountProductService;
-import com.example.product_processor_service.util.UrlMapper;
+import com.example.product_processor_service.service.common.notification.NotificationService;
 import com.example.product_processor_service.service.marketplace.manager.router.MarketplaceManagerRouterService;
 import com.example.product_processor_service.service.product.EntityProductService;
-import org.jooq.DSLContext;
+import com.example.product_processor_service.service.user.UserService;
+import com.example.product_processor_service.util.UrlMapper;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,14 +29,16 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
     private final AccountService<Account> accountService;
     private final AccountProductService<AccountProduct> accountProductService;
     private final EntityProductService entityProductService;
-    private final DSLContext dslContext;
+    private final UserService<User> userService;
+    private final NotificationService<MailMessage> notificationService;
 
-    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountService<Account> accountService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, DSLContext dslContext) {
+    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountService<Account> accountService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, UserService<User> userService, NotificationService<MailMessage> notificationService) {
         this.marketplaceManagerRouterService = marketplaceManagerRouterService;
         this.accountService = accountService;
         this.accountProductService = accountProductService;
         this.entityProductService = entityProductService;
-        this.dslContext = dslContext;
+        this.userService = userService;
+        this.notificationService = notificationService;
     }
 
 
@@ -45,11 +52,11 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
 
 //        System.out.println("before save transaction, dslContext: " + dslContext);
 //        dslContext.transaction(() -> {
-            System.out.println("in save transaction");
-            Product p = entityProductService.save(new Product(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), Timestamp.from(Instant.now())));
-            System.out.println("after save product");
-            accountProductService.save(new AccountProduct(p.getUrl(), accountUuid));
-            System.out.println("after save account");
+        System.out.println("in save transaction");
+        Product p = entityProductService.save(new Product(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), Timestamp.from(Instant.now())));
+        System.out.println("after save product");
+        accountProductService.save(new AccountProduct(p.getUrl(), accountUuid));
+        System.out.println("after save account");
 //        });
         System.out.println("after save transaction");
     }
@@ -59,11 +66,14 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
         System.out.println("updating outdated product");
         Product product = entityProductService.getByUrl(productUrl);
         ProductDTO productDTO = marketplaceManagerRouterService.getByBaseUrl(UrlMapper.extractBaseUrl(productUrl)).loadProduct(URI.create(product.getUrl()));
-        if (product.getActualPrice() != productDTO.getPrice()) {
+//        if (product.getActualPrice() != productDTO.getPrice()) {
             product.setPastPrice(product.getActualPrice());
             product.setActualPrice(productDTO.getPrice());
-
             entityProductService.update(product);
-        }
+            List<User> users = userService.getAllByProductUrl(URI.create(productUrl));
+            for (User user : users) {
+                notificationService.sendMessage(new MailMessage(user.getEmail(), String.format("Product price is changed! Product name: %s, old price: %s, new price: %s", product.getName(), product.getPastPrice(), product.getActualPrice())));
+            }
+//        }
     }
 }

@@ -70,4 +70,11 @@ public abstract class AccountRepository extends JooqRepository<Account> {
                         }
                 );
     }
+
+    public List<Account> findAllByUuid(UUID uuid) {
+        return dslContext
+                .selectFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.UUID.eq(uuid))
+                .fetchInto(Account.class);
+    }
 }

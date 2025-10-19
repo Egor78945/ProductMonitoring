@@ -113,35 +113,6 @@ services:
       - service-discovery
       - postgres
 
-  product-processor-service:
-    container_name: ${PRODUCT_PROCESSOR_SERVICE_HOST}
-    networks:
-      - internal-service
-    build:
-      context: ./product-processor-service
-      dockerfile: Dockerfile
-      args:
-        JAVA_VERSION: ${JAVA_VERSION}
-    volumes:
-      - ./configuration/playwright/ms-playwright:/root/.cache/ms-playwright
-    restart: on-failure
-    env_file:
-      - .env
-    depends_on:
-      - user-database-manager-service
-
-  authentication-service:
-    container_name: ${AUTHENTICATION_SERVICE_HOST}
-    networks:
-      - internal-service
-    build:
-      context: ./authentication-service
-      dockerfile: Dockerfile
-      args:
-        JAVA_VERSION: ${JAVA_VERSION}
-    env_file:
-      - .env
-
   zookeeper:
     image: confluentinc/cp-zookeeper:${ZOOKEEPER_VERSION}
     hostname: ${ZOOKEEPER_HOST}
@@ -199,6 +170,19 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
+  email-sender-service:
+    container_name: ${EMAIL_SENDER_SERVICE_HOST}
+    networks:
+      - internal-service
+    build:
+      context: ./email-sender-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    restart: on-failure
+    env_file:
+      - .env
+
   product-manager-service:
     container_name: ${PRODUCT_MANAGER_SERVICE_HOST}
     networks:
@@ -213,3 +197,32 @@ services:
     depends_on:
       - kafka1
       - kafka2
+
+  product-processor-service:
+    container_name: ${PRODUCT_PROCESSOR_SERVICE_HOST}
+    networks:
+      - internal-service
+    build:
+      context: ./product-processor-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    volumes:
+      - ./configuration/playwright/ms-playwright:/root/.cache/ms-playwright
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - user-database-manager-service
+
+  authentication-service:
+    container_name: ${AUTHENTICATION_SERVICE_HOST}
+    networks:
+      - internal-service
+    build:
+      context: ./authentication-service
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    env_file:
+      - .env

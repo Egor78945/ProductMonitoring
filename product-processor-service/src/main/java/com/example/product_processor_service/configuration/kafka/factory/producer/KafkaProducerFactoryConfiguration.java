@@ -1,6 +1,7 @@
 package com.example.product_processor_service.configuration.kafka.factory.producer;
 
 import com.example.product_processor_service.configuration.kafka.environment.KafkaEnvironment;
+import com.example.product_processor_service.model.mail.dto.MailMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -19,6 +20,14 @@ public class KafkaProducerFactoryConfiguration {
 
     public KafkaProducerFactoryConfiguration(KafkaEnvironment kafkaEnvironment) {
         this.kafkaEnvironment = kafkaEnvironment;
+    }
+
+    @Bean
+    public ProducerFactory<String, MailMessage> mailMessageProducerFactory(ObjectMapper objectMapper) {
+        DefaultKafkaProducerFactory<String, MailMessage> cfg = new DefaultKafkaProducerFactory<>(buildAtLeastOnceProducerProperties());
+        cfg.setKeySerializer(new StringSerializer());
+        cfg.setValueSerializer(new JsonSerializer<>(objectMapper));
+        return cfg;
     }
 
     @Bean

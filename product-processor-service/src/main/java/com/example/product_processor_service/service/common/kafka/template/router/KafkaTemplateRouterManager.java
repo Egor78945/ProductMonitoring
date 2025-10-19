@@ -1,6 +1,7 @@
 package com.example.product_processor_service.service.common.kafka.template.router;
 
 import com.example.product_processor_service.exception.NotFoundException;
+import com.example.product_processor_service.model.mail.dto.MailMessage;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -14,9 +15,10 @@ import java.util.Optional;
 public class KafkaTemplateRouterManager implements KafkaTemplateRouter {
     private final Map<Class<?>, KafkaTemplate<String, ?>> kafkaTemplateMap;
 
-    public KafkaTemplateRouterManager(KafkaTemplate<String, String> stringKafkaTemplate) {
+    public KafkaTemplateRouterManager(KafkaTemplate<String, String> stringKafkaTemplate, KafkaTemplate<String, MailMessage> mailMessagekafkaTemplate) {
         kafkaTemplateMap = new HashMap<>();
         kafkaTemplateMap.put(String.class, stringKafkaTemplate);
+        kafkaTemplateMap.put(MailMessage.class, mailMessagekafkaTemplate);
     }
 
     @Override

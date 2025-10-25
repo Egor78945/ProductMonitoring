@@ -15,9 +15,10 @@ class ProductController(private val productService: ProductService<URI>) {
     fun addProduct(@RequestParam("url") productUrl: String?) {
         val cl = Thread.currentThread()
         println("CONTROLLER CLASS THREAD = ${cl.name}, CONTROLLER CLASS CL NAME = ${cl.contextClassLoader.name}, has = ${cl.contextClassLoader.loadClass("com.example.product_manager_service.exception.GrpcHandlerException")}")
-        val senderEmail: String? = SecurityContextHolder.getContext()?.authentication?.principal.toString()
+        val senderAccountUuid: String? = SecurityContextHolder.getContext()?.authentication?.principal.toString()
+        println("SENDER ACCOUNT UUID = $senderAccountUuid")
         productService.save(
-            senderEmail ?: throw IllegalArgumentException("sender email is missing"),
+            senderAccountUuid ?: throw IllegalArgumentException("sender email is missing"),
             URI(productUrl ?: throw IllegalArgumentException("product url is null"))
         )
     }

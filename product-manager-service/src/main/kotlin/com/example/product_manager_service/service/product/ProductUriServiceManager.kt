@@ -14,12 +14,12 @@ class ProductUriServiceManager(
     private val kafkaProducerService: KafkaProducerService,
     private val kafkaEnvironment: KafkaEnvironment
 ) : ProductService<URI> {
-    override fun save(publisherEmail: String, product: URI) {
+    override fun save(publisherUsername: String, product: URI) {
         if (marketplaceValidationService.isSupported(product))
             kafkaProducerService.send(
                 ProducerRecord<String, ProductPublisherDto>(
                     kafkaEnvironment.KAFKA_TOPIC_PRODUCT_SAVE_NAME,
-                    ProductPublisherDto(publisherEmail, product.toString())
+                    ProductPublisherDto(publisherUsername, product.toString())
                 )
             )
         else

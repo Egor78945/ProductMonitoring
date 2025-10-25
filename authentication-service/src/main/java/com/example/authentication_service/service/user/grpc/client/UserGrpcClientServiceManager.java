@@ -1,6 +1,5 @@
 package com.example.authentication_service.service.user.grpc.client;
 
-import com.example.grpc.user.UserProtoConfiguration;
 import com.example.grpc.user.UserProtoServiceGrpc;
 import org.springframework.stereotype.Service;
 
@@ -9,26 +8,4 @@ public class UserGrpcClientServiceManager extends UserGrpcClientService {
     public UserGrpcClientServiceManager(UserProtoServiceGrpc.UserProtoServiceBlockingStub stub) {
         super(stub);
     }
-
-    @Override
-    public UserProtoConfiguration.UserMessage getUserByUUID(UserProtoConfiguration.StringMessage uuid) {
-        return stub.getUserByUUID(uuid);
-    }
-
-    @Override
-    public void registerUser(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage) {
-        stub.registerUser(userRegistrationMessage);
-    }
-
-    @Override
-    public UserProtoConfiguration.BooleanMessage existsUserByEmail(UserProtoConfiguration.StringMessage email) {
-        return stub.existsUserByEmail(email);
-    }
-
-    @Override
-    public UserProtoConfiguration.BooleanMessage existsUserByUUID(UserProtoConfiguration.StringMessage uuid) {
-        return stub.existsUserByUUID(uuid);
-    }
-
-
 }

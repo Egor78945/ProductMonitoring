@@ -22,8 +22,10 @@ public abstract class AccountRepository extends JooqRepository<Account> {
                 .insertInto(Tables.ACCOUNT)
                 .set(Tables.ACCOUNT.UUID, account.getUuid())
                 .set(Tables.ACCOUNT.USER_UUID, account.getUserUUID())
+                .set(Tables.ACCOUNT.NAME, account.getName())
                 .set(Tables.ACCOUNT.STATUS_ID, account.getStatusId())
                 .set(Tables.ACCOUNT.CREATED_AT, account.getCreatedAt().toLocalDateTime())
+                .set(Tables.ACCOUNT.MAIN, account.isMain())
                 .returning()
                 .fetchOneInto(Account.class);
     }
@@ -34,8 +36,10 @@ public abstract class AccountRepository extends JooqRepository<Account> {
                 .update(Tables.ACCOUNT)
                 .set(Tables.ACCOUNT.UUID, account.getUuid())
                 .set(Tables.ACCOUNT.USER_UUID, account.getUserUUID())
+                .set(Tables.ACCOUNT.NAME, account.getName())
                 .set(Tables.ACCOUNT.STATUS_ID, account.getStatusId())
                 .set(Tables.ACCOUNT.CREATED_AT, account.getCreatedAt().toLocalDateTime())
+                .set(Tables.ACCOUNT.MAIN, account.isMain())
                 .returning()
                 .fetchOneInto(Account.class);
     }
@@ -66,7 +70,7 @@ public abstract class AccountRepository extends JooqRepository<Account> {
                 .fetchOptional(r -> {
                             var ar = r.value1();
                             var ur = r.value2();
-                            return new Account(ar.getId(), ar.getUuid(), ur.getUuid(), ar.getStatusId(), Timestamp.from(ar.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()));
+                            return new Account(ar.getId(), ar.getUuid(), ur.getUuid(), ar.getName(), ar.getStatusId(), Timestamp.from(ar.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant()), ar.getMain());
                         }
                 );
     }

@@ -11,8 +11,8 @@ eureka:
 
 grpc:
   client:
-    product-processor-grpc-service:
-      address: discovery:///${PRODUCT_PROCESSOR_SERVICE_GRPC_PORT}
+    user-database-grpc-service:
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
       negotiation-type: plaintext
 
 keycloak:

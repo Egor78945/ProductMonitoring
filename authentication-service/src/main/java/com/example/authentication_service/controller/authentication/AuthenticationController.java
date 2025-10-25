@@ -32,7 +32,7 @@ public class AuthenticationController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<String>> login(@RequestParam("email") String email, @RequestParam("password") String password) {
-        return asyncTaskExecutorService.submit(() -> ResponseEntity.ok(authenticationService.login(email, password)));
+    public CompletableFuture<ResponseEntity<String>> login(@RequestParam("username") String username, @RequestParam("password") String password) {
+        return asyncTaskExecutorService.submit(() -> ResponseEntity.ok(authenticationService.login(username, password)));
     }
 }

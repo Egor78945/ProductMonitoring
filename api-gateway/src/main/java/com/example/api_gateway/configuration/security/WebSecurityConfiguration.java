@@ -36,7 +36,7 @@ public class WebSecurityConfiguration {
                 .addFilterAfter((exchange, chain) -> {
                     if (SecurityContextHolder.getContext().getAuthentication() != null) {
                         ServerHttpRequest request = exchange.getRequest();
-                        request.getHeaders().set("X-User-Email", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+                        request.getHeaders().set("X-Account-Uuid", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
                     }
                     return chain.filter(exchange);
                 }, SecurityWebFiltersOrder.AUTHENTICATION)

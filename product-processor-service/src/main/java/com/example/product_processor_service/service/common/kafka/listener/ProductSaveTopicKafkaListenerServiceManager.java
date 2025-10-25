@@ -17,6 +17,7 @@ public class ProductSaveTopicKafkaListenerServiceManager implements KafkaListene
     @Override
     @KafkaListener(topics = "${kafka.topic.product.save.name}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "productPublisherListenerContainerFactory")
     public void listen(ConsumerRecord<String, ProductPublisherDTO> listenableObject) {
+        System.out.println("got new product = " + listenableObject.value());
         productProcessorService.register(listenableObject.value());
     }
 }

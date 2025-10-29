@@ -14,9 +14,11 @@ message UserMessage {
 message AccountMessage {
   optional int64 id = 1;
   string uuid = 2;
-  string user_uuid = 3;
-  int64 status_id = 4;
-  int64 created_at = 5;
+  string name = 3;
+  string user_uuid = 4;
+  int64 status_id = 5;
+  int64 created_at = 6;
+  bool main = 7;
 }
 
 message UserRoleMessage {
@@ -39,16 +41,23 @@ message StringMessage {
 
 message EmptyMessage {}
 
+service AuthenticationProtoService {
+  rpc register(UserRegistrationMessage) returns (UserRegistrationMessage);
+  rpc delete(UserRegistrationMessage) returns (EmptyMessage);
+}
+
 service UserProtoService {
-  rpc registerUser(UserRegistrationMessage) returns (EmptyMessage);
+  rpc save(UserMessage) returns (EmptyMessage);
   rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
   rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
+  rpc getByAccountName(StringMessage) returns (UserMessage);
 }
 
 service AccountProtoService {
-  rpc registerAccount(AccountMessage) returns (EmptyMessage);
+  rpc save(AccountMessage) returns (EmptyMessage);
   rpc existsAccountByUUID(StringMessage) returns (BooleanMessage);
+  rpc existsAccountByName(StringMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
 }

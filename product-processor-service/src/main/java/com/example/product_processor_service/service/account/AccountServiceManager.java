@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Service
 public class AccountServiceManager implements AccountService<Account> {
-    private final AccountRepository accountRepository;
+    private final AccountRepository<Account> accountRepository;
 
-    public AccountServiceManager(AccountRepository accountRepository) {
+    public AccountServiceManager(AccountRepository<Account> accountRepository) {
         this.accountRepository = accountRepository;
     }
 

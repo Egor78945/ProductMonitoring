@@ -40,12 +40,12 @@ public class ProtoProductServiceManager implements ProtoProductService {
 
     @Override
     public ProductServiceProtoConfiguration.ProductMessage getByUrl(String url) {
-        return productRepository.getByUrl(url).orElseThrow(() -> new NotFoundException("product not found"));
+        return productRepository.findByUrl(url).orElseThrow(() -> new NotFoundException("product not found"));
     }
 
     @Override
     public List<ProductServiceProtoConfiguration.ProductMessage> getAllExpired(int limit) {
-        return productRepository.getAllExpired(limit, DatePart.SECOND, productEnvironment.getPRODUCT_READ_COUNT());
+        return productRepository.findAllExpired(limit, DatePart.SECOND, productEnvironment.getPRODUCT_READ_COUNT());
     }
 
     @Override
@@ -60,6 +60,6 @@ public class ProtoProductServiceManager implements ProtoProductService {
 
     @Override
     public List<ProductServiceProtoConfiguration.ProductMessage> getAllByAccountUuid(UUID accountUuid, int page) {
-        return productRepository.getAllByAccountUuid(accountUuid, page, productEnvironment.getPRODUCT_READ_COUNT());
+        return productRepository.findAllByAccountUuid(accountUuid, page, productEnvironment.getPRODUCT_READ_COUNT());
     }
 }

@@ -8,18 +8,38 @@ public class Account {
     private long id;
     private UUID uuid;
     private UUID userUUID;
+    private String name;
     private long statusId;
     private Timestamp createdAt;
+    private boolean main;
 
-    public Account(long id, UUID uuid, UUID userUUID, long statusId, Timestamp createdAt) {
+    public Account(long id, UUID uuid, UUID userUUID, String name, long statusId, Timestamp createdAt, boolean main) {
         this.id = id;
         this.uuid = uuid;
         this.userUUID = userUUID;
+        this.name = name;
         this.statusId = statusId;
         this.createdAt = createdAt;
+        this.main = main;
     }
 
     public Account() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isMain() {
+        return main;
+    }
+
+    public void setMain(boolean main) {
+        this.main = main;
     }
 
     public long getId() {
@@ -80,8 +100,10 @@ public class Account {
                 "id=" + id +
                 ", uuid=" + uuid +
                 ", userUUID=" + userUUID +
+                ", name='" + name + '\'' +
                 ", statusId=" + statusId +
                 ", createdAt=" + createdAt +
+                ", main=" + main +
                 '}';
     }
 }

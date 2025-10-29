@@ -31,16 +31,14 @@ import java.util.UUID;
 @Service
 public class ProductProcessorServiceManager implements ProductProcessorService {
     private final MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService;
-    private final AccountService<Account> accountService;
     private final AccountProductService<AccountProduct> accountProductService;
     private final EntityProductService entityProductService;
     private final UserService<User> userService;
     private final UserMailMessagingService messagingService;
     private final UserNotificationService<UserNotification> userNotificationService;
 
-    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountService<Account> accountService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, UserService<User> userService, UserMailMessagingService messagingService, UserNotificationService<UserNotification> userNotificationService) {
+    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountProductService<AccountProduct> accountProductService, EntityProductService entityProductService, UserService<User> userService, UserMailMessagingService messagingService, UserNotificationService<UserNotification> userNotificationService) {
         this.marketplaceManagerRouterService = marketplaceManagerRouterService;
-        this.accountService = accountService;
         this.accountProductService = accountProductService;
         this.entityProductService = entityProductService;
         this.userService = userService;
@@ -54,15 +52,16 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
         System.out.println("saving new product");
         URI uri = URI.create(productDTO.getProductUri());
         String baseUrl = UrlMapper.extractBaseUrl(uri.toString());
+
+        System.out.println("uri = " + uri + " baseUrl = " + baseUrl);
         ProductDTO product = marketplaceManagerRouterService.getByBaseUrl(baseUrl).loadProduct(uri);
-        UUID accountUuid = accountService.getByUserEmail(productDTO.getPublisherEmail()).getUuid();
 
 //        System.out.println("before save transaction, dslContext: " + dslContext);
 //        dslContext.transaction(() -> {
         System.out.println("in save transaction");
         Product p = entityProductService.save(new Product(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), Timestamp.from(Instant.now())));
         System.out.println("after save product");
-        accountProductService.save(new AccountProduct(p.getUrl(), accountUuid));
+        accountProductService.save(new AccountProduct(p.getUrl(), UUID.fromString(productDTO.getPublisherAccountUuid())));
         System.out.println("after save account");
 //        });
         System.out.println("after save transaction");

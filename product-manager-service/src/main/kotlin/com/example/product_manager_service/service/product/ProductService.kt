@@ -1,5 +1,6 @@
 package com.example.product_manager_service.service.product
 
-interface ProductService<P> {
-    fun save(publisherEmail : String, product: P);
+import com.example.product_manager_service.service.EntityService
+
+interface ProductService<P> : EntityService<P> {
 }

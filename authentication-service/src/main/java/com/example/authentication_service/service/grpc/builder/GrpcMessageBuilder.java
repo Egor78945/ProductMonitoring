@@ -18,11 +18,13 @@ public class GrpcMessageBuilder {
                 .build();
     }
 
-    public static UserProtoConfiguration.AccountMessage buildFrom(AccountStatusEnumeration accountStatusEnumeration) {
+    public static UserProtoConfiguration.AccountMessage buildFrom(String name, AccountStatusEnumeration accountStatusEnumeration, boolean main) {
         return UserProtoConfiguration.AccountMessage
                 .newBuilder()
+                .setName(name)
                 .setStatusId(accountStatusEnumeration.getId())
                 .setCreatedAt(Instant.now().toEpochMilli())
+                .setMain(main)
                 .build();
     }
 

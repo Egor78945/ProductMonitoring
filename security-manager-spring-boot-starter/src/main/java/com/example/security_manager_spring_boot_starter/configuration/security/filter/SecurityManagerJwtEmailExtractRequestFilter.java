@@ -15,8 +15,8 @@ import java.io.IOException;
 public class SecurityManagerJwtEmailExtractRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getHeader("X-User-Email") != null && !request.getHeader("X-User-Email").equals("anonymousUser") && SecurityContextHolder.getContext().getAuthentication() == null) {
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(request.getHeader("X-User-Email"), null));
+        if (request.getHeader("X-Account-Uuid") != null && !request.getHeader("X-Account-Uuid").equals("anonymousUser") && SecurityContextHolder.getContext().getAuthentication() == null) {
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(request.getHeader("X-Account-Uuid"), null));
         }
         filterChain.doFilter(request, response);
     }

@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 public class UserServiceManager implements UserService<User> {
-    private final UserRepository userRepository;
+    private final UserRepository<User> userRepository;
 
-    public UserServiceManager(UserRepository userRepository) {
+    public UserServiceManager(UserRepository<User> userRepository) {
         this.userRepository = userRepository;
     }
 

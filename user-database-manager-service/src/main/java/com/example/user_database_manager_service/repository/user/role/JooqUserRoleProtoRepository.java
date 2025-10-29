@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqUserRoleProtoRepository extends UserRoleProtoRepository {
-    protected DSLContext dslContext;
-
+public abstract class JooqUserRoleProtoRepository extends JooqUserRoleRepository {
     public JooqUserRoleProtoRepository(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     public UserProtoConfiguration.UserRoleMessage save(UserProtoConfiguration.UserRoleMessage userRole) {
@@ -39,48 +37,5 @@ public abstract class JooqUserRoleProtoRepository extends UserRoleProtoRepositor
                 .from(Tables.USERS_ROLES)
                 .where(Tables.USERS_ROLES.USER_UUID.eq(userUUID))
                 .fetch(ur -> UserRoleMapper.map(ur.value1()));
-    }
-
-    public boolean existsById(Long id) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS_ROLES)
-                                .where(Tables.USERS_ROLES.ID.eq(id))
-                );
-    }
-
-    public boolean existsBy(UUID userUUID, Long roleId) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS_ROLES)
-                                .where(Tables.USERS_ROLES.USER_UUID.eq(userUUID).and(Tables.USERS_ROLES.ROLE_ID.eq(roleId)))
-                );
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.UserRoleMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USERS_ROLES)
-                .where(Tables.USERS_ROLES.USER_UUID.eq(UUID.fromString(entity.getUserUUID()))
-                        .and(Tables.USERS_ROLES.ROLE_ID.eq(entity.getRoleId())))
-                .execute();
-    }
-
-    @Override
-    public void deleteAllByUserUuid(UUID userUuid) {
-        dslContext
-                .deleteFrom(Tables.USERS_ROLES)
-                .where(Tables.USERS_ROLES.USER_UUID.eq(userUuid))
-                .execute();
-    }
-
-    @Override
-    public void deleteAllByRoleId(Long roleId) {
-        dslContext
-                .deleteFrom(Tables.USERS_ROLES)
-                .where(Tables.USERS_ROLES.ROLE_ID.eq(roleId))
-                .execute();
     }
 }

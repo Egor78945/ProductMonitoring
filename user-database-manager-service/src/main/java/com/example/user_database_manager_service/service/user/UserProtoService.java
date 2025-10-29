@@ -3,14 +3,14 @@ package com.example.user_database_manager_service.service.user;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.repository.user.UserProtoRepository;
+import com.example.user_database_manager_service.repository.user.JooqUserRepository;
 
 import java.util.UUID;
 
 public abstract class UserProtoService implements UserService<UserProtoConfiguration.UserMessage> {
-    protected final UserProtoRepository userProtoRepository;
+    protected final JooqUserRepository userProtoRepository;
 
-    public UserProtoService(UserProtoRepository userProtoRepository) {
+    public UserProtoService(JooqUserRepository userProtoRepository) {
         this.userProtoRepository = userProtoRepository;
     }
 

@@ -3,14 +3,14 @@ package com.example.user_database_manager_service.service.user.notification;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.model.user.notification.entity.UserNotification;
-import com.example.user_database_manager_service.repository.user.notification.UserNotificationEntityRepository;
+import com.example.user_database_manager_service.repository.user.notification.JooqUserNotificationRepository;
 
 import java.util.UUID;
 
 public abstract class UserNotificationEntityService implements UserNotificationService<UserNotification> {
-    protected final UserNotificationEntityRepository userNotificationEntityRepository;
+    protected final JooqUserNotificationRepository userNotificationEntityRepository;
 
-    public UserNotificationEntityService(UserNotificationEntityRepository userNotificationEntityRepository) {
+    public UserNotificationEntityService(JooqUserNotificationRepository userNotificationEntityRepository) {
         this.userNotificationEntityRepository = userNotificationEntityRepository;
     }
 

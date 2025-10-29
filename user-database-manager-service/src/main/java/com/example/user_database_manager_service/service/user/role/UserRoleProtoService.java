@@ -3,15 +3,15 @@ package com.example.user_database_manager_service.service.user.role;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.repository.user.role.UserRoleProtoRepository;
+import com.example.user_database_manager_service.repository.user.role.JooqUserRoleRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 public abstract class UserRoleProtoService implements UserRoleService<UserProtoConfiguration.UserRoleMessage> {
-    protected final UserRoleProtoRepository userRoleProtoRepository;
+    protected final JooqUserRoleRepository userRoleProtoRepository;
 
-    public UserRoleProtoService(UserRoleProtoRepository userRoleProtoRepository) {
+    public UserRoleProtoService(JooqUserRoleRepository userRoleProtoRepository) {
         this.userRoleProtoRepository = userRoleProtoRepository;
     }
 

@@ -11,11 +11,9 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqUserProtoRepository extends UserProtoRepository {
-    protected DSLContext dslContext;
-
+public abstract class JooqUserProtoRepository extends JooqUserRepository {
     public JooqUserProtoRepository(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
     @Override
@@ -63,56 +61,5 @@ public abstract class JooqUserProtoRepository extends UserProtoRepository {
                         .on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID)))
                 .where(Tables.ACCOUNT.NAME.eq(accountName))
                 .fetchOptional(u -> UserMapper.map(u.value1()));
-    }
-
-    @Override
-    public boolean existsBy(Long id, UUID uuid, String email) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS)
-                                .where(Tables.USERS.ID.eq(id)
-                                        .and(Tables.USERS.UUID.eq(uuid)
-                                                .and(Tables.USERS.EMAIL.eq(email))))
-                );
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS)
-                                .where(Tables.USERS.ID.eq(id))
-                );
-    }
-
-    @Override
-    public boolean existsByUUID(UUID uuid) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS)
-                                .where(Tables.USERS.UUID.eq(uuid))
-                );
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.USERS)
-                                .where(Tables.USERS.EMAIL.eq(email))
-                );
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.UserMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USERS)
-                .where(Tables.USERS.UUID.eq(UUID.fromString(entity.getUuid()))
-                        .and(Tables.USERS.ID.eq(entity.getId())))
-                .execute();
     }
 }

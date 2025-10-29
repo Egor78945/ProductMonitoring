@@ -4,16 +4,16 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.repository.account.AccountProtoRepository;
+import com.example.user_database_manager_service.repository.account.JooqAccountRepository;
 import com.example.user_database_manager_service.repository.user.UserRepository;
 
 import java.util.UUID;
 
 public abstract class AccountProtoService implements AccountService<UserProtoConfiguration.AccountMessage> {
-    protected final AccountProtoRepository accountProtoRepository;
+    protected final JooqAccountRepository accountProtoRepository;
     protected final UserRepository<?> userRepository;
 
-    public AccountProtoService(AccountProtoRepository accountProtoRepository, UserRepository<?> userRepository) {
+    public AccountProtoService(JooqAccountRepository accountProtoRepository, UserRepository<?> userRepository) {
         this.accountProtoRepository = accountProtoRepository;
         this.userRepository = userRepository;
     }

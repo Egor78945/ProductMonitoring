@@ -16,5 +16,6 @@ public abstract class UserRoleRepository<UR> implements EntityRepository<UR> {
     public abstract boolean existsBy(UUID userUUID, Long roleId);
 
     public abstract void deleteAllByUserUuid(UUID userUuid);
+
     public abstract void deleteAllByRoleId(Long roleId);
 }

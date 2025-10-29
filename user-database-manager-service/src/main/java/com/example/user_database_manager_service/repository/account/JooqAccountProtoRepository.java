@@ -11,13 +11,12 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqAccountProtoRepository extends AccountProtoRepository {
-    protected final DSLContext dslContext;
-
+public abstract class JooqAccountProtoRepository extends JooqAccountRepository {
     public JooqAccountProtoRepository(DSLContext dslContext) {
-        this.dslContext = dslContext;
+        super(dslContext);
     }
 
+    @Override
     public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage entity) {
         return dslContext
                 .insertInto(Tables.ACCOUNT)
@@ -31,6 +30,7 @@ public abstract class JooqAccountProtoRepository extends AccountProtoRepository 
                 .fetchOne(AccountMapper::map);
     }
 
+    @Override
     public Optional<UserProtoConfiguration.AccountMessage> getByUUID(UUID uuid) {
         return dslContext
                 .selectFrom(Tables.ACCOUNT)
@@ -38,6 +38,7 @@ public abstract class JooqAccountProtoRepository extends AccountProtoRepository 
                 .fetchOptional(AccountMapper::map);
     }
 
+    @Override
     public Optional<UserProtoConfiguration.AccountMessage> getByUserUUID(UUID uuid) {
         return dslContext
                 .selectFrom(Tables.ACCOUNT)
@@ -45,55 +46,11 @@ public abstract class JooqAccountProtoRepository extends AccountProtoRepository 
                 .fetchOptional(AccountMapper::map);
     }
 
+    @Override
     public Optional<UserProtoConfiguration.AccountMessage> getById(Long id) {
         return dslContext
                 .selectFrom(Tables.ACCOUNT)
                 .where(Tables.ACCOUNT.ID.eq(id))
                 .fetchOptional(AccountMapper::map);
-    }
-
-    public boolean existsByUUID(UUID uuid) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.ACCOUNT)
-                                .where(Tables.ACCOUNT.UUID.eq(uuid))
-                );
-    }
-
-    public boolean existsByUserUUID(UUID uuid) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.ACCOUNT)
-                                .where(Tables.ACCOUNT.USER_UUID.eq(uuid))
-                );
-    }
-
-    public boolean existsByName(String name) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.ACCOUNT)
-                                .where(Tables.ACCOUNT.NAME.eq(name))
-                );
-    }
-
-    public boolean existsById(Long id) {
-        return dslContext
-                .fetchExists(
-                        dslContext.selectOne()
-                                .from(Tables.ACCOUNT)
-                                .where(Tables.ACCOUNT.ID.eq(id))
-                );
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.AccountMessage entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT)
-                .where(Tables.ACCOUNT.UUID.eq(UUID.fromString(entity.getUuid()))
-                        .and(Tables.ACCOUNT.ID.eq(entity.getId())))
-                .execute();
     }
 }

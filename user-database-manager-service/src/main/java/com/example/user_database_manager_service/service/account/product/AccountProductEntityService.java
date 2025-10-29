@@ -3,15 +3,15 @@ package com.example.user_database_manager_service.service.account.product;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.model.account.product.entity.AccountProduct;
-import com.example.user_database_manager_service.repository.account.product.AccountProductEntityRepository;
+import com.example.user_database_manager_service.repository.account.product.JooqAccountProductRepository;
 
 import java.net.URI;
 import java.util.UUID;
 
 public abstract class AccountProductEntityService implements AccountProductService<AccountProduct> {
-    protected final AccountProductEntityRepository accountProductEntityRepository;
+    protected final JooqAccountProductRepository accountProductEntityRepository;
 
-    public AccountProductEntityService(AccountProductEntityRepository accountProductEntityRepository) {
+    public AccountProductEntityService(JooqAccountProductRepository accountProductEntityRepository) {
         this.accountProductEntityRepository = accountProductEntityRepository;
     }
 

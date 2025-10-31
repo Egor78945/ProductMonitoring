@@ -34,6 +34,12 @@ message AccountProductMessage {
   string productUrl = 2;
 }
 
+message UserNotificationMessage {
+  string userUuid = 1;
+  int64 notificationTypeId = 2;
+  int64 notifiedAt = 3;
+}
+
 message ProductListMessage {
   repeated ProductMessage products = 1;
 }
@@ -61,6 +67,11 @@ message StringIntMessage {
   int32 int = 2;
 }
 
+message StringLongMessage {
+  string string = 1;
+  int64 long = 2;
+}
+
 message EmptyMessage {}
 
 service AuthenticationProtoService {
@@ -74,6 +85,13 @@ service UserProtoService {
   rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
   rpc getByAccountName(StringMessage) returns (UserMessage);
+}
+
+service UserNotificationProtoService {
+  rpc save(UserNotificationMessage) returns (UserNotificationMessage);
+  rpc update(UserNotificationMessage) returns (UserNotificationMessage);
+  rpc findByUserUuidAndNotificationTypeId(StringLongMessage) returns (UserNotificationMessage);
+  rpc existsByUserUuidAndNotificationTypeId(StringLongMessage) returns (BooleanMessage);
 }
 
 service ProductProtoService {
@@ -91,4 +109,8 @@ service AccountProtoService {
   rpc existsAccountByName(StringMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
+}
+
+service AccountProductProtoService {
+  rpc save(AccountProductMessage) returns (AccountProductMessage);
 }

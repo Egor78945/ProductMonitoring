@@ -4,8 +4,8 @@ import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JooqUserNotificationEntityRepositoryManager extends JooqUserNotificationEntityRepository{
-    public JooqUserNotificationEntityRepositoryManager(DSLContext dslContext) {
+public class JooqUserNotificationProtoRepositoryManager extends JooqUserNotificationProtoRepository {
+    public JooqUserNotificationProtoRepositoryManager(DSLContext dslContext) {
         super(dslContext);
     }
 }

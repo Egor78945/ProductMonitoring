@@ -4,21 +4,25 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.repository.user.JooqUserRepository;
+import com.example.user_database_manager_service.repository.user.UserRepository;
 
 import java.util.UUID;
 
 public abstract class UserProtoService implements UserService<UserProtoConfiguration.UserMessage> {
-    protected final JooqUserRepository userProtoRepository;
+    protected final UserRepository<UserProtoConfiguration.UserMessage> userProtoRepository;
 
-    public UserProtoService(JooqUserRepository userProtoRepository) {
+    public UserProtoService(UserRepository<UserProtoConfiguration.UserMessage> userProtoRepository) {
         this.userProtoRepository = userProtoRepository;
     }
 
     @Override
     public UserProtoConfiguration.UserMessage save(UserProtoConfiguration.UserMessage user) {
-        if (!existsByEmail(user.getEmail())) {
-            return userProtoRepository.save(user);
-        } else throw new ProcessingException(ExceptionMessage.ALREADY_EXISTS.getMessage());
+        return userProtoRepository.save(user);
+    }
+
+    @Override
+    public UserProtoConfiguration.UserMessage update(UserProtoConfiguration.UserMessage entity) {
+        return userProtoRepository.update(entity);
     }
 
     @Override

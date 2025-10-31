@@ -4,22 +4,26 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.repository.user.role.JooqUserRoleRepository;
+import com.example.user_database_manager_service.repository.user.role.UserRoleRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 public abstract class UserRoleProtoService implements UserRoleService<UserProtoConfiguration.UserRoleMessage> {
-    protected final JooqUserRoleRepository userRoleProtoRepository;
+    protected final UserRoleRepository<UserProtoConfiguration.UserRoleMessage> userRoleProtoRepository;
 
-    public UserRoleProtoService(JooqUserRoleRepository userRoleProtoRepository) {
+    public UserRoleProtoService(UserRoleRepository<UserProtoConfiguration.UserRoleMessage> userRoleProtoRepository) {
         this.userRoleProtoRepository = userRoleProtoRepository;
     }
 
     @Override
     public UserProtoConfiguration.UserRoleMessage save(UserProtoConfiguration.UserRoleMessage userRole) {
-        if (!userRoleProtoRepository.existsBy(UUID.fromString(userRole.getUserUUID()), userRole.getRoleId())) {
             return userRoleProtoRepository.save(userRole);
-        } else throw new NotFoundException(ExceptionMessage.ALREADY_EXISTS.getMessage());
+    }
+
+    @Override
+    public UserProtoConfiguration.UserRoleMessage update(UserProtoConfiguration.UserRoleMessage entity) {
+        return userRoleProtoRepository.update(entity);
     }
 
     @Override

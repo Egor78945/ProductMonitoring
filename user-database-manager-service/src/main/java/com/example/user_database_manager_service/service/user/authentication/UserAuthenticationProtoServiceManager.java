@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserAuthenticationProtoServiceManager extends UserAuthenticationProtoService {
-    public UserAuthenticationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserNotification> userNotificationService, AccountProductService<AccountProduct> accountProductService) {
+    public UserAuthenticationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService) {
         super(userService, accountService, userRoleService, userNotificationService, accountProductService);
     }
 }

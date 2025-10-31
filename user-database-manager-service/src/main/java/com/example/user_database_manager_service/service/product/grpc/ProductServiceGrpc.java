@@ -2,6 +2,7 @@ package com.example.user_database_manager_service.service.product.grpc;
 
 import com.example.grpc.user.ProductProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.exception.AlreadyExistsException;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
@@ -24,14 +25,22 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
 
     @Override
     public void save(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.ProductMessage> responseObserver) {
-        responseObserver.onNext(productService.save(request));
-        responseObserver.onCompleted();
+        try {
+            responseObserver.onNext(productService.save(request));
+            responseObserver.onCompleted();
+        } catch (AlreadyExistsException e) {
+            responseObserver.onError(e);
+        }
     }
 
     @Override
     public void update(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.ProductMessage> responseObserver) {
-        responseObserver.onNext(productService.update(request));
-        responseObserver.onCompleted();
+        try {
+            responseObserver.onNext(productService.update(request));
+            responseObserver.onCompleted();
+        } catch (NotFoundException e) {
+            responseObserver.onError(e);
+        }
     }
 
     @Override

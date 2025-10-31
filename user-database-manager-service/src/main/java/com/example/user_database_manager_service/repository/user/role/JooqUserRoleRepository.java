@@ -1,12 +1,11 @@
 package com.example.user_database_manager_service.repository.user.role;
 
-import com.example.grpc.user.UserProtoConfiguration;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
 import java.util.UUID;
 
-public abstract class JooqUserRoleRepository extends UserRoleRepository<UserProtoConfiguration.UserRoleMessage> {
+public abstract class JooqUserRoleRepository<UR> extends UserRoleRepository<UR> {
     protected final DSLContext dslContext;
 
     public JooqUserRoleRepository(DSLContext dslContext) {
@@ -29,15 +28,6 @@ public abstract class JooqUserRoleRepository extends UserRoleRepository<UserProt
                                 .from(Tables.USERS_ROLES)
                                 .where(Tables.USERS_ROLES.USER_UUID.eq(userUUID).and(Tables.USERS_ROLES.ROLE_ID.eq(roleId)))
                 );
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.UserRoleMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USERS_ROLES)
-                .where(Tables.USERS_ROLES.USER_UUID.eq(UUID.fromString(entity.getUserUUID()))
-                        .and(Tables.USERS_ROLES.ROLE_ID.eq(entity.getRoleId())))
-                .execute();
     }
 
     @Override

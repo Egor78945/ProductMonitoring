@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqAccountProtoRepository extends JooqAccountRepository {
+public abstract class JooqAccountProtoRepository extends JooqAccountRepository<UserProtoConfiguration.AccountMessage> {
     public JooqAccountProtoRepository(DSLContext dslContext) {
         super(dslContext);
     }
@@ -21,6 +21,30 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository {
         return dslContext
                 .insertInto(Tables.ACCOUNT)
                 .set(Tables.ACCOUNT.UUID, build())
+                .set(Tables.ACCOUNT.USER_UUID, UUID.fromString(entity.getUserUuid()))
+                .set(Tables.ACCOUNT.NAME, entity.getName())
+                .set(Tables.ACCOUNT.STATUS_ID, entity.getStatusId())
+                .set(Tables.ACCOUNT.CREATED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(entity.getCreatedAt()), ZoneId.systemDefault()))
+                .set(Tables.ACCOUNT.MAIN, entity.getMain())
+                .returning()
+                .fetchOne(AccountMapper::map);
+    }
+
+    @Override
+    public void delete(UserProtoConfiguration.AccountMessage entity) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.UUID.eq(UUID.fromString(entity.getUuid()))
+                        .and(Tables.ACCOUNT.ID.eq(entity.getId())))
+                .execute();
+    }
+
+    @Override
+    public UserProtoConfiguration.AccountMessage update(UserProtoConfiguration.AccountMessage entity) {
+        return dslContext
+                .update(Tables.ACCOUNT)
+                .set(Tables.ACCOUNT.ID, entity.getId())
+                .set(Tables.ACCOUNT.UUID, UUID.fromString(entity.getUuid()))
                 .set(Tables.ACCOUNT.USER_UUID, UUID.fromString(entity.getUserUuid()))
                 .set(Tables.ACCOUNT.NAME, entity.getName())
                 .set(Tables.ACCOUNT.STATUS_ID, entity.getStatusId())

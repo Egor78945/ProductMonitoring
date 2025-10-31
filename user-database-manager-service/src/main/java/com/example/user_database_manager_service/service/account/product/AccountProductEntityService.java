@@ -1,30 +1,31 @@
 package com.example.user_database_manager_service.service.account.product;
 
-import com.example.user_database_manager_service.exception.ProcessingException;
-import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.model.account.product.entity.AccountProduct;
-import com.example.user_database_manager_service.repository.account.product.JooqAccountProductRepository;
+import com.example.user_database_manager_service.repository.account.product.AccountProductRepository;
 
 import java.net.URI;
 import java.util.UUID;
 
 public abstract class AccountProductEntityService implements AccountProductService<AccountProduct> {
-    protected final JooqAccountProductRepository accountProductEntityRepository;
+    protected final AccountProductRepository<AccountProduct> accountProductEntityRepository;
 
-    public AccountProductEntityService(JooqAccountProductRepository accountProductEntityRepository) {
+    public AccountProductEntityService(AccountProductRepository<AccountProduct> accountProductEntityRepository) {
         this.accountProductEntityRepository = accountProductEntityRepository;
     }
 
     @Override
     public AccountProduct save(AccountProduct entity) {
-        if (!existsBy(entity.getAccountUuid(), entity.getProductUrl())) {
-            return accountProductEntityRepository.save(entity);
-        } else throw new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage());
+        return accountProductEntityRepository.save(entity);
+    }
+
+    @Override
+    public AccountProduct update(AccountProduct entity) {
+        return accountProductEntityRepository.update(entity);
     }
 
     @Override
     public void delete(AccountProduct entity) {
-            accountProductEntityRepository.delete(entity);
+        accountProductEntityRepository.delete(entity);
     }
 
     @Override

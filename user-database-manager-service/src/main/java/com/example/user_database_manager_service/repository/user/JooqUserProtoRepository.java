@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqUserProtoRepository extends JooqUserRepository {
+public abstract class JooqUserProtoRepository extends JooqUserRepository<UserProtoConfiguration.UserMessage> {
     public JooqUserProtoRepository(DSLContext dslContext) {
         super(dslContext);
     }
@@ -21,6 +21,28 @@ public abstract class JooqUserProtoRepository extends JooqUserRepository {
         return dslContext
                 .insertInto(Tables.USERS)
                 .set(Tables.USERS.UUID, build())
+                .set(Tables.USERS.EMAIL, user.getEmail())
+                .set(Tables.USERS.STATUS_ID, user.getStatusId())
+                .set(Tables.USERS.REGISTERED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(user.getRegisteredAt()), ZoneId.systemDefault()))
+                .returning()
+                .fetchOne(UserMapper::map);
+    }
+
+    @Override
+    public void delete(UserProtoConfiguration.UserMessage entity) {
+        dslContext
+                .deleteFrom(Tables.USERS)
+                .where(Tables.USERS.UUID.eq(UUID.fromString(entity.getUuid()))
+                        .and(Tables.USERS.ID.eq(entity.getId())))
+                .execute();
+    }
+
+    @Override
+    public UserProtoConfiguration.UserMessage update(UserProtoConfiguration.UserMessage user) {
+        return dslContext
+                .update(Tables.USERS)
+                .set(Tables.USERS.ID, user.getId())
+                .set(Tables.USERS.UUID, UUID.fromString(user.getUuid()))
                 .set(Tables.USERS.EMAIL, user.getEmail())
                 .set(Tables.USERS.STATUS_ID, user.getStatusId())
                 .set(Tables.USERS.REGISTERED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(user.getRegisteredAt()), ZoneId.systemDefault()))

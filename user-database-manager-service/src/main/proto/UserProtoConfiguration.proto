@@ -21,6 +21,23 @@ message AccountMessage {
   bool main = 7;
 }
 
+message ProductMessage {
+  string url = 1;
+  string name = 2;
+  int32 actualPrice = 3;
+  int32 pastPrice = 4;
+  int64 updatedAt = 5;
+}
+
+message AccountProductMessage {
+  string accountUuid = 1;
+  string productUrl = 2;
+}
+
+message ProductListMessage {
+  repeated ProductMessage products = 1;
+}
+
 message UserRoleMessage {
   string userUUID = 1;
   int64 roleId = 2;
@@ -39,6 +56,11 @@ message StringMessage {
   string string = 1;
 }
 
+message StringIntMessage {
+  string string = 1;
+  int32 int = 2;
+}
+
 message EmptyMessage {}
 
 service AuthenticationProtoService {
@@ -52,6 +74,15 @@ service UserProtoService {
   rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
   rpc getByAccountName(StringMessage) returns (UserMessage);
+}
+
+service ProductProtoService {
+  rpc save(ProductMessage) returns (ProductMessage);
+  rpc update(ProductMessage) returns (ProductMessage);
+  rpc getByUrl(StringMessage) returns (ProductMessage);
+  rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
+  rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
+  rpc existsByUrl(StringMessage) returns (BooleanMessage);
 }
 
 service AccountProtoService {

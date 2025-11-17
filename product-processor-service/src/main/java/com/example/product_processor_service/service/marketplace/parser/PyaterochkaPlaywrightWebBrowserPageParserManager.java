@@ -1,5 +1,6 @@
 package com.example.product_processor_service.service.marketplace.parser;
 
+import com.example.grpc.user.UserProtoConfiguration;
 import com.example.product_processor_service.enumeration.MarketplaceDetailsEnumeration;
 import com.example.product_processor_service.model.marketplace.selector.entity.MarketplaceSelector;
 import com.example.product_processor_service.model.product.ProductDTO;
@@ -9,16 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PyaterochkaPlaywrightWebBrowserPageParserManager implements PyaterochkaPlaywrightWebBrowserPageParser<ProductDTO> {
-    private final MarketplaceSelectorService<MarketplaceSelector> marketplaceSelectorService;
+    private final MarketplaceSelectorService<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorService;
 
-    public PyaterochkaPlaywrightWebBrowserPageParserManager(MarketplaceSelectorService<MarketplaceSelector> marketplaceSelectorService) {
+    public PyaterochkaPlaywrightWebBrowserPageParserManager(MarketplaceSelectorService<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorService) {
         this.marketplaceSelectorService = marketplaceSelectorService;
     }
 
     @Override
     public ProductDTO parse(WebBrowserPageWrapper wrapper) {
-        String name = wrapper.locator(marketplaceSelectorService.getByMarketplaceName(MarketplaceDetailsEnumeration.PYATEROCHKA.getName()).getProductName());
-        int price = Integer.parseInt(wrapper.locator(marketplaceSelectorService.getByMarketplaceName(MarketplaceDetailsEnumeration.PYATEROCHKA.getName()).getProductPrice()));
+        UserProtoConfiguration.MarketplaceSelectorMessage selectorMessage = marketplaceSelectorService.getByMarketplaceName(MarketplaceDetailsEnumeration.PYATEROCHKA.getName());
+        String name = wrapper.locator(selectorMessage.getProductName());
+        int price = Integer.parseInt(wrapper.locator(selectorMessage.getProductPrice()));
         return new ProductDTO(wrapper.url(), name, price);
     }
 }

@@ -53,7 +53,7 @@ public class UserNotificationServiceGrpc extends UserNotificationProtoServiceGrp
 
     @Override
     public void existsByUserUuidAndNotificationTypeId(UserProtoConfiguration.StringLongMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
-        responseObserver.onNext(GrpcMapper.map(userNotificationService.existsBy(UUID.fromString(request.getString()), request.getLong())));
+        responseObserver.onNext(GrpcMapper.mapTo(userNotificationService.existsBy(UUID.fromString(request.getString()), request.getLong())));
         responseObserver.onCompleted();
     }
 }

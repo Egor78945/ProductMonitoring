@@ -1,17 +1,13 @@
 package com.example.product_processor_service.service.product;
 
-import com.example.product_processor_service.util.function.Scrypt;
-import org.jooq.DatePart;
+import com.example.product_processor_service.service.EntityService;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface ProductService<P> {
-    P save(P product);
-    P update(P product);
+public interface ProductService<P> extends EntityService<P> {
     P getByUrl(String url);
-    List<P> getAllExpired(int limit);
+    List<P> getAllExpired();
     List<P> getAllByAccountUuid(UUID accountUuid, int page);
     boolean existsByUrl(String url);
-    void transactional(Scrypt scrypt);
 }

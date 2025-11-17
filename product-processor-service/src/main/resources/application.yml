@@ -11,12 +11,6 @@ spring:
     producer:
       retries: 10
 
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT_INNER}/${POSTGRES_DATABASE_USER_NAME}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-
 eureka:
   client:
     service-url:
@@ -54,3 +48,7 @@ server:
 grpc:
   server:
     port: ${PRODUCT_PROCESSOR_SERVICE_GRPC_PORT}
+  client:
+    user-database-grpc-service:
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
+      negotiation-type: plaintext

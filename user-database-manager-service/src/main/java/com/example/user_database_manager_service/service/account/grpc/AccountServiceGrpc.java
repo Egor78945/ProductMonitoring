@@ -21,7 +21,7 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     public void save(UserProtoConfiguration.AccountMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             accountService.save(request);
-            responseObserver.onNext(GrpcMapper.map());
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -31,7 +31,7 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     @Override
     public void existsAccountByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcMapper.map(accountService.existsByUUID(UUID.fromString(request.getString()))));
+            responseObserver.onNext(GrpcMapper.mapTo(accountService.existsByUUID(UUID.fromString(request.getString()))));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -61,7 +61,7 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     @Override
     public void existsAccountByName(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcMapper.map(accountService.existsByName(request.getString())));
+            responseObserver.onNext(GrpcMapper.mapTo(accountService.existsByName(request.getString())));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);

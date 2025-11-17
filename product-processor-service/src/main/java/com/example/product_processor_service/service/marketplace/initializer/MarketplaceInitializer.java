@@ -4,6 +4,6 @@ import com.example.product_processor_service.service.marketplace.manager.Marketp
 
 import java.util.Map;
 
-public interface MarketplaceInitializer <K, V extends MarketplaceManagerService> {
+public interface MarketplaceInitializer <K, S, V extends MarketplaceManagerService<S>> {
     Map<K, V> getMarketplaces();
 }

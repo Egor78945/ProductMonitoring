@@ -68,7 +68,7 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
 
     @Override
     public void existsByUrl(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
-        responseObserver.onNext(GrpcMapper.map(productService.existsByUrl(URI.create(request.getString()))));
+        responseObserver.onNext(GrpcMapper.mapTo(productService.existsByUrl(URI.create(request.getString()))));
         responseObserver.onCompleted();
     }
 }

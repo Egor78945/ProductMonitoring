@@ -39,8 +39,6 @@ message IntMessage {
   int32 int = 1;
 }
 
-
-
 message BooleanMessage {
   bool boolean = 1;
 }

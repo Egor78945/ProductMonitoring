@@ -32,7 +32,11 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
         URI uri = URI.create(productDTO.getProductUri());
         String baseUrl = UrlMapper.extractBaseUrl(uri.toString());
 
+        System.out.println("product register before load");
+
         ProductDTO product = marketplaceManagerRouterService.getByBaseUrl(baseUrl).loadProduct(uri);
+
+        System.out.println("product register loaded: " + product);
 
         UserProtoConfiguration.ProductMessage p = productService.save(ProductMapper.mapTo(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), new Date().toInstant().toEpochMilli()));
         accountProductService.save(UserGrpcMapper.mapTo(p.getUrl(), UUID.fromString(productDTO.getPublisherAccountUuid()).toString()));
@@ -42,11 +46,17 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
     public void update(String productUrl) {
         System.out.println("updating product...");
         UserProtoConfiguration.ProductMessage product = productService.getByUrl(productUrl);
+        System.out.println("update from database: " + product);
+        System.out.println("product update before load");
         ProductDTO productDTO = marketplaceManagerRouterService.getByBaseUrl(UrlMapper.extractBaseUrl(productUrl)).loadProduct(URI.create(product.getUrl()));
+        System.out.println("product update loaded: " + productDTO);
         if (product.getActualPrice() != productDTO.getPrice()) {
             System.out.println("price changed !");
-            product.toBuilder().setActualPrice(product.getActualPrice());
-            product.toBuilder().setActualPrice(productDTO.getPrice());
+            product = product.toBuilder()
+                    .setPastPrice(product.getActualPrice())
+                    .setActualPrice(productDTO.getPrice())
+                    .setUpdatedAt(new Date().toInstant().toEpochMilli())
+                    .build();
             productService.update(product);
         }
     }

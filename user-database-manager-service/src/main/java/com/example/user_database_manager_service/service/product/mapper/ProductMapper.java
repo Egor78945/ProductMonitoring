@@ -10,6 +10,7 @@ public class ProductMapper {
     public static UserProtoConfiguration.ProductMessage mapTo(ProductRecord record) {
         return UserProtoConfiguration.ProductMessage.newBuilder()
                 .setUrl(record.getUrl())
+                .setName(record.getName())
                 .setActualPrice(record.getActualPrice())
                 .setPastPrice(record.getPastPrice())
                 .setUpdatedAt(record.getUpdatedAt().atZone(ZoneOffset.UTC).toInstant().toEpochMilli())

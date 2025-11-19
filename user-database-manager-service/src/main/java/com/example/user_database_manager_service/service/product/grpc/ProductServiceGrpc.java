@@ -36,6 +36,7 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
     @Override
     public void update(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.ProductMessage> responseObserver) {
         try {
+            System.out.println(request);
             responseObserver.onNext(productService.update(request));
             responseObserver.onCompleted();
         } catch (NotFoundException e) {

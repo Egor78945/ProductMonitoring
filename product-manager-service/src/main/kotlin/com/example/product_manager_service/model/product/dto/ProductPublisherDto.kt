@@ -6,6 +6,4 @@ import java.net.URI
 data class ProductPublisherDto(val publisherAccountUuid: String?, val productUri: URI?) : Serializable{
     constructor() : this(null, null) {
     }
-
-    fun isInitialized(): Boolean = publisherAccountUuid != null && productUri != null
 }

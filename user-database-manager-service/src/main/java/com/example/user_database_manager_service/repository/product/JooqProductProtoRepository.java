@@ -77,20 +77,17 @@ public abstract class JooqProductProtoRepository extends JooqProductRepository<U
                 .selectFrom(Tables.PRODUCT)
                 .where(DSL.extract(DSL.currentTimestamp().minus(Tables.PRODUCT.UPDATED_AT), datePart).greaterThan(timeLimit))
                 .limit(count)
-                .fetchStreamInto(Tables.PRODUCT)
-                .map(ProductMapper::mapTo)
-                .toList();
+                .fetch(ProductMapper::mapTo);
     }
 
     @Override
     public List<UserProtoConfiguration.ProductMessage> findAllBy(UUID uuid, int page, int count) {
         return dslContext
-                .selectFrom(Tables.PRODUCT.join(Tables.ACCOUNT_PRODUCTS).on(Tables.PRODUCT.URL.eq(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL)))
+                .select(Tables.PRODUCT)
+                .from(Tables.PRODUCT.join(Tables.ACCOUNT_PRODUCTS).on(Tables.PRODUCT.URL.eq(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL)))
                 .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(uuid))
                 .limit(count)
                 .offset((page - 1) * count)
-                .fetchStreamInto(Tables.PRODUCT)
-                .map(ProductMapper::mapTo)
-                .toList();
+                .fetch(p -> ProductMapper.mapTo(p.value1()));
     }
 }

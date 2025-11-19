@@ -19,8 +19,11 @@ public class PyaterochkaPlaywrightWebBrowserPageParserManager implements Pyatero
     @Override
     public ProductDTO parse(WebBrowserPageWrapper wrapper) {
         UserProtoConfiguration.MarketplaceSelectorMessage selectorMessage = marketplaceSelectorService.getByMarketplaceName(MarketplaceDetailsEnumeration.PYATEROCHKA.getName());
+        System.out.println("marketplace selector message: " + selectorMessage);
         String name = wrapper.locator(selectorMessage.getProductName());
+        System.out.println("loaded name: " + name);
         int price = Integer.parseInt(wrapper.locator(selectorMessage.getProductPrice()));
+        System.out.println("loaded price: " + price);
         return new ProductDTO(wrapper.url(), name, price);
     }
 }

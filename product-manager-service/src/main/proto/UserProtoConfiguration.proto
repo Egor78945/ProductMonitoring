@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package com.example.grpc.user;
+
+message ProductMessage {
+  string url = 1;
+  string name = 2;
+  int32 actualPrice = 3;
+  int32 pastPrice = 4;
+  int64 updatedAt = 5;
+}
+
+message AccountProductMessage {
+  string accountUuid = 1;
+  string productUrl = 2;
+}
+
+message ProductListMessage {
+  repeated ProductMessage products = 1;
+}
+
+message UserRoleMessage {
+  string userUUID = 1;
+  int64 roleId = 2;
+}
+
+message BooleanMessage {
+  bool boolean = 1;
+}
+
+message StringMessage {
+  string string = 1;
+}
+
+message StringIntMessage {
+  string string = 1;
+  int32 int = 2;
+}
+
+message StringLongMessage {
+  string string = 1;
+  int64 long = 2;
+}
+
+message MarketplaceDefinitionMessage {
+  int64 id = 1;
+  string name = 2;
+  string processorClassName = 3;
+}
+
+message ListMarketplaceDefinitionMessage {
+  repeated MarketplaceDefinitionMessage marketplaceDefinitionMessageList = 1;
+}
+
+message MarketplacePathDefinitionMessage {
+  int64 marketplaceId = 1;
+  string baseUrl = 2;
+}
+
+message LongMessage {
+  int64 long = 1;
+}
+
+message ListMarketplacePathDefinitionMessage {
+  repeated MarketplacePathDefinitionMessage marketplacePathDefinitionList = 1;
+}
+
+message MarketplaceSelectorMessage {
+  int64 id = 1;
+  int64 marketplaceId = 2;
+  string productName = 3;
+  string productPrice = 4;
+}
+
+message EmptyMessage {}
+
+service ProductProtoService {
+  rpc save(ProductMessage) returns (ProductMessage);
+  rpc update(ProductMessage) returns (ProductMessage);
+  rpc getByUrl(StringMessage) returns (ProductMessage);
+  rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
+  rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
+  rpc existsByUrl(StringMessage) returns (BooleanMessage);
+}
+
+service MarketplaceDefinitionProtoService {
+  rpc getAll(EmptyMessage) returns (ListMarketplaceDefinitionMessage);
+}
+
+service MarketplacePathDefinitionProtoService {
+  rpc isMarketplaceSupported(StringMessage) returns (BooleanMessage);
+  rpc getSupportedMarketplaces(EmptyMessage) returns (ListMarketplacePathDefinitionMessage);
+  rpc getByMarketplaceDefinitionId(LongMessage) returns (ListMarketplacePathDefinitionMessage);
+}
+
+service AccountProductProtoService {
+  rpc save(AccountProductMessage) returns (AccountProductMessage);
+}
+
+service MarketplaceSelectorProtoService {
+  rpc getByMarketplaceId(LongMessage) returns (MarketplaceSelectorMessage);
+  rpc getByMarketplaceName(StringMessage) returns (MarketplaceSelectorMessage);
+}

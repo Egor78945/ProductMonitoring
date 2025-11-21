@@ -7,14 +7,12 @@ import java.io.Serializable
 import kotlin.reflect.KClass
 
 @Service
-class KafkaTemplateRouterManager(private val productPublisherKafkaTemplate: KafkaTemplate<*, ProductPublisherDto>) :
+class KafkaTemplateRouterManager(productPublisherKafkaTemplate: KafkaTemplate<*, ProductPublisherDto>) :
     KafkaTemplateRouter {
     private val routerMap = mutableMapOf<KClass<*>, KafkaTemplate<*, *>>()
 
     init {
-        println("$productPublisherKafkaTemplate class = ${productPublisherKafkaTemplate::class}")
         routerMap[ProductPublisherDto::class] = productPublisherKafkaTemplate
-        println("map = $routerMap")
     }
 
     override fun <T : Serializable> route(valueClass: KClass<T>): KafkaTemplate<String, T> =

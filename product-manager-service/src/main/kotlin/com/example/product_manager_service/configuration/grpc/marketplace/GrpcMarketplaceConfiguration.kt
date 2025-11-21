@@ -1,6 +1,7 @@
 package com.example.product_manager_service.configuration.grpc.marketplace
 
 import com.example.grpc.user.MarketplacePathDefinitionProtoServiceGrpc
+import com.example.grpc.user.ProductProtoServiceGrpc
 import io.grpc.Channel
 import net.devh.boot.grpc.client.inject.GrpcClient
 import org.springframework.context.annotation.Bean
@@ -12,6 +13,10 @@ class GrpcMarketplaceConfiguration() {
     private lateinit var channel: Channel
 
     @Bean
-    fun productProtoServiceBlockingStub(): MarketplacePathDefinitionProtoServiceGrpc.MarketplacePathDefinitionProtoServiceBlockingStub =
+    fun marketplaceProtoServiceBlockingStub(): MarketplacePathDefinitionProtoServiceGrpc.MarketplacePathDefinitionProtoServiceBlockingStub =
         MarketplacePathDefinitionProtoServiceGrpc.newBlockingStub(channel)
+
+    @Bean
+    fun productProtoServiceBlockingStub(): ProductProtoServiceGrpc.ProductProtoServiceBlockingStub =
+        ProductProtoServiceGrpc.newBlockingStub(channel)
 }

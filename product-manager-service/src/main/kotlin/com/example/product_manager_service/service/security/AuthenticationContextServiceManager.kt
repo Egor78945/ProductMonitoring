@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
-class SecurityContextServiceManager : SecurityContextService {
+class AuthenticationContextServiceManager : AuthenticationContextService<Authentication> {
     override fun getCurrentAuthentication(): Authentication {
         return SecurityContextHolder.getContext().authentication ?: throw IllegalStateException("authentication is not present")
     }

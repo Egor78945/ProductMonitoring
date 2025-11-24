@@ -23,14 +23,6 @@ public class KafkaProducerFactoryConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, MailMessage> mailMessageProducerFactory(ObjectMapper objectMapper) {
-        DefaultKafkaProducerFactory<String, MailMessage> cfg = new DefaultKafkaProducerFactory<>(buildAtLeastOnceProducerProperties());
-        cfg.setKeySerializer(new StringSerializer());
-        cfg.setValueSerializer(new JsonSerializer<>(objectMapper));
-        return cfg;
-    }
-
-    @Bean
     public ProducerFactory<String, String> productUrlProducerFactory() {
         DefaultKafkaProducerFactory<String, String> cfg = new DefaultKafkaProducerFactory<>(buildAtLeastOnceProducerProperties());
         cfg.setKeySerializer(new StringSerializer());

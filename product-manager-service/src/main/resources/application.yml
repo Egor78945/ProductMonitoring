@@ -12,8 +12,8 @@ spring:
 
 grpc:
   client:
-    product-grpc-service:
-      address: discovery:///${PRODUCT_PROCESSOR_SERVICE_HOST}
+    user-database-grpc-service:
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
       negotiation-type: plaintext
 
 eureka:

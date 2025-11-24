@@ -15,11 +15,11 @@ import java.util.UUID;
 public abstract class UserAuthenticationProtoService implements UserAuthenticationService<UserProtoConfiguration.UserRegistrationMessage> {
     protected final UserService<UserProtoConfiguration.UserMessage> userService;
     protected final UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService;
-    protected final UserNotificationService<UserNotification>  userNotificationService;
+    protected final UserNotificationService<UserProtoConfiguration.UserNotificationMessage>  userNotificationService;
     protected final AccountService<UserProtoConfiguration.AccountMessage> accountService;
-    protected final AccountProductService<AccountProduct> accountProductService;
+    protected final AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService;
 
-    public UserAuthenticationProtoService(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserNotification> userNotificationService, AccountProductService<AccountProduct> accountProductService) {
+    public UserAuthenticationProtoService(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService) {
         this.userService = userService;
         this.accountService = accountService;
         this.userRoleService = userRoleService;

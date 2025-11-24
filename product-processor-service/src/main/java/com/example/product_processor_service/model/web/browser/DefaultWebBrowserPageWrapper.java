@@ -11,6 +11,7 @@ public class DefaultWebBrowserPageWrapper extends WebBrowserPageWrapper {
     @Override
     public String locator(String selector) {
         if(page != null) {
+            System.out.println("Locator Called");
             return page.locator(selector).first().textContent();
         }
         throw new SessionTerminatedException();

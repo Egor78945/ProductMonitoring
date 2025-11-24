@@ -1,12 +1,11 @@
 package com.example.user_database_manager_service.repository.account;
 
-import com.example.grpc.user.UserProtoConfiguration;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
 import java.util.UUID;
 
-public abstract class JooqAccountRepository extends AccountRepository<UserProtoConfiguration.AccountMessage> {
+public abstract class JooqAccountRepository<A> extends AccountRepository<A> {
     protected final DSLContext dslContext;
 
     public JooqAccountRepository(DSLContext dslContext) {
@@ -51,14 +50,5 @@ public abstract class JooqAccountRepository extends AccountRepository<UserProtoC
                                 .from(Tables.ACCOUNT)
                                 .where(Tables.ACCOUNT.ID.eq(id))
                 );
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.AccountMessage entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT)
-                .where(Tables.ACCOUNT.UUID.eq(UUID.fromString(entity.getUuid()))
-                        .and(Tables.ACCOUNT.ID.eq(entity.getId())))
-                .execute();
     }
 }

@@ -1,34 +1,32 @@
 package com.example.product_processor_service.service.marketplace.initializer;
 
-import com.example.product_processor_service.model.marketplace.definition.entity.MarketplaceDefinition;
-import com.example.product_processor_service.model.marketplace.definition.path.entity.MarketplacePathDefinition;
+import com.example.grpc.user.UserProtoConfiguration;
 import com.example.product_processor_service.model.product.ProductDTO;
-import com.example.product_processor_service.repository.marketplace.definition.MarketplaceDefinitionRepository;
-import com.example.product_processor_service.repository.marketplace.definition.path.MarketplacePathDefinitionRepository;
+import com.example.product_processor_service.service.marketplace.definition.MarketplaceDefinitionService;
 import com.example.product_processor_service.service.marketplace.manager.MarketplaceManagerService;
-import org.springframework.context.ApplicationContext;
+import com.example.product_processor_service.service.marketplace.path.MarketplacePathDefinitionService;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class MarketplaceInitializerManager implements MarketplaceInitializer<String, MarketplaceManagerService<ProductDTO>> {
-    private final MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository;
-    private final MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository;
-    private final ApplicationContext applicationContext;
+public class MarketplaceInitializerManager implements MarketplaceInitializer<String, ProductDTO, MarketplaceManagerService<ProductDTO>> {
+    private final MarketplaceDefinitionService<UserProtoConfiguration.MarketplaceDefinitionMessage> marketplaceDefinitionService;
+    private final MarketplacePathDefinitionService<UserProtoConfiguration.MarketplacePathDefinitionMessage> marketplacePathDefinitionService;
     private final Map<String, MarketplaceManagerService<ProductDTO>> marketplaceManagerServiceMap;
+    private final List<MarketplaceManagerService<ProductDTO>> marketplaceManagerServiceList;
 
-    public MarketplaceInitializerManager(MarketplaceDefinitionRepository<MarketplaceDefinition> marketplaceDefinitionRepository, MarketplacePathDefinitionRepository<MarketplacePathDefinition> marketplacePathDefinitionRepository, ApplicationContext applicationContext) {
-        this.marketplaceDefinitionRepository = marketplaceDefinitionRepository;
-        this.marketplacePathDefinitionRepository = marketplacePathDefinitionRepository;
-        this.applicationContext = applicationContext;
+    public MarketplaceInitializerManager(MarketplaceDefinitionService<UserProtoConfiguration.MarketplaceDefinitionMessage> marketplaceDefinitionService, MarketplacePathDefinitionService<UserProtoConfiguration.MarketplacePathDefinitionMessage> marketplacePathDefinitionService, List<MarketplaceManagerService<ProductDTO>> marketplaceManagerServices) {
+        this.marketplaceDefinitionService = marketplaceDefinitionService;
+        this.marketplacePathDefinitionService = marketplacePathDefinitionService;
         this.marketplaceManagerServiceMap = new HashMap<>();
+        this.marketplaceManagerServiceList = marketplaceManagerServices;
     }
 
     @Override
@@ -36,21 +34,21 @@ public class MarketplaceInitializerManager implements MarketplaceInitializer<Str
         return marketplaceManagerServiceMap;
     }
 
-    @PostConstruct
-    public void initMarketplaceServiceMap() {
-        if (marketplaceManagerServiceMap.isEmpty()) {
-            for (MarketplaceDefinition marketplaceDefinition : marketplaceDefinitionRepository.findAll()) {
-                List<MarketplacePathDefinition> marketplacePathDefinitions = marketplacePathDefinitionRepository.findByMarketplaceId(marketplaceDefinition.getId());
-                for (MarketplacePathDefinition mpd : marketplacePathDefinitions) {
-                    try {
-                        Class<?> managerServiceClass = Class.forName(marketplaceDefinition.getProcessorClassName());
-                        if (MarketplaceManagerService.class.isAssignableFrom(managerServiceClass) && AnnotationUtils.findAnnotation(managerServiceClass, Component.class) != null) {
-                            MarketplaceManagerService<ProductDTO> marketplaceManagerService = (MarketplaceManagerService) applicationContext.getBean(managerServiceClass);
-                            marketplaceManagerServiceMap.put(mpd.getBaseUrl(), marketplaceManagerService);
-                        }
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+    @EventListener(ContextRefreshedEvent.class)
+    private void initMarketplaces() {
+        Map<String, MarketplaceManagerService<ProductDTO>> marketplaceManagerServiceClassNameMap = new HashMap<>();
+        for (MarketplaceManagerService<ProductDTO> marketplaceManagerService : marketplaceManagerServiceList) {
+            marketplaceManagerServiceClassNameMap.put(marketplaceManagerService.getClass().getName(), marketplaceManagerService);
+        }
+        for (UserProtoConfiguration.MarketplaceDefinitionMessage marketplaceDefinition : marketplaceDefinitionService.getAll()) {
+            for (UserProtoConfiguration.MarketplacePathDefinitionMessage mpd : marketplacePathDefinitionService.getByMarketplaceDefinitionId(marketplaceDefinition.getId())) {
+                try {
+                    Class<?> managerServiceClass = Class.forName(marketplaceDefinition.getProcessorClassName());
+                    if (MarketplaceManagerService.class.isAssignableFrom(managerServiceClass) && AnnotationUtils.findAnnotation(managerServiceClass, Component.class) != null) {
+                        marketplaceManagerServiceMap.put(mpd.getBaseUrl(), marketplaceManagerServiceClassNameMap.get(marketplaceDefinition.getProcessorClassName()));
                     }
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

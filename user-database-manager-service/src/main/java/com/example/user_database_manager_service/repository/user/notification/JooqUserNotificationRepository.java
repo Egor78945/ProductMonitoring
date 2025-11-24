@@ -1,26 +1,15 @@
 package com.example.user_database_manager_service.repository.user.notification;
 
-import com.example.user_database_manager_service.model.user.notification.entity.UserNotification;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
 import java.util.UUID;
 
-public abstract class JooqUserNotificationRepository extends UserNotificationRepository<UserNotification> {
+public abstract class JooqUserNotificationRepository<UN> extends UserNotificationRepository<UN> {
     protected final DSLContext dslContext;
 
     public JooqUserNotificationRepository(DSLContext dslContext) {
         this.dslContext = dslContext;
-    }
-
-    @Override
-    public void delete(UserNotification entity) {
-        dslContext
-                .deleteFrom(Tables.USER_NOTIFICATION)
-                .where(Tables.USER_NOTIFICATION.USER_UUID.eq(entity.getUserUuid())
-                        .and(Tables.USER_NOTIFICATION.NOTIFICATION_TYPE_ID.eq(entity.getNotificationTypeId()))
-                        .and(Tables.USER_NOTIFICATION.NOTIFIED_AT.eq(entity.getNotifiedAt().toLocalDateTime())))
-                .execute();
     }
 
     @Override

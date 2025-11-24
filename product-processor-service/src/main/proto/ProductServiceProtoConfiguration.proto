@@ -18,6 +18,10 @@ message ProductMessage {
   int64 updatedAt = 5;
 }
 
+message ProductListMessage {
+  repeated ProductMessage products = 1;
+}
+
 message StringIntMessage {
   string string = 1;
   int32 int = 2;
@@ -31,8 +35,8 @@ message StringMessage {
   string string = 1;
 }
 
-message ProductListMessage {
-  repeated ProductMessage products = 1;
+message IntMessage {
+  int32 int = 1;
 }
 
 message BooleanMessage {
@@ -44,9 +48,16 @@ message EmptyMessage {
 }
 
 service ProductProtoService {
-  rpc save(AccountProductMessage) returns (BooleanMessage);
+  rpc save(ProductMessage) returns (ProductMessage);
+  rpc update(ProductMessage) returns (ProductMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
+  rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
   rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
+  rpc existsByUrl(StringMessage) returns (BooleanMessage);
+}
+
+service AccountProductProtoService {
+  rpc save(AccountProductMessage) returns (AccountProductMessage);
 }
 
 service MarketplaceProtoService {

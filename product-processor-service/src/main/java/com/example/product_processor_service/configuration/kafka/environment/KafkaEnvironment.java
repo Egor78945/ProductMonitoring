@@ -8,7 +8,6 @@ public class KafkaEnvironment {
     private final String KAFKA_BOOTSTRAP_SERVERS;
     private final String KAFKA_TOPIC_PRODUCT_SAVE_NAME;
     private final String KAFKA_TOPIC_PRODUCT_UPDATE_NAME;
-    private final String KAFKA_TOPIC_USER_NOTIFICATION_NAME;
     private final String KAFKA_GROUP_ID;
     private final int KAFKA_REPLICATION_FACTOR;
     private final int KAFKA_PRODUCER_RETRY;
@@ -17,8 +16,6 @@ public class KafkaEnvironment {
                             String KAFKA_TOPIC_PRODUCT_SAVE_NAME,
                             @Value("${kafka.topic.product.update.name}")
                             String kafkaTopicProductUpdateName,
-                            @Value("${kafka.topic.user.notification.name}")
-                            String kafkaTopicUserNotificationName,
                             @Value("${kafka.replicas}")
                             int KAFKA_REPLICATION_FACTOR,
                             @Value("${spring.kafka.bootstrap-servers}")
@@ -29,7 +26,6 @@ public class KafkaEnvironment {
         this.KAFKA_BOOTSTRAP_SERVERS = KAFKA_BOOTSTRAP_SERVERS;
         this.KAFKA_TOPIC_PRODUCT_SAVE_NAME = KAFKA_TOPIC_PRODUCT_SAVE_NAME;
         this.KAFKA_TOPIC_PRODUCT_UPDATE_NAME = kafkaTopicProductUpdateName;
-        this.KAFKA_TOPIC_USER_NOTIFICATION_NAME = kafkaTopicUserNotificationName;
         this.KAFKA_REPLICATION_FACTOR = KAFKA_REPLICATION_FACTOR;
         this.KAFKA_GROUP_ID = KAFKA_GROUP_ID;
         KAFKA_PRODUCER_RETRY = kafkaProducerRetry;
@@ -43,9 +39,6 @@ public class KafkaEnvironment {
         return KAFKA_TOPIC_PRODUCT_UPDATE_NAME;
     }
 
-    public String getKAFKA_TOPIC_USER_NOTIFICATION_NAME() {
-        return KAFKA_TOPIC_USER_NOTIFICATION_NAME;
-    }
 
     public String getKAFKA_BOOTSTRAP_SERVERS() {
         return KAFKA_BOOTSTRAP_SERVERS;

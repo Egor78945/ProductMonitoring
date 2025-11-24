@@ -19,6 +19,7 @@ public class PyaterochkaMarketplaceManagerService implements MarketplaceManagerS
 
     @Override
     public ProductDTO loadProduct(URI uri) {
+        System.out.println("loading product...");
         return pageContext.getAndParse(uri, parser);
     }
 }

@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.net.URI;
 import java.util.UUID;
 
-public abstract class JooqAccountProductEntityRepository extends JooqAccountProductRepository {
+public abstract class JooqAccountProductEntityRepository extends JooqAccountProductRepository<AccountProduct> {
     public JooqAccountProductEntityRepository(DSLContext dslContext) {
         super(dslContext);
     }
@@ -16,6 +16,26 @@ public abstract class JooqAccountProductEntityRepository extends JooqAccountProd
     public AccountProduct save(AccountProduct entity) {
         return dslContext
                 .insertInto(Tables.ACCOUNT_PRODUCTS)
+                .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, entity.getAccountUuid())
+                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUrl().toString())
+                .returning()
+                .fetchOneInto(AccountProduct.class);
+    }
+
+    @Override
+    public void delete(AccountProduct entity) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(entity.getAccountUuid())
+                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(entity.getProductUrl().toString())))
+                .execute();
+
+    }
+
+    @Override
+    public AccountProduct update(AccountProduct entity) {
+        return dslContext
+                .update(Tables.ACCOUNT_PRODUCTS)
                 .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, entity.getAccountUuid())
                 .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUrl().toString())
                 .returning()

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MarketplaceManagerRouterServiceManager extends MarketplaceManagerRouterService<ProductDTO> {
-    private final MarketplaceInitializer<String, MarketplaceManagerService<ProductDTO>> marketplaceInitializer;
+    private final MarketplaceInitializer<String, ProductDTO, MarketplaceManagerService<ProductDTO>> marketplaceInitializer;
 
-    public MarketplaceManagerRouterServiceManager(MarketplaceInitializer<String, MarketplaceManagerService<ProductDTO>> marketplaceInitializer) {
+    public MarketplaceManagerRouterServiceManager(MarketplaceInitializer<String, ProductDTO, MarketplaceManagerService<ProductDTO>> marketplaceInitializer) {
         this.marketplaceInitializer = marketplaceInitializer;
     }
 

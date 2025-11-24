@@ -45,7 +45,9 @@ public class ReloadablePlaywrightWebBrowserPageContextService extends Reloadable
     @Override
     public <P> P getAndParse(URI uri, PlaywrightWebBrowserPageParser<P> parser) {
         Page page = pagePoolManager.getPage();
+        System.out.println("got page: " + page);
         page.navigate(uri.toString());
+        System.out.println("page navigated: " + page);
 
         WebBrowserPageWrapper pageWrapper = new DefaultWebBrowserPageWrapper(page);
 

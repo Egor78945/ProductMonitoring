@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class JooqUserRoleProtoRepository extends JooqUserRoleRepository {
+public abstract class JooqUserRoleProtoRepository extends JooqUserRoleRepository<UserProtoConfiguration.UserRoleMessage> {
     public JooqUserRoleProtoRepository(DSLContext dslContext) {
         super(dslContext);
     }
@@ -17,6 +17,25 @@ public abstract class JooqUserRoleProtoRepository extends JooqUserRoleRepository
     public UserProtoConfiguration.UserRoleMessage save(UserProtoConfiguration.UserRoleMessage userRole) {
         return dslContext
                 .insertInto(Tables.USERS_ROLES)
+                .set(Tables.USERS_ROLES.USER_UUID, UUID.fromString(userRole.getUserUUID()))
+                .set(Tables.USERS_ROLES.ROLE_ID, userRole.getRoleId())
+                .returning()
+                .fetchOne(UserRoleMapper::map);
+    }
+
+    @Override
+    public void delete(UserProtoConfiguration.UserRoleMessage entity) {
+        dslContext
+                .deleteFrom(Tables.USERS_ROLES)
+                .where(Tables.USERS_ROLES.USER_UUID.eq(UUID.fromString(entity.getUserUUID()))
+                        .and(Tables.USERS_ROLES.ROLE_ID.eq(entity.getRoleId())))
+                .execute();
+    }
+
+    @Override
+    public UserProtoConfiguration.UserRoleMessage update(UserProtoConfiguration.UserRoleMessage userRole) {
+        return dslContext
+                .update(Tables.USERS_ROLES)
                 .set(Tables.USERS_ROLES.USER_UUID, UUID.fromString(userRole.getUserUUID()))
                 .set(Tables.USERS_ROLES.ROLE_ID, userRole.getRoleId())
                 .returning()

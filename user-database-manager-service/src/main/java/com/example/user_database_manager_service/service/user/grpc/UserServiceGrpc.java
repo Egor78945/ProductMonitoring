@@ -20,7 +20,7 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     @Override
     public void existsUserByEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcMapper.map(userService.existsByEmail(request.getString())));
+            responseObserver.onNext(GrpcMapper.mapTo(userService.existsByEmail(request.getString())));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -30,7 +30,7 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     @Override
     public void existsUserByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcMapper.map(userService.existsByUUID(UUID.fromString(request.getString()))));
+            responseObserver.onNext(GrpcMapper.mapTo(userService.existsByUUID(UUID.fromString(request.getString()))));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -51,7 +51,7 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     public void save(UserProtoConfiguration.UserMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             userService.save(request);
-            responseObserver.onNext(GrpcMapper.map());
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);

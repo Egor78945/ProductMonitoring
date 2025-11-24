@@ -16,6 +16,7 @@ public class ProductUpdateTopicKafkaListenerService implements KafkaListenerServ
     @Override
     @KafkaListener(topics = "${kafka.topic.product.update.name}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "stringListenerContainerFactory")
     public void listen(ConsumerRecord<String, String> listenableObject) {
+        System.out.println("kafka update listener");
         productProcessorService.update(listenableObject.value());
     }
 }

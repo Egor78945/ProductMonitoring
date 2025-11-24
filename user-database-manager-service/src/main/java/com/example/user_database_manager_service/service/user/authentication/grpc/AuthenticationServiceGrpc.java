@@ -33,7 +33,7 @@ public class AuthenticationServiceGrpc extends AuthenticationProtoServiceGrpc.Au
         System.out.println("deleting user");
         userAuthenticationService.delete(request);
         System.out.println("user deleted");
-        responseObserver.onNext(GrpcMapper.map());
+        responseObserver.onNext(GrpcMapper.mapTo());
         responseObserver.onCompleted();
     }
 }

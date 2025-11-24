@@ -25,11 +25,6 @@ public abstract class UserNotificationProtoService implements UserNotificationSe
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserNotificationMessage entity) {
-        userNotificationEntityRepository.delete(entity);
-    }
-
-    @Override
     public Optional<UserProtoConfiguration.UserNotificationMessage> findByUserUuidAndNotificationTypeId(UUID userUuid, Long notificationTypeId) {
         return userNotificationEntityRepository.findByUserUuidAndNotificationTypeId(userUuid, notificationTypeId);
     }

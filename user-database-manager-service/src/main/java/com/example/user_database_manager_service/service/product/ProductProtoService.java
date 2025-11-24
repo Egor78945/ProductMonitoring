@@ -27,11 +27,6 @@ public abstract class ProductProtoService implements ProductService<UserProtoCon
     }
 
     @Override
-    public void delete(UserProtoConfiguration.ProductMessage entity) {
-        productRepository.delete(entity);
-    }
-
-    @Override
     public Optional<UserProtoConfiguration.ProductMessage> findByUrl(URI url) {
         return productRepository.findByUrl(url);
     }

@@ -30,8 +30,13 @@ public abstract class AccountProtoService implements AccountService<UserProtoCon
     }
 
     @Override
-    public void delete(UserProtoConfiguration.AccountMessage account) {
-        accountProtoRepository.delete(account);
+    public void deleteById(Long id) {
+        accountProtoRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByAccountUuid(UUID accountUuid) {
+        accountProtoRepository.deleteByAccountUuid(accountUuid);
     }
 
     @Override

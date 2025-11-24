@@ -23,16 +23,6 @@ public abstract class JooqAccountProductEntityRepository extends JooqAccountProd
     }
 
     @Override
-    public void delete(AccountProduct entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
-                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(entity.getAccountUuid())
-                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(entity.getProductUrl().toString())))
-                .execute();
-
-    }
-
-    @Override
     public AccountProduct update(AccountProduct entity) {
         return dslContext
                 .update(Tables.ACCOUNT_PRODUCTS)

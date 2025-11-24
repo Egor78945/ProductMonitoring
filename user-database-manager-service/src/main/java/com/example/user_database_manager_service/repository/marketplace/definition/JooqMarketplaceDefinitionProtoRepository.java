@@ -34,16 +34,6 @@ public abstract class JooqMarketplaceDefinitionProtoRepository extends JooqMarke
     }
 
     @Override
-    public void delete(UserProtoConfiguration.MarketplaceDefinitionMessage entity) {
-        dslContext
-                .deleteFrom(Tables.MARKETPLACE_DEFINITION)
-                .where(Tables.MARKETPLACE_DEFINITION.ID.eq(entity.getId())
-                        .and(Tables.MARKETPLACE_DEFINITION.NAME.eq(entity.getName())))
-                .execute();
-
-    }
-
-    @Override
     public List<UserProtoConfiguration.MarketplaceDefinitionMessage> findAll() {
         return dslContext
                 .selectFrom(Tables.MARKETPLACE_DEFINITION)

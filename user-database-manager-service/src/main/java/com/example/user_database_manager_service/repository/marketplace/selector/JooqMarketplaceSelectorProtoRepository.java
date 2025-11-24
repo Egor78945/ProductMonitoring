@@ -36,14 +36,6 @@ public abstract class JooqMarketplaceSelectorProtoRepository extends JooqMarketp
     }
 
     @Override
-    public void delete(UserProtoConfiguration.MarketplaceSelectorMessage entity) {
-        dslContext
-                .deleteFrom(Tables.MARKETPLACE_SELECTOR)
-                .where(Tables.MARKETPLACE_SELECTOR.ID.eq(entity.getId()))
-                .execute();
-    }
-
-    @Override
     public Optional<UserProtoConfiguration.MarketplaceSelectorMessage> findByMarketplaceId(long marketplaceId) {
         return dslContext
                 .selectFrom(Tables.MARKETPLACE_SELECTOR)

@@ -27,11 +27,6 @@ public abstract class UserRoleProtoService implements UserRoleService<UserProtoC
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserRoleMessage userRole) {
-        userRoleProtoRepository.delete(userRole);
-    }
-
-    @Override
     public void deleteAllByRoleId(Long roleId) {
         userRoleProtoRepository.deleteAllByRoleId(roleId);
     }

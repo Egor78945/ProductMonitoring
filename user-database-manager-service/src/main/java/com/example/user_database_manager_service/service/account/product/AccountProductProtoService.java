@@ -24,8 +24,8 @@ public abstract class AccountProductProtoService implements AccountProductServic
     }
 
     @Override
-    public void delete(UserProtoConfiguration.AccountProductMessage entity) {
-        accountProductRepository.delete(entity);
+    public void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl) {
+        accountProductRepository.deleteByAccountUuidAndProductUri(accountUuid, productUrl);
     }
 
     @Override

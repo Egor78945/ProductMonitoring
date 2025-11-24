@@ -33,15 +33,6 @@ public abstract class JooqMarketplacePathDefinitionProtoRepository extends JooqM
     }
 
     @Override
-    public void delete(UserProtoConfiguration.MarketplacePathDefinitionMessage entity) {
-        dslContext
-                .deleteFrom(Tables.MARKETPLACE_PATH_DEFINITION)
-                .where(Tables.MARKETPLACE_PATH_DEFINITION.MARKETPLACE_ID.eq(entity.getMarketplaceId())
-                        .and(Tables.MARKETPLACE_PATH_DEFINITION.BASE_URL.eq(entity.getBaseUrl())))
-                .execute();
-    }
-
-    @Override
     public List<UserProtoConfiguration.MarketplacePathDefinitionMessage> findAllSupported() {
         return dslContext
                 .selectFrom(Tables.MARKETPLACE_PATH_DEFINITION)

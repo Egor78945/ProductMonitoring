@@ -24,4 +24,9 @@ public class AccountProductServiceGrpc extends AccountProductProtoServiceGrpc.Ac
             responseObserver.onError(e);
         }
     }
+
+    @Override
+    public void deleteByAccountUuidAndProductUri(UserProtoConfiguration.StringStringMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
+
+    }
 }

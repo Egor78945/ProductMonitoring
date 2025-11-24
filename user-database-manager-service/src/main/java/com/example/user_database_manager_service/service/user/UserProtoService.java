@@ -3,7 +3,6 @@ package com.example.user_database_manager_service.service.user;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.repository.user.JooqUserRepository;
 import com.example.user_database_manager_service.repository.user.UserRepository;
 
 import java.util.UUID;
@@ -26,11 +25,6 @@ public abstract class UserProtoService implements UserService<UserProtoConfigura
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserMessage user) {
-        userProtoRepository.delete(user);
-    }
-
-    @Override
     public UserProtoConfiguration.UserMessage findById(Long id) {
         return userProtoRepository.getById(id).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
@@ -48,6 +42,16 @@ public abstract class UserProtoService implements UserService<UserProtoConfigura
     @Override
     public UserProtoConfiguration.UserMessage findByAccountName(String accountName) {
         return userProtoRepository.getByAccountName(accountName).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userProtoRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        userProtoRepository.deleteByUuid(uuid);
     }
 
     @Override

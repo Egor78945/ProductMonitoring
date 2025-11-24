@@ -5,6 +5,7 @@ import com.example.user_database_manager_service.service.account.product.mapper.
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
+import java.net.URI;
 import java.util.UUID;
 
 public abstract class JooqAccountProductProtoRepository extends JooqAccountProductRepository<UserProtoConfiguration.AccountProductMessage> {
@@ -20,16 +21,6 @@ public abstract class JooqAccountProductProtoRepository extends JooqAccountProdu
                 .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUrl())
                 .returning()
                 .fetchOne(AccountProductMapper::mapTo);
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.AccountProductMessage entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
-                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(UUID.fromString(entity.getAccountUuid()))
-                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(entity.getProductUrl())))
-                .execute();
-
     }
 
     @Override

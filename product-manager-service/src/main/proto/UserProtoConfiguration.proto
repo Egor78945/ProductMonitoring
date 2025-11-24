@@ -52,6 +52,11 @@ message ListMarketplaceDefinitionMessage {
   repeated MarketplaceDefinitionMessage marketplaceDefinitionMessageList = 1;
 }
 
+message StringStringMessage {
+  string string1 = 1;
+  string string2 = 2;
+}
+
 message MarketplacePathDefinitionMessage {
   int64 marketplaceId = 1;
   string baseUrl = 2;
@@ -95,6 +100,7 @@ service MarketplacePathDefinitionProtoService {
 
 service AccountProductProtoService {
   rpc save(AccountProductMessage) returns (AccountProductMessage);
+  rpc deleteByAccountUuidAndProductUri(StringStringMessage) returns (EmptyMessage);
 }
 
 service MarketplaceSelectorProtoService {

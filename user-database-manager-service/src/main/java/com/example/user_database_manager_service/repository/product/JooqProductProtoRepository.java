@@ -34,14 +34,6 @@ public abstract class JooqProductProtoRepository extends JooqProductRepository<U
     }
 
     @Override
-    public void delete(UserProtoConfiguration.ProductMessage product) {
-        dslContext
-                .deleteFrom(Tables.PRODUCT)
-                .where(Tables.PRODUCT.URL.eq(product.getUrl()))
-                .execute();
-    }
-
-    @Override
     public UserProtoConfiguration.ProductMessage update(UserProtoConfiguration.ProductMessage product) {
         return dslContext
                 .update(Tables.PRODUCT)

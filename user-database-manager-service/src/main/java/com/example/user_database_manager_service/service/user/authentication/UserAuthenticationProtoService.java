@@ -52,9 +52,9 @@ public abstract class UserAuthenticationProtoService implements UserAuthenticati
     @Override
     public void delete(UserProtoConfiguration.UserRegistrationMessage userForm) {
         accountProductService.deleteAllByAccountUuid(UUID.fromString(userForm.getAccount().getUuid()));
-        accountService.delete(userForm.getAccount());
+        accountService.deleteById(userForm.getAccount().getId());
         userNotificationService.deleteAllByUserUuid(UUID.fromString(userForm.getUser().getUuid()));
         userRoleService.deleteAllByUserUuid(UUID.fromString(userForm.getUser().getUuid()));
-        userService.delete(userForm.getUser());
+        userService.deleteById(userForm.getUser().getId());
     }
 }

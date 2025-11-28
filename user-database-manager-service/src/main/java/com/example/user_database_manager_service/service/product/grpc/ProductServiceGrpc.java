@@ -5,7 +5,10 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.AlreadyExistsException;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
+import com.example.user_database_manager_service.service.account.product.AccountProductService;
+import com.example.user_database_manager_service.service.account.product.mapper.AccountProductMapper;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
+import com.example.user_database_manager_service.service.product.ProductProtoConsumingRegistrationService;
 import com.example.user_database_manager_service.service.product.ProductService;
 import com.example.user_database_manager_service.service.product.mapper.ProductMapper;
 import io.grpc.stub.StreamObserver;
@@ -18,15 +21,20 @@ import java.util.UUID;
 @GrpcService
 public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServiceImplBase {
     private final ProductService<UserProtoConfiguration.ProductMessage> productService;
+    private final AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService;
+    private final ProductProtoConsumingRegistrationService productProtoConsumingRegistrationService;
 
-    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService) {
+    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService, ProductProtoConsumingRegistrationService productProtoConsumingRegistrationService) {
         this.productService = productService;
+        this.accountProductService = accountProductService;
+        this.productProtoConsumingRegistrationService = productProtoConsumingRegistrationService;
     }
 
     @Override
-    public void save(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.ProductMessage> responseObserver) {
+    public void save(UserProtoConfiguration.ProductRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
-            responseObserver.onNext(productService.save(request));
+            productProtoConsumingRegistrationService.register(request);
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (AlreadyExistsException e) {
             responseObserver.onError(e);
@@ -42,6 +50,13 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
         } catch (NotFoundException e) {
             responseObserver.onError(e);
         }
+    }
+
+    @Override
+    public void deleteAccountProductByAccountUuidAndProductUri(UserProtoConfiguration.AccountUuidProductUriMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
+        accountProductService.deleteByAccountUuidAndProductUri(UUID.fromString(request.getAccountUuid()), URI.create(request.getProductUri()));
+        responseObserver.onNext(GrpcMapper.mapTo());
+        responseObserver.onCompleted();
     }
 
     @Override

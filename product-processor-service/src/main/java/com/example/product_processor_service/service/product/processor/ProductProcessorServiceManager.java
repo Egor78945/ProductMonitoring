@@ -3,11 +3,10 @@ package com.example.product_processor_service.service.product.processor;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.product_processor_service.model.product.ProductDTO;
 import com.example.product_processor_service.model.product.ProductPublisherDTO;
-import com.example.product_processor_service.service.account.product.AccountProductService;
-import com.example.product_processor_service.util.mapper.UserGrpcMapper;
+import com.example.product_processor_service.model.product.ProductRegistrationModel;
+import com.example.product_processor_service.service.product.ProductRegistrationService;
 import com.example.product_processor_service.service.marketplace.manager.router.MarketplaceManagerRouterService;
 import com.example.product_processor_service.service.product.ProductService;
-import com.example.product_processor_service.service.product.mapper.ProductMapper;
 import com.example.product_processor_service.util.mapper.UrlMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +17,12 @@ import java.util.UUID;
 @Service
 public class ProductProcessorServiceManager implements ProductProcessorService {
     private final MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService;
-    private final AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService;
+    private final ProductRegistrationService productRegistrationService;
     private final ProductService<UserProtoConfiguration.ProductMessage> productService;
 
-    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService, ProductService<UserProtoConfiguration.ProductMessage> productService) {
+    public ProductProcessorServiceManager(MarketplaceManagerRouterService<ProductDTO> marketplaceManagerRouterService, ProductRegistrationService productRegistrationService, ProductService<UserProtoConfiguration.ProductMessage> productService) {
         this.marketplaceManagerRouterService = marketplaceManagerRouterService;
-        this.accountProductService = accountProductService;
+        this.productRegistrationService = productRegistrationService;
         this.productService = productService;
     }
 
@@ -38,8 +37,7 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
 
         System.out.println("product register loaded: " + product);
 
-        UserProtoConfiguration.ProductMessage p = productService.save(ProductMapper.mapTo(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), new Date().toInstant().toEpochMilli()));
-        accountProductService.save(UserGrpcMapper.mapTo(p.getUrl(), UUID.fromString(productDTO.getPublisherAccountUuid()).toString()));
+        productRegistrationService.register(new ProductRegistrationModel(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), new Date().toInstant().toEpochMilli(), productDTO.getPublisherAccountUuid()));
     }
 
     @Override
@@ -59,5 +57,12 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
                     .build();
             productService.update(product);
         }
+    }
+
+    @Override
+    public void delete(ProductPublisherDTO accountProductDeleteDTO) {
+        System.out.println("deleting product of: " +  accountProductDeleteDTO);
+        productService.deleteByAccountUuidAndProductUrl(UUID.fromString(accountProductDeleteDTO.getPublisherAccountUuid()), URI.create(accountProductDeleteDTO.getProductUri()));
+        System.out.println("product deleted: " + accountProductDeleteDTO);
     }
 }

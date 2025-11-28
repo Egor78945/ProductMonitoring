@@ -1,0 +1,23 @@
+package com.example.product_processor_service.service.common.kafka.listener;
+
+import com.example.product_processor_service.model.product.ProductPublisherDTO;
+import com.example.product_processor_service.service.product.processor.ProductProcessorService;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AccountProductDeleteTopicKafkaListenerServiceManager implements KafkaListenerService<String, ProductPublisherDTO> {
+    private final ProductProcessorService productProcessorService;
+
+    public AccountProductDeleteTopicKafkaListenerServiceManager(ProductProcessorService productProcessorService) {
+        this.productProcessorService = productProcessorService;
+    }
+
+    @Override
+    @KafkaListener(topics = "${kafka.topic.account.product.delete}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "productPublisherListenerContainerFactory")
+    public void listen(ConsumerRecord<String, ProductPublisherDTO> listenableObject) {
+        System.out.println("got product to delete = " + listenableObject.value());
+        productProcessorService.delete(listenableObject.value());
+    }
+}

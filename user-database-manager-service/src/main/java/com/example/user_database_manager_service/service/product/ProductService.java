@@ -20,4 +20,6 @@ public interface ProductService<P> extends EntityService<P> {
     boolean existsByUrl(URI url);
 
     boolean existsBy(UUID accountUuid, URI productUrl);
+
+    void deleteByUrl(URI url);
 }

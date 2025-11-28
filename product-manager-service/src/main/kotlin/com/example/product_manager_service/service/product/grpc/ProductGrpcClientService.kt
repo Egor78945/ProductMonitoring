@@ -10,4 +10,6 @@ abstract class ProductGrpcClientService(stub: ProductProtoServiceGrpc.ProductPro
     fun getAllByAccountUuid(message: UserProtoConfiguration.StringIntMessage): UserProtoConfiguration.ProductListMessage =
         stub.getAllByAccountUuidAndPage(message)
 
+    fun deleteAccountProductByAccountUuidAndProductUri(message: UserProtoConfiguration.AccountUuidProductUriMessage): UserProtoConfiguration.EmptyMessage =
+        stub.deleteAccountProductByAccountUuidAndProductUri(message)
 }

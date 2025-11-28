@@ -13,21 +13,21 @@ import java.util.UUID;
 
 @Service
 public class AccountProductProtoServiceManager extends AccountProductProtoService {
-    public AccountProductProtoServiceManager(AccountProductRepository<UserProtoConfiguration.AccountProductMessage> accountProductRepository) {
+    public AccountProductProtoServiceManager(AccountProductRepository<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductRepository) {
         super(accountProductRepository);
     }
 
     @Override
-    public UserProtoConfiguration.AccountProductMessage save(UserProtoConfiguration.AccountProductMessage entity) {
-        if (!existsBy(UUID.fromString(entity.getAccountUuid()), URI.create(entity.getProductUrl()))) {
+    public UserProtoConfiguration.AccountUuidProductUriMessage save(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
+        if (!existsBy(UUID.fromString(entity.getAccountUuid()), URI.create(entity.getProductUri()))) {
             return super.save(entity);
         }
         throw new AlreadyExistsException(ExceptionMessage.ALREADY_EXISTS.getMessage());
     }
 
     @Override
-    public UserProtoConfiguration.AccountProductMessage update(UserProtoConfiguration.AccountProductMessage entity) {
-        if (existsBy(UUID.fromString(entity.getAccountUuid()), URI.create(entity.getProductUrl()))) {
+    public UserProtoConfiguration.AccountUuidProductUriMessage update(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
+        if (existsBy(UUID.fromString(entity.getAccountUuid()), URI.create(entity.getProductUri()))) {
             return super.update(entity);
         }
         throw new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage());

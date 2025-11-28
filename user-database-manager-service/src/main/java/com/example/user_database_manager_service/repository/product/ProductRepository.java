@@ -20,4 +20,6 @@ public abstract class ProductRepository<P> implements EntityRepository<P> {
     public abstract boolean existsByUrl(URI url);
 
     public abstract boolean existsBy(UUID accountUuid, URI productUrl);
+
+    public abstract void deleteByUrl(URI url);
 }

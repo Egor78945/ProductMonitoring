@@ -28,10 +28,14 @@ message ProductMessage {
   int32 pastPrice = 4;
   int64 updatedAt = 5;
 }
-
-message AccountProductMessage {
+message ProductRegistrationMessage {
   string accountUuid = 1;
-  string productUrl = 2;
+  ProductMessage product = 2;
+}
+
+message AccountUuidProductUriMessage {
+  string accountUuid = 1;
+  string productUri = 2;
 }
 
 message UserNotificationMessage {
@@ -125,12 +129,13 @@ service UserNotificationProtoService {
 }
 
 service ProductProtoService {
-  rpc save(ProductMessage) returns (ProductMessage);
+  rpc save(ProductRegistrationMessage) returns (EmptyMessage);
   rpc update(ProductMessage) returns (ProductMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
   rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
   rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
   rpc existsByUrl(StringMessage) returns (BooleanMessage);
+  rpc deleteAccountProductByAccountUuidAndProductUri(AccountUuidProductUriMessage) returns (EmptyMessage);
 }
 
 service AccountProtoService {
@@ -149,10 +154,6 @@ service MarketplacePathDefinitionProtoService {
   rpc isMarketplaceSupported(StringMessage) returns (BooleanMessage);
   rpc getSupportedMarketplaces(EmptyMessage) returns (ListMarketplacePathDefinitionMessage);
   rpc getByMarketplaceDefinitionId(LongMessage) returns (ListMarketplacePathDefinitionMessage);
-}
-
-service AccountProductProtoService {
-  rpc save(AccountProductMessage) returns (AccountProductMessage);
 }
 
 service MarketplaceSelectorProtoService {

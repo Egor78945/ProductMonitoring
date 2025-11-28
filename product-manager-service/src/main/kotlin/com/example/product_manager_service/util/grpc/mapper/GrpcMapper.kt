@@ -28,7 +28,14 @@ class GrpcMapper {
         )
 
         fun mapTo(productMessageList: List<UserProtoConfiguration.ProductMessage>) = productMessageList
-            .map{ mapTo(it) }
+            .map { mapTo(it) }
             .toList()
+
+        fun mapTo(accountUuid: String, productUri: String) =
+            UserProtoConfiguration.AccountUuidProductUriMessage
+                .newBuilder()
+                .setProductUri(productUri)
+                .setAccountUuid(accountUuid)
+                .build()
     }
 }

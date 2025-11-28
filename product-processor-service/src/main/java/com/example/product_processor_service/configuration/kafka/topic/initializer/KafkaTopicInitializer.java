@@ -21,6 +21,14 @@ public class KafkaTopicInitializer {
                 .replicas(kafkaEnvironment.getKAFKA_REPLICATION_FACTOR())
                 .partitions(kafkaEnvironment.getKAFKA_REPLICATION_FACTOR())
                 .build();
+    }
 
+    @Bean
+    public NewTopic deleteAccountProductTopicInitializer() {
+        return TopicBuilder
+                .name(kafkaEnvironment.getKAFKA_TOPIC_ACCOUNT_PRODUCT_DELETE_NAME())
+                .replicas(kafkaEnvironment.getKAFKA_REPLICATION_FACTOR())
+                .partitions(kafkaEnvironment.getKAFKA_REPLICATION_FACTOR())
+                .build();
     }
 }

@@ -1,16 +1,15 @@
 package com.example.product_processor_service.model.product.entity;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Product {
-    private String url;
-    private String name;
-    private int actualPrice;
-    private int pastPrice;
-    private Timestamp updatedAt;
+    protected String url;
+    protected String name;
+    protected int actualPrice;
+    protected int pastPrice;
+    protected long updatedAt;
 
-    public Product(String url, String name, int actualPrice, int pastPrice, Timestamp updatedAt) {
+    public Product(String url, String name, int actualPrice, int pastPrice, long updatedAt) {
         this.url = url;
         this.name = name;
         this.actualPrice = actualPrice;
@@ -53,11 +52,11 @@ public class Product {
         this.pastPrice = pastPrice;
     }
 
-    public Timestamp getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 

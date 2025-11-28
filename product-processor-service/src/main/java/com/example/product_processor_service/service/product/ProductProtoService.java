@@ -4,6 +4,7 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.product_processor_service.util.mapper.UserGrpcMapper;
 import com.example.product_processor_service.service.product.grpc.client.ProductGrpcClientService;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,18 +16,8 @@ public abstract class ProductProtoService implements ProductService<UserProtoCon
     }
 
     @Override
-    public UserProtoConfiguration.ProductMessage save(UserProtoConfiguration.ProductMessage entity) {
-        return productGrpcClientService.save(entity);
-    }
-
-    @Override
     public UserProtoConfiguration.ProductMessage update(UserProtoConfiguration.ProductMessage entity) {
         return productGrpcClientService.update(entity);
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.ProductMessage entity) {
-//TODO
     }
 
     @Override
@@ -47,5 +38,10 @@ public abstract class ProductProtoService implements ProductService<UserProtoCon
     @Override
     public boolean existsByUrl(String url) {
         return productGrpcClientService.existsByUrl(UserGrpcMapper.mapTo(url)).getBoolean();
+    }
+
+    @Override
+    public void deleteByAccountUuidAndProductUrl(UUID accountUuid, URI productUrl) {
+        productGrpcClientService.deleteAccountProductByAccountUuidAndProductUri(UserGrpcMapper.mapTo(accountUuid.toString(), productUrl.toString()));
     }
 }

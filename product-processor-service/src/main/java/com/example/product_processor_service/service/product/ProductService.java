@@ -1,13 +1,14 @@
 package com.example.product_processor_service.service.product;
 
-import com.example.product_processor_service.service.EntityService;
-
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-public interface ProductService<P> extends EntityService<P> {
+public interface ProductService<P> {
+    P update(P entity);
     P getByUrl(String url);
     List<P> getAllExpired();
     List<P> getAllByAccountUuid(UUID accountUuid, int page);
     boolean existsByUrl(String url);
+    void deleteByAccountUuidAndProductUrl(UUID accountUuid, URI productUrl);
 }

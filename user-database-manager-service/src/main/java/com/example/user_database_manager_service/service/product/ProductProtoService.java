@@ -55,4 +55,9 @@ public abstract class ProductProtoService implements ProductService<UserProtoCon
     public boolean existsBy(UUID accountUuid, URI productUrl) {
         return productRepository.existsBy(accountUuid, productUrl);
     }
+
+    @Override
+    public void deleteByUrl(URI url) {
+        productRepository.deleteByUrl(url);
+    }
 }

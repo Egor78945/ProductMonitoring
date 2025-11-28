@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -29,5 +30,15 @@ class ProductController(
 
     @GetMapping
     fun getProductsOfCurrentUser(@RequestParam("page") page: Int): ResponseEntity<List<ProductDto>> =
-        ResponseEntity.ok(productService.getByAccountUuid(page))
+        ResponseEntity.ok(productService.getByAccountUuid(UUID.fromString(authenticationContextService.getCurrentAuthentication().principal.toString()), page))
+
+    @DeleteMapping
+    fun deleteProductsOfCurrentUser(@RequestParam("url") productUrl: String?) {
+        productRegistrationService.delete(
+            ProductPublisherDto(
+                authenticationContextService.getCurrentAuthentication().principal.toString(),
+                URI.create(productUrl ?: throw IllegalArgumentException("product url is invalid"))
+            )
+        )
+    }
 }

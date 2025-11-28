@@ -6,14 +6,23 @@ import com.example.product_manager_service.service.kafka.producter.KafkaProducer
 import org.springframework.stereotype.Service
 
 @Service
-class AsyncKafkaProductPublisherRegistrationServiceManager(
+class AsyncKafkaProductRegistrationServiceManager(
     kafkaProducerService: KafkaProducerService,
     kafkaEnvironment: KafkaEnvironment
-) : AsyncKafkaProductPublisherRegistrationService(kafkaProducerService, kafkaEnvironment) {
+) : AsyncKafkaProductRegistrationService(kafkaProducerService, kafkaEnvironment) {
     override fun register(product: ProductPublisherDto) {
         when (product.productUri != null && product.publisherAccountUuid != null) {
             true ->
                 super.register(product)
+
+            false -> throw RuntimeException("product information is not initialized")
+        }
+    }
+
+    override fun delete(product: ProductPublisherDto) {
+        when (product.productUri != null && product.publisherAccountUuid != null) {
+            true ->
+                super.delete(product)
 
             false -> throw RuntimeException("product information is not initialized")
         }

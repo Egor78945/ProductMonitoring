@@ -1,8 +1,6 @@
 package com.example.user_database_manager_service.service.user.authentication;
 
 import com.example.grpc.user.UserProtoConfiguration;
-import com.example.user_database_manager_service.model.account.product.entity.AccountProduct;
-import com.example.user_database_manager_service.model.user.notification.entity.UserNotification;
 import com.example.user_database_manager_service.service.account.AccountService;
 import com.example.user_database_manager_service.service.account.product.AccountProductService;
 import com.example.user_database_manager_service.service.user.UserService;
@@ -11,8 +9,8 @@ import com.example.user_database_manager_service.service.user.role.UserRoleServi
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserAuthenticationProtoServiceManager extends UserAuthenticationProtoService {
-    public UserAuthenticationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountProductMessage> accountProductService) {
+public class UserProducingRegistrationProtoServiceManager extends UserProducingRegistrationProtoService {
+    public UserProducingRegistrationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService) {
         super(userService, accountService, userRoleService, userNotificationService, accountProductService);
     }
 }

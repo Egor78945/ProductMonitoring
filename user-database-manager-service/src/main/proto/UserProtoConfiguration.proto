@@ -128,15 +128,15 @@ service UserProtoService {
 }
 
 service UserNotificationProtoService {
-  rpc save(UserNotificationMessage) returns (UserNotificationMessage);
-  rpc update(UserNotificationMessage) returns (UserNotificationMessage);
+  rpc save(UserNotificationMessage) returns (EmptyMessage);
+  rpc update(UserNotificationMessage) returns (EmptyMessage);
   rpc findByUserUuidAndNotificationTypeId(StringLongMessage) returns (UserNotificationMessage);
   rpc existsByUserUuidAndNotificationTypeId(StringLongMessage) returns (BooleanMessage);
 }
 
 service ProductProtoService {
   rpc save(ProductRegistrationMessage) returns (EmptyMessage);
-  rpc update(ProductMessage) returns (ProductMessage);
+  rpc update(ProductMessage) returns (EmptyMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
   rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
   rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);

@@ -21,9 +21,10 @@ public class UserNotificationServiceGrpc extends UserNotificationProtoServiceGrp
     }
 
     @Override
-    public void save(UserProtoConfiguration.UserNotificationMessage request, StreamObserver<UserProtoConfiguration.UserNotificationMessage> responseObserver) {
+    public void save(UserProtoConfiguration.UserNotificationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
-            responseObserver.onNext(userNotificationService.save(request));
+            userNotificationService.save(request);
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (AlreadyExistsException e) {
             responseObserver.onError(e);
@@ -31,9 +32,10 @@ public class UserNotificationServiceGrpc extends UserNotificationProtoServiceGrp
     }
 
     @Override
-    public void update(UserProtoConfiguration.UserNotificationMessage request, StreamObserver<UserProtoConfiguration.UserNotificationMessage> responseObserver) {
+    public void update(UserProtoConfiguration.UserNotificationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
-            responseObserver.onNext(userNotificationService.update(request));
+            userNotificationService.update(request);
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (NotFoundException e) {
             responseObserver.onError(e);

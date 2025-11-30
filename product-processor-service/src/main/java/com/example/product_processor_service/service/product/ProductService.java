@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductService<P> {
-    P update(P entity);
+    void update(P entity);
     P getByUrl(String url);
     List<P> getAllExpired();
     List<P> getAllByAccountUuid(UUID accountUuid, int page);

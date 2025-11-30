@@ -1,10 +1,7 @@
 package com.example.product_processor_service.util.mapper;
 
-import com.example.grpc.product.ProductServiceProtoConfiguration;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.product_processor_service.model.product.entity.Product;
-
-import java.util.List;
 
 public class UserGrpcMapper {
     public static UserProtoConfiguration.StringIntMessage mapTo(String string, int intt) {
@@ -34,21 +31,6 @@ public class UserGrpcMapper {
 
     public static UserProtoConfiguration.EmptyMessage mapTo() {
         return UserProtoConfiguration.EmptyMessage.newBuilder()
-                .build();
-    }
-
-    public static ProductServiceProtoConfiguration.ProductMessage mapTo(ProductServiceProtoConfiguration.AccountProductMessage accountProductMessage) {
-        return ProductServiceProtoConfiguration.ProductMessage.newBuilder()
-                .setUrl(accountProductMessage.getUrl())
-                .setActualPrice(accountProductMessage.getActualPrice())
-                .setPastPrice(accountProductMessage.getPastPrice())
-                .setUpdatedAt(accountProductMessage.getUpdatedAt())
-                .build();
-    }
-
-    public static ProductServiceProtoConfiguration.ProductListMessage mapTo(List<ProductServiceProtoConfiguration.ProductMessage> productMessageList) {
-        return ProductServiceProtoConfiguration.ProductListMessage.newBuilder()
-                .addAllProducts(productMessageList)
                 .build();
     }
 

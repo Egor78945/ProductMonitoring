@@ -38,12 +38,6 @@ message AccountUuidProductUriMessage {
   string productUri = 2;
 }
 
-message UserNotificationMessage {
-  string userUuid = 1;
-  int64 notificationTypeId = 2;
-  int64 notifiedAt = 3;
-}
-
 message ProductListMessage {
   repeated ProductMessage products = 1;
 }
@@ -121,16 +115,9 @@ service UserProtoService {
   rpc getByAccountName(StringMessage) returns (UserMessage);
 }
 
-service UserNotificationProtoService {
-  rpc save(UserNotificationMessage) returns (UserNotificationMessage);
-  rpc update(UserNotificationMessage) returns (UserNotificationMessage);
-  rpc findByUserUuidAndNotificationTypeId(StringLongMessage) returns (UserNotificationMessage);
-  rpc existsByUserUuidAndNotificationTypeId(StringLongMessage) returns (BooleanMessage);
-}
-
 service ProductProtoService {
   rpc save(ProductRegistrationMessage) returns (EmptyMessage);
-  rpc update(ProductMessage) returns (ProductMessage);
+  rpc update(ProductMessage) returns (EmptyMessage);
   rpc getByUrl(StringMessage) returns (ProductMessage);
   rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
   rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);

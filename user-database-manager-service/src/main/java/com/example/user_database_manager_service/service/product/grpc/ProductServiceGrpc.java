@@ -42,10 +42,11 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
     }
 
     @Override
-    public void update(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.ProductMessage> responseObserver) {
+    public void update(UserProtoConfiguration.ProductMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
             System.out.println(request);
-            responseObserver.onNext(productService.update(request));
+            productService.update(request);
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (NotFoundException e) {
             responseObserver.onError(e);

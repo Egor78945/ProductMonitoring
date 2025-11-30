@@ -16,8 +16,8 @@ public abstract class ProductProtoService implements ProductService<UserProtoCon
     }
 
     @Override
-    public UserProtoConfiguration.ProductMessage update(UserProtoConfiguration.ProductMessage entity) {
-        return productGrpcClientService.update(entity);
+    public void update(UserProtoConfiguration.ProductMessage entity) {
+        productGrpcClientService.update(entity);
     }
 
     @Override

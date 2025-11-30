@@ -18,8 +18,8 @@ public abstract class ProductGrpcClientService extends GrpcClientService<Product
         stub.deleteAccountProductByAccountUuidAndProductUri(accountUuidProductUriMessage);
     }
 
-    public UserProtoConfiguration.ProductMessage update(UserProtoConfiguration.ProductMessage productMessage) {
-        return stub.update(productMessage);
+    public void update(UserProtoConfiguration.ProductMessage productMessage) {
+        stub.update(productMessage);
     }
 
     public UserProtoConfiguration.ProductMessage getByUrl(UserProtoConfiguration.StringMessage stringMessage) {

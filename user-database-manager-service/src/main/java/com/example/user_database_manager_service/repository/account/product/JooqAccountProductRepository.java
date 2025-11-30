@@ -40,6 +40,19 @@ public abstract class JooqAccountProductRepository<AP> extends AccountProductRep
     }
 
     @Override
+    public void deleteAllByUserUuid(UUID userUuid) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.in(
+                        dslContext.select(Tables.ACCOUNT.UUID)
+                                .from(Tables.ACCOUNT.join(Tables.USERS)
+                                        .on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID)))
+                                .where(Tables.USERS.UUID.eq(userUuid))
+                ))
+                .execute();
+    }
+
+    @Override
     public boolean existsBy(UUID accountUuid, URI productUrl) {
         return dslContext
                 .fetchExists(

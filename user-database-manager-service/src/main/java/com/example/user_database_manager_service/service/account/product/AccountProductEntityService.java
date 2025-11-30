@@ -34,6 +34,11 @@ public abstract class AccountProductEntityService implements AccountProductServi
     }
 
     @Override
+    public void deleteAllByUserUuid(UUID userUuid) {
+        accountProductRepository.deleteAllByUserUuid(userUuid);
+    }
+
+    @Override
     public void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl) {
         accountProductRepository.deleteByAccountUuidAndProductUri(accountUuid, productUrl);
     }

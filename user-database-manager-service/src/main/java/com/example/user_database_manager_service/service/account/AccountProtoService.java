@@ -40,6 +40,11 @@ public abstract class AccountProtoService implements AccountService<UserProtoCon
     }
 
     @Override
+    public void deleteByUserUuid(UUID uuid) {
+        accountProtoRepository.deleteByUserUuid(uuid);
+    }
+
+    @Override
     public UserProtoConfiguration.AccountMessage findByUUID(UUID uuid) {
         return accountProtoRepository.getByUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }

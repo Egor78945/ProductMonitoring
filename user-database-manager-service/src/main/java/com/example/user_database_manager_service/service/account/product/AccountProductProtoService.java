@@ -39,6 +39,11 @@ public abstract class AccountProductProtoService implements AccountProductServic
     }
 
     @Override
+    public void deleteAllByUserUuid(UUID userUuid) {
+        accountProductRepository.deleteAllByUserUuid(userUuid);
+    }
+
+    @Override
     public boolean existsBy(UUID accountUuid, URI productUrl) {
         return accountProductRepository.existsBy(accountUuid, productUrl);
     }

@@ -23,25 +23,14 @@ public abstract class ProductProtoConsumingRegistrationService implements Produc
     @Override
     public void register(UserProtoConfiguration.ProductRegistrationMessage subject) {
         if (accountService.existsByUUID(UUID.fromString(subject.getAccountUuid()))) {
-            try {
-                if (!productService.existsByUrl(URI.create(subject.getProduct().getUrl()))) {
-                    productService.save(subject.getProduct());
-                }
-                if (!accountProductService.existsBy(UUID.fromString(subject.getAccountUuid()), URI.create(subject.getProduct().getUrl()))) {
-                    accountProductService.save(new AccountProduct(UUID.fromString(subject.getAccountUuid()), URI.create(subject.getProduct().getUrl())));
-                }
-            } catch (Exception e) {
-                rollback(subject);
+            if (!productService.existsByUrl(URI.create(subject.getProduct().getUrl()))) {
+                productService.save(subject.getProduct());
+            }
+            if (!accountProductService.existsBy(UUID.fromString(subject.getAccountUuid()), URI.create(subject.getProduct().getUrl()))) {
+                accountProductService.save(new AccountProduct(UUID.fromString(subject.getAccountUuid()), URI.create(subject.getProduct().getUrl())));
             }
         } else {
             throw new NotFoundException(String.format("account not found: account uuid = %s", subject.getAccountUuid()));
         }
-    }
-
-    @Override
-    public void rollback(UserProtoConfiguration.ProductRegistrationMessage subject) {
-        URI url = URI.create(subject.getProduct().getUrl());
-        accountProductService.deleteAllByProductUrl(url);
-        productService.deleteByUrl(url);
     }
 }

@@ -11,6 +11,8 @@ public interface AccountProductService<AP> extends EntityService<AP> {
 
     void deleteAllByProductUrl(URI productUrl);
 
+    void deleteAllByUserUuid(UUID userUuid);
+
     void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl);
 
     boolean existsBy(UUID accountUuid, URI productUrl);

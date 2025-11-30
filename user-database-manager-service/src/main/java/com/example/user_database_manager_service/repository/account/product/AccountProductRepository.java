@@ -13,6 +13,8 @@ public abstract class AccountProductRepository<AP> implements EntityRepository<A
 
     public abstract void deleteAllByProductUrl(URI productUrl);
 
+    public abstract void deleteAllByUserUuid(UUID userUuid);
+
     public abstract boolean existsBy(UUID accountUuid, URI productUrl);
 
     public abstract boolean existsByProductUrl(URI productUrl);

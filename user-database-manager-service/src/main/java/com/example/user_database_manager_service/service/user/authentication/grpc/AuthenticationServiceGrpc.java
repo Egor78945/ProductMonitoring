@@ -3,15 +3,15 @@ package com.example.user_database_manager_service.service.user.authentication.gr
 import com.example.grpc.user.AuthenticationProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
-import com.example.user_database_manager_service.service.user.authentication.UserProducingRegistrationService;
+import com.example.user_database_manager_service.service.user.authentication.UserSupplyingRegistrationService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
 public class AuthenticationServiceGrpc extends AuthenticationProtoServiceGrpc.AuthenticationProtoServiceImplBase {
-    private final UserProducingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService;
+    private final UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService;
 
-    public AuthenticationServiceGrpc(UserProducingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService) {
+    public AuthenticationServiceGrpc(UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
 

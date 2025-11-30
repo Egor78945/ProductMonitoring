@@ -15,6 +15,8 @@ public interface AccountService<A> extends EntityService<A> {
 
     void deleteByAccountUuid(UUID accountUuid);
 
+    void deleteByUserUuid(UUID uuid);
+
     boolean existsById(Long id);
 
     boolean existsByUUID(UUID uuid);

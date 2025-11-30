@@ -9,8 +9,8 @@ import com.example.user_database_manager_service.service.user.role.UserRoleServi
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserProducingRegistrationProtoServiceManager extends UserProducingRegistrationProtoService {
-    public UserProducingRegistrationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService) {
+public class UserSupplyingRegistrationProtoServiceManager extends UserSupplyingRegistrationProtoService {
+    public UserSupplyingRegistrationProtoServiceManager(UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, UserRoleService<UserProtoConfiguration.UserRoleMessage> userRoleService, UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService) {
         super(userService, accountService, userRoleService, userNotificationService, accountProductService);
     }
 }

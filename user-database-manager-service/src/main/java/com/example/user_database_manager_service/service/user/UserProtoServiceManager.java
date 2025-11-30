@@ -17,7 +17,7 @@ public class UserProtoServiceManager extends UserProtoService {
 
     @Override
     public UserProtoConfiguration.UserMessage save(UserProtoConfiguration.UserMessage user) {
-        if (!existsByEmail(user.getEmail())) {
+        if (user.getId() == 0 && user.getUuid().isEmpty() && !existsByEmail(user.getEmail())) {
             return super.save(user);
         }
         throw new AlreadyExistsException(ExceptionMessage.ALREADY_EXISTS.getMessage());

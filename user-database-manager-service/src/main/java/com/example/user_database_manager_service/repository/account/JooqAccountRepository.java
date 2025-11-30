@@ -67,4 +67,12 @@ public abstract class JooqAccountRepository<A> extends AccountRepository<A> {
                 .where(Tables.ACCOUNT.UUID.eq(accountUuid))
                 .execute();
     }
+
+    @Override
+    public void deleteByUserUuid(UUID userUuid) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.USER_UUID.eq(userUuid))
+                .execute();
+    }
 }

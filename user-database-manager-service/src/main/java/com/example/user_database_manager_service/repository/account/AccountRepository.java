@@ -17,6 +17,8 @@ public abstract class AccountRepository<A> extends UUIDManager implements Entity
 
     public abstract void deleteByAccountUuid(UUID accountUuid);
 
+    public abstract void deleteByUserUuid(UUID userUuid);
+
     public abstract boolean existsByUUID(UUID uuid);
 
     public abstract boolean existsByUserUUID(UUID uuid);

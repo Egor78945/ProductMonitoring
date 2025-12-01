@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 
 @Service
-public class ProductProtoServiceManager extends ProductProtoService{
-    public ProductProtoServiceManager(ProductRepository<UserProtoConfiguration.ProductMessage> productRepository) {
+public class ProductRepositoryProtoServiceManager extends ProductRepositoryService<UserProtoConfiguration.ProductMessage> {
+    public ProductRepositoryProtoServiceManager(ProductRepository<UserProtoConfiguration.ProductMessage> productRepository) {
         super(productRepository);
     }
 
@@ -20,7 +20,7 @@ public class ProductProtoServiceManager extends ProductProtoService{
         if(!existsByUrl(URI.create(entity.getUrl()))) {
             return super.save(entity);
         }
-        throw new AlreadyExistsException(ExceptionMessage.ALREADY_EXISTS.getMessage());
+        throw new AlreadyExistsException(String.format("Product is already exists by url: %s", entity));
     }
 
     @Override
@@ -28,6 +28,6 @@ public class ProductProtoServiceManager extends ProductProtoService{
         if(existsByUrl(URI.create(entity.getUrl()))) {
             return super.update(entity);
         }
-        throw new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage());
+        throw new NotFoundException(String.format("Product is not found by url: %s", entity));
     }
 }

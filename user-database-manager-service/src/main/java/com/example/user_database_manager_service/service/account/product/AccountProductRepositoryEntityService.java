@@ -1,31 +1,26 @@
 package com.example.user_database_manager_service.service.account.product;
 
-import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.model.account.product.entity.AccountProduct;
 import com.example.user_database_manager_service.repository.account.product.AccountProductRepository;
 
 import java.net.URI;
 import java.util.UUID;
 
-public abstract class AccountProductProtoService implements AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> {
-    protected final AccountProductRepository<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductRepository;
+public abstract class AccountProductRepositoryEntityService implements AccountProductService<AccountProduct> {
+    protected final AccountProductRepository<AccountProduct> accountProductRepository;
 
-    public AccountProductProtoService(AccountProductRepository<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductRepository) {
+    public AccountProductRepositoryEntityService(AccountProductRepository<AccountProduct> accountProductRepository) {
         this.accountProductRepository = accountProductRepository;
     }
 
     @Override
-    public UserProtoConfiguration.AccountUuidProductUriMessage save(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
+    public AccountProduct save(AccountProduct entity) {
         return accountProductRepository.save(entity);
     }
 
     @Override
-    public UserProtoConfiguration.AccountUuidProductUriMessage update(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
+    public AccountProduct update(AccountProduct entity) {
         return accountProductRepository.update(entity);
-    }
-
-    @Override
-    public void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl) {
-        accountProductRepository.deleteByAccountUuidAndProductUri(accountUuid, productUrl);
     }
 
     @Override
@@ -41,6 +36,11 @@ public abstract class AccountProductProtoService implements AccountProductServic
     @Override
     public void deleteAllByUserUuid(UUID userUuid) {
         accountProductRepository.deleteAllByUserUuid(userUuid);
+    }
+
+    @Override
+    public void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl) {
+        accountProductRepository.deleteByAccountUuidAndProductUri(accountUuid, productUrl);
     }
 
     @Override

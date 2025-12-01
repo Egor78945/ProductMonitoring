@@ -1,4 +1,4 @@
-package com.example.user_database_manager_service.service.marketplace.definition;
+package com.example.user_database_manager_service.service.marketplace.definition.mapper;
 
 import com.example.grpc.user.UserProtoConfiguration;
 import nu.studer.sample.tables.records.MarketplaceDefinitionRecord;

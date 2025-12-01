@@ -33,7 +33,7 @@ public abstract class JooqMarketplacePathDefinitionProtoRepository extends JooqM
     }
 
     @Override
-    public List<UserProtoConfiguration.MarketplacePathDefinitionMessage> findAllSupported() {
+    public List<UserProtoConfiguration.MarketplacePathDefinitionMessage> findAll() {
         return dslContext
                 .selectFrom(Tables.MARKETPLACE_PATH_DEFINITION)
                 .fetch(MarketplacePathDefinitionMapper::mapTo);

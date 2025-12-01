@@ -11,4 +11,8 @@ public enum ExceptionMessage {
     public String getMessage() {
         return message;
     }
+
+    public static String errorBySubject(ExceptionMessage exceptionMessage, Object subject) {
+        return String.format("%s: %s", exceptionMessage.getMessage(), subject);
+    }
 }

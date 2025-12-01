@@ -1,7 +1,7 @@
 package com.example.user_database_manager_service.repository.marketplace.definition;
 
 import com.example.grpc.user.UserProtoConfiguration;
-import com.example.user_database_manager_service.service.marketplace.definition.MarketplaceDefinitionMapper;
+import com.example.user_database_manager_service.service.marketplace.definition.mapper.MarketplaceDefinitionMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 

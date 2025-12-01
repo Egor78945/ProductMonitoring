@@ -6,31 +6,33 @@ import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.repository.account.AccountRepository;
-import com.example.user_database_manager_service.repository.account.JooqAccountRepository;
 import com.example.user_database_manager_service.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class AccountProtoServiceManager extends AccountProtoService {
-    public AccountProtoServiceManager(AccountRepository<UserProtoConfiguration.AccountMessage> accountProtoRepository, UserRepository<?> userRepository) {
-        super(accountProtoRepository, userRepository);
+public class AccountRepositoryProtoServiceManager extends AccountRepositoryProtoService<UserProtoConfiguration.AccountMessage> {
+    protected final UserRepository<?> userRepository;
+
+    public AccountRepositoryProtoServiceManager(AccountRepository<UserProtoConfiguration.AccountMessage> accountProtoRepository, UserRepository<?> userRepository) {
+        super(accountProtoRepository);
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage account) {
-        if (!existsByName(account.getName()) && userRepository.existsByUUID(UUID.fromString(account.getUserUuid()))) {
+        if (userRepository.existsByUUID(UUID.fromString(account.getUserUuid())) && !accountProtoRepository.existsByName(account.getName()) && accountProtoRepository.getCountOfAccountsOfUserByUserUUID(UUID.fromString(account.getUserUuid())) < 3) {
             return super.save(account);
         }
-        throw new AlreadyExistsException(ExceptionMessage.ALREADY_EXISTS.getMessage());
+        throw new ProcessingException(String.format("User not found or count of accounts of user is exceeded: %s", account));
     }
 
     @Override
     public UserProtoConfiguration.AccountMessage update(UserProtoConfiguration.AccountMessage account) {
-        if (existsByName(account.getName()) && userRepository.existsByUUID(UUID.fromString(account.getUserUuid()))) {
+        if (existsByUUID(UUID.fromString(account.getUuid()))) {
             return super.update(account);
         }
-        throw new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage());
+        throw new NotFoundException(String.format("Account is not found by uuid: %s", account.getUuid()));
     }
 }

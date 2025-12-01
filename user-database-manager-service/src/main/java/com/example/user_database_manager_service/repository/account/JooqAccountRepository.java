@@ -13,6 +13,19 @@ public abstract class JooqAccountRepository<A> extends AccountRepository<A> {
     }
 
     @Override
+    public int getCountOfAccountsOfUserByUserUUID(UUID uuid) {
+        return dslContext
+                .fetchCount(
+                        dslContext
+                                .select(Tables.ACCOUNT)
+                                .from(Tables.ACCOUNT.join(Tables.USERS)
+                                        .on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID))
+                                        .where(Tables.ACCOUNT.USER_UUID.eq(uuid)))
+                );
+
+    }
+
+    @Override
     public boolean existsByUUID(UUID uuid) {
         return dslContext
                 .fetchExists(

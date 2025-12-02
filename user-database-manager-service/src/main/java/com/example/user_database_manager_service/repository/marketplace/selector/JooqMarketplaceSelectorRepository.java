@@ -15,9 +15,9 @@ public abstract class JooqMarketplaceSelectorRepository<MS> extends MarketplaceS
         return dslContext
                 .fetchExists(
                         dslContext.selectOne()
-                                .from(Tables.MARKETPLACE_SELECTOR.join(Tables.MARKETPLACE_DEFINITION)
-                                        .on(Tables.MARKETPLACE_SELECTOR.MARKETPLACE_ID.eq(Tables.MARKETPLACE_DEFINITION.ID)))
-                                .where(Tables.MARKETPLACE_DEFINITION.ID.eq(marketplaceId))
+                                .from(Tables.MARKETPLACE_SELECTOR.join(Tables.MARKETPLACE_PATH_DEFINITION)
+                                        .on(Tables.MARKETPLACE_SELECTOR.MARKETPLACE_ID.eq(Tables.MARKETPLACE_PATH_DEFINITION.ID)))
+                                .where(Tables.MARKETPLACE_PATH_DEFINITION.ID.eq(marketplaceId))
                 );
     }
 

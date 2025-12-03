@@ -56,7 +56,7 @@ public abstract class UserSupplyingRegistrationProtoService implements UserSuppl
         try {
             if (userService.existsById(registerModel.getUser().getId()) && LocalDateTime.now().getHour() - LocalDateTime.ofInstant(Instant.ofEpochMilli(userService.findById(registerModel.getUser().getId()).getRegisteredAt()), ZoneId.systemDefault()).getHour() <= 12) {
                 accountProductService.deleteAllByAccountUuid(UUID.fromString(registerModel.getAccount().getUuid()));
-                accountService.deleteByAccountUuid(UUID.fromString(registerModel.getAccount().getUuid()));
+                accountService.deleteByUserUuid(UUID.fromString(registerModel.getUser().getUuid()));
                 userNotificationService.deleteAllByUserUuid(UUID.fromString(registerModel.getUser().getUuid()));
                 userRoleService.deleteAllByUserUuid(UUID.fromString(registerModel.getUser().getUuid()));
                 userService.deleteByUuid(UUID.fromString(registerModel.getUser().getUuid()));

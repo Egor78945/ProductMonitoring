@@ -1,75 +1,34 @@
 package com.example.user_database_manager_service.service.account;
 
+import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.NotFoundException;
-import com.example.user_database_manager_service.exception.message.ExceptionMessage;
+import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.repository.account.AccountRepository;
+import com.example.user_database_manager_service.repository.user.UserRepository;
 
 import java.util.UUID;
 
-public abstract class AccountRepositoryProtoService<A> implements AccountService<A> {
-    protected final AccountRepository<A> accountProtoRepository;
+public abstract class AccountRepositoryProtoService extends AccountRepositoryService<UserProtoConfiguration.AccountMessage> {
+    protected final UserRepository<?> userRepository;
 
-    public AccountRepositoryProtoService(AccountRepository<A> accountProtoRepository) {
-        this.accountProtoRepository = accountProtoRepository;
+    public AccountRepositoryProtoService(AccountRepository<UserProtoConfiguration.AccountMessage> accountProtoRepository, UserRepository<?> userRepository) {
+        super(accountProtoRepository);
+        this.userRepository = userRepository;
     }
 
     @Override
-    public A save(A account) {
-        return accountProtoRepository.save(account);
+    public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage account) {
+        if (userRepository.existsByUUID(UUID.fromString(account.getUserUuid())) && !accountProtoRepository.existsByName(account.getName()) && accountProtoRepository.getCountOfAccountsOfUserByUserUUID(UUID.fromString(account.getUserUuid())) < 3) {
+            return super.save(account);
+        }
+        throw new ProcessingException(String.format("User not found or count of accounts of user is exceeded: %s", account));
     }
 
     @Override
-    public A update(A entity) {
-        return accountProtoRepository.update(entity);
-    }
-
-    @Override
-    public A findByUUID(UUID uuid) {
-        return accountProtoRepository.getByUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
-    }
-
-    @Override
-    public A findByUserUUID(UUID uuid) {
-        return accountProtoRepository.getByUserUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
-    }
-
-    @Override
-    public A findById(Long id) {
-        return accountProtoRepository.getById(id).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        accountProtoRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteByAccountUuid(UUID accountUuid) {
-        accountProtoRepository.deleteByAccountUuid(accountUuid);
-    }
-
-    @Override
-    public void deleteByUserUuid(UUID uuid) {
-        accountProtoRepository.deleteByUserUuid(uuid);
-    }
-
-    @Override
-    public boolean existsByUserUUID(UUID uuid) {
-        return accountProtoRepository.existsByUserUUID(uuid);
-    }
-
-    @Override
-    public boolean existsByName(String name) {
-        return accountProtoRepository.existsByName(name);
-    }
-
-    @Override
-    public boolean existsByUUID(UUID uuid) {
-        return accountProtoRepository.existsByUUID(uuid);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return accountProtoRepository.existsById(id);
+    public UserProtoConfiguration.AccountMessage update(UserProtoConfiguration.AccountMessage account) {
+        if (existsByUUID(UUID.fromString(account.getUuid()))) {
+            return super.update(account);
+        }
+        throw new NotFoundException(String.format("Account is not found by uuid: %s", account.getUuid()));
     }
 }

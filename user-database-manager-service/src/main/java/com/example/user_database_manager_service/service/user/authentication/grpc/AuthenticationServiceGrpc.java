@@ -6,12 +6,13 @@ import com.example.user_database_manager_service.service.common.grpc.mapper.Grpc
 import com.example.user_database_manager_service.service.user.authentication.UserSupplyingRegistrationService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @GrpcService
 public class AuthenticationServiceGrpc extends AuthenticationProtoServiceGrpc.AuthenticationProtoServiceImplBase {
     private final UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService;
 
-    public AuthenticationServiceGrpc(UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService) {
+    public AuthenticationServiceGrpc(@Qualifier("userSupplyingRegistrationProtoTransactionalServiceManager") UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
 

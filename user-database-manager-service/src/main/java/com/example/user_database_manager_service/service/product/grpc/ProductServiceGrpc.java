@@ -6,14 +6,14 @@ import com.example.user_database_manager_service.exception.AlreadyExistsExceptio
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.account.product.AccountProductService;
-import com.example.user_database_manager_service.service.account.product.mapper.AccountProductMapper;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
-import com.example.user_database_manager_service.service.product.ProductProtoConsumingRegistrationService;
+import com.example.user_database_manager_service.service.product.ProductConsumingRegistrationProtoService;
 import com.example.user_database_manager_service.service.product.ProductService;
 import com.example.user_database_manager_service.service.product.mapper.ProductMapper;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.jooq.DatePart;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.net.URI;
 import java.util.UUID;
@@ -22,18 +22,18 @@ import java.util.UUID;
 public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServiceImplBase {
     private final ProductService<UserProtoConfiguration.ProductMessage> productService;
     private final AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService;
-    private final ProductProtoConsumingRegistrationService productProtoConsumingRegistrationService;
+    private final ProductConsumingRegistrationProtoService productConsumingRegistrationProtoService;
 
-    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService, ProductProtoConsumingRegistrationService productProtoConsumingRegistrationService) {
+    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService, @Qualifier("productConsumingRegistrationProtoTransactionalServiceManager") ProductConsumingRegistrationProtoService productConsumingRegistrationProtoService) {
         this.productService = productService;
         this.accountProductService = accountProductService;
-        this.productProtoConsumingRegistrationService = productProtoConsumingRegistrationService;
+        this.productConsumingRegistrationProtoService = productConsumingRegistrationProtoService;
     }
 
     @Override
     public void save(UserProtoConfiguration.ProductRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         try {
-            productProtoConsumingRegistrationService.register(request);
+            productConsumingRegistrationProtoService.register(request);
             responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
         } catch (AlreadyExistsException e) {

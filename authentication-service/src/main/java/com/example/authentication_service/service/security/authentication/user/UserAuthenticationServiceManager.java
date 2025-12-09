@@ -5,25 +5,25 @@ import com.example.authentication_service.model.security.KeycloakRegistrationMod
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
-import com.example.authentication_service.service.concurrency.AsyncTaskExecutorService;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
 import com.example.authentication_service.service.security.authentication.grpc.AuthenticationGrpcClientService;
 import com.example.authentication_service.service.security.authentication.keycloak.KeycloakAuthenticationService;
-import com.example.authentication_service.service.user.grpc.client.UserGrpcClientService;
 import com.example.grpc.user.UserProtoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsyncTaskExecutorService;
+
 @Service
 public class UserAuthenticationServiceManager implements AuthenticationService<String, UserRegistrationModel> {
     private final AuthenticationGrpcClientService authenticationGrpcClientService;
     private final KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService;
-    private final AsyncTaskExecutorService asyncTaskExecutorService;
+    private final AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService;
 
-    public UserAuthenticationServiceManager(AuthenticationGrpcClientService authenticationGrpcClientService, KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService, AsyncTaskExecutorService asyncTaskExecutorService) {
+    public UserAuthenticationServiceManager(AuthenticationGrpcClientService authenticationGrpcClientService, KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService, AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService) {
         this.authenticationGrpcClientService = authenticationGrpcClientService;
         this.keycloakAuthenticationService = keycloakAuthenticationService;
         this.asyncTaskExecutorService = asyncTaskExecutorService;

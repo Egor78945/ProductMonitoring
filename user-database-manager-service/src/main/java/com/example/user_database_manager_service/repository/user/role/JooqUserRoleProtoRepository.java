@@ -24,15 +24,6 @@ public abstract class JooqUserRoleProtoRepository extends JooqUserRoleRepository
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserRoleMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USERS_ROLES)
-                .where(Tables.USERS_ROLES.USER_UUID.eq(UUID.fromString(entity.getUserUUID()))
-                        .and(Tables.USERS_ROLES.ROLE_ID.eq(entity.getRoleId())))
-                .execute();
-    }
-
-    @Override
     public UserProtoConfiguration.UserRoleMessage update(UserProtoConfiguration.UserRoleMessage userRole) {
         return dslContext
                 .update(Tables.USERS_ROLES)

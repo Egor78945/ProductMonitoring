@@ -32,4 +32,12 @@ public abstract class JooqProductRepository<P> extends ProductRepository<P> {
                         .from(Tables.ACCOUNT_PRODUCTS)
                         .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid).and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl.toString()))));
     }
+
+    @Override
+    public void deleteByUrl(URI url) {
+        dslContext
+                .deleteFrom(Tables.PRODUCT)
+                .where(Tables.PRODUCT.URL.eq(url.toString()))
+                .execute();
+    }
 }

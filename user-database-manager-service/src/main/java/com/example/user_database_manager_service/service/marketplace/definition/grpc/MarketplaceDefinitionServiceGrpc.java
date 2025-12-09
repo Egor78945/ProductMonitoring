@@ -3,7 +3,7 @@ package com.example.user_database_manager_service.service.marketplace.definition
 import com.example.grpc.user.MarketplaceDefinitionProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.repository.marketplace.definition.MarketplaceDefinitionRepository;
-import com.example.user_database_manager_service.service.marketplace.definition.MarketplaceDefinitionMapper;
+import com.example.user_database_manager_service.service.marketplace.definition.mapper.MarketplaceDefinitionMapper;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 

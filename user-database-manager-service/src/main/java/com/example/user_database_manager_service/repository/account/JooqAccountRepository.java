@@ -13,6 +13,19 @@ public abstract class JooqAccountRepository<A> extends AccountRepository<A> {
     }
 
     @Override
+    public int getCountOfAccountsOfUserByUserUUID(UUID uuid) {
+        return dslContext
+                .fetchCount(
+                        dslContext
+                                .select(Tables.ACCOUNT)
+                                .from(Tables.ACCOUNT.join(Tables.USERS)
+                                        .on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID))
+                                        .where(Tables.ACCOUNT.USER_UUID.eq(uuid)))
+                );
+
+    }
+
+    @Override
     public boolean existsByUUID(UUID uuid) {
         return dslContext
                 .fetchExists(
@@ -50,5 +63,29 @@ public abstract class JooqAccountRepository<A> extends AccountRepository<A> {
                                 .from(Tables.ACCOUNT)
                                 .where(Tables.ACCOUNT.ID.eq(id))
                 );
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.ID.eq(id))
+                .execute();
+    }
+
+    @Override
+    public void deleteByAccountUuid(UUID accountUuid) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.UUID.eq(accountUuid))
+                .execute();
+    }
+
+    @Override
+    public void deleteByUserUuid(UUID userUuid) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.USER_UUID.eq(userUuid))
+                .execute();
     }
 }

@@ -1,44 +1,33 @@
 package com.example.user_database_manager_service.repository.account.product;
 
 import com.example.grpc.user.UserProtoConfiguration;
-import com.example.user_database_manager_service.service.account.product.mapper.AccountProductMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
 import java.util.UUID;
 
-public abstract class JooqAccountProductProtoRepository extends JooqAccountProductRepository<UserProtoConfiguration.AccountProductMessage> {
+public abstract class JooqAccountProductProtoRepository extends JooqAccountProductRepository<UserProtoConfiguration.AccountUuidProductUriMessage> {
     public JooqAccountProductProtoRepository(DSLContext dslContext) {
         super(dslContext);
     }
 
     @Override
-    public UserProtoConfiguration.AccountProductMessage save(UserProtoConfiguration.AccountProductMessage entity) {
+    public UserProtoConfiguration.AccountUuidProductUriMessage save(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
         return dslContext
                 .insertInto(Tables.ACCOUNT_PRODUCTS)
                 .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, UUID.fromString(entity.getAccountUuid()))
-                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUrl())
+                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUri())
                 .returning()
-                .fetchOne(AccountProductMapper::mapTo);
+                .fetchOne(r -> entity);
     }
 
     @Override
-    public void delete(UserProtoConfiguration.AccountProductMessage entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
-                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(UUID.fromString(entity.getAccountUuid()))
-                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(entity.getProductUrl())))
-                .execute();
-
-    }
-
-    @Override
-    public UserProtoConfiguration.AccountProductMessage update(UserProtoConfiguration.AccountProductMessage entity) {
+    public UserProtoConfiguration.AccountUuidProductUriMessage update(UserProtoConfiguration.AccountUuidProductUriMessage entity) {
         return dslContext
                 .update(Tables.ACCOUNT_PRODUCTS)
                 .set(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID, UUID.fromString(entity.getAccountUuid()))
-                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUrl())
+                .set(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL, entity.getProductUri())
                 .returning()
-                .fetchOne(AccountProductMapper::mapTo);
+                .fetchOne(r -> entity);
     }
 }

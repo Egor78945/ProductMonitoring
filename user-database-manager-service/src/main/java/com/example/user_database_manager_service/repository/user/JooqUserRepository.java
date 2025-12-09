@@ -53,4 +53,20 @@ public abstract class JooqUserRepository<U> extends UserRepository<U> {
                                 .where(Tables.USERS.EMAIL.eq(email))
                 );
     }
+
+    @Override
+    public void deleteById(Long id) {
+        dslContext
+                .deleteFrom(Tables.USERS)
+                .where(Tables.USERS.ID.eq(id))
+                .execute();
+    }
+
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        dslContext
+                .deleteFrom(Tables.USERS)
+                .where(Tables.USERS.UUID.eq(uuid))
+                .execute();
+    }
 }

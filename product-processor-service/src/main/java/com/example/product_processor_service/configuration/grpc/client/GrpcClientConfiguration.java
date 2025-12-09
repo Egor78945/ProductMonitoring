@@ -17,11 +17,6 @@ public class GrpcClientConfiguration {
     }
 
     @Bean
-    public AccountProductProtoServiceGrpc.AccountProductProtoServiceBlockingStub accountProductProtoServiceBlockingStub() {
-        return AccountProductProtoServiceGrpc.newBlockingStub(channel);
-    }
-
-    @Bean
     public MarketplacePathDefinitionProtoServiceGrpc.MarketplacePathDefinitionProtoServiceBlockingStub marketplacePathDefinitionProtoServiceBlockingStub() {
         return MarketplacePathDefinitionProtoServiceGrpc.newBlockingStub(channel);
     }

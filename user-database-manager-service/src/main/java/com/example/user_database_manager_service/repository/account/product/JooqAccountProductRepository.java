@@ -14,6 +14,15 @@ public abstract class JooqAccountProductRepository<AP> extends AccountProductRep
     }
 
     @Override
+    public void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid)
+                        .and(Tables.ACCOUNT_PRODUCTS.PRODUCT_URL.eq(productUrl.toString())))
+                .execute();
+    }
+
+    @Override
     public void deleteAllByProductUrl(URI productUrl) {
         dslContext
                 .deleteFrom(Tables.ACCOUNT_PRODUCTS)
@@ -27,6 +36,19 @@ public abstract class JooqAccountProductRepository<AP> extends AccountProductRep
         dslContext
                 .deleteFrom(Tables.ACCOUNT_PRODUCTS)
                 .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.eq(accountUuid))
+                .execute();
+    }
+
+    @Override
+    public void deleteAllByUserUuid(UUID userUuid) {
+        dslContext
+                .deleteFrom(Tables.ACCOUNT_PRODUCTS)
+                .where(Tables.ACCOUNT_PRODUCTS.ACCOUNT_UUID.in(
+                        dslContext.select(Tables.ACCOUNT.UUID)
+                                .from(Tables.ACCOUNT.join(Tables.USERS)
+                                        .on(Tables.ACCOUNT.USER_UUID.eq(Tables.USERS.UUID)))
+                                .where(Tables.USERS.UUID.eq(userUuid))
+                ))
                 .execute();
     }
 

@@ -1,7 +1,7 @@
 package com.example.user_database_manager_service.repository.marketplace.definition;
 
 import com.example.grpc.user.UserProtoConfiguration;
-import com.example.user_database_manager_service.service.marketplace.definition.MarketplaceDefinitionMapper;
+import com.example.user_database_manager_service.service.marketplace.definition.mapper.MarketplaceDefinitionMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
 
@@ -31,16 +31,6 @@ public abstract class JooqMarketplaceDefinitionProtoRepository extends JooqMarke
                 .set(Tables.MARKETPLACE_DEFINITION.PROCESSOR_CLASS_NAME, entity.getProcessorClassName())
                 .returning()
                 .fetchOne(MarketplaceDefinitionMapper::mapTo);
-    }
-
-    @Override
-    public void delete(UserProtoConfiguration.MarketplaceDefinitionMessage entity) {
-        dslContext
-                .deleteFrom(Tables.MARKETPLACE_DEFINITION)
-                .where(Tables.MARKETPLACE_DEFINITION.ID.eq(entity.getId())
-                        .and(Tables.MARKETPLACE_DEFINITION.NAME.eq(entity.getName())))
-                .execute();
-
     }
 
     @Override

@@ -29,15 +29,6 @@ public abstract class JooqUserProtoRepository extends JooqUserRepository<UserPro
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USERS)
-                .where(Tables.USERS.UUID.eq(UUID.fromString(entity.getUuid()))
-                        .and(Tables.USERS.ID.eq(entity.getId())))
-                .execute();
-    }
-
-    @Override
     public UserProtoConfiguration.UserMessage update(UserProtoConfiguration.UserMessage user) {
         return dslContext
                 .update(Tables.USERS)

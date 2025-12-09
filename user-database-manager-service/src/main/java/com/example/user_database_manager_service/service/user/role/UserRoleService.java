@@ -15,4 +15,6 @@ public interface UserRoleService<UR> extends EntityService<UR> {
     List<UR> findByUserUUID(UUID userUUID);
 
     boolean existsById(Long id);
+
+    boolean existsBy(UUID userUuid, long roleId);
 }

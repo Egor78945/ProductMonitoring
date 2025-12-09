@@ -10,12 +10,16 @@ public abstract class ProductGrpcClientService extends GrpcClientService<Product
         super(stub);
     }
 
-    public UserProtoConfiguration.ProductMessage save(UserProtoConfiguration.ProductMessage productMessage) {
-        return stub.save(productMessage);
+    public void save(UserProtoConfiguration.ProductRegistrationMessage productMessage) {
+        stub.save(productMessage);
     }
 
-    public UserProtoConfiguration.ProductMessage update(UserProtoConfiguration.ProductMessage productMessage) {
-        return stub.update(productMessage);
+    public void deleteAccountProductByAccountUuidAndProductUri(UserProtoConfiguration.AccountUuidProductUriMessage accountUuidProductUriMessage) {
+        stub.deleteAccountProductByAccountUuidAndProductUri(accountUuidProductUriMessage);
+    }
+
+    public void update(UserProtoConfiguration.ProductMessage productMessage) {
+        stub.update(productMessage);
     }
 
     public UserProtoConfiguration.ProductMessage getByUrl(UserProtoConfiguration.StringMessage stringMessage) {

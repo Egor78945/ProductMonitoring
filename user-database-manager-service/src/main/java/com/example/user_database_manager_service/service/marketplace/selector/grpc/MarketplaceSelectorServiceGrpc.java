@@ -3,23 +3,22 @@ package com.example.user_database_manager_service.service.marketplace.selector.g
 import com.example.grpc.user.MarketplaceSelectorProtoServiceGrpc;
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.NotFoundException;
-import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.repository.marketplace.selector.MarketplaceSelectorRepository;
+import com.example.user_database_manager_service.service.marketplace.selector.MarketplaceSelectorService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
 public class MarketplaceSelectorServiceGrpc extends MarketplaceSelectorProtoServiceGrpc.MarketplaceSelectorProtoServiceImplBase {
-    private final MarketplaceSelectorRepository<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorRepository;
+    private final MarketplaceSelectorService<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorService;
 
-    public MarketplaceSelectorServiceGrpc(MarketplaceSelectorRepository<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorRepository) {
-        this.marketplaceSelectorRepository = marketplaceSelectorRepository;
+    public MarketplaceSelectorServiceGrpc(MarketplaceSelectorService<UserProtoConfiguration.MarketplaceSelectorMessage> marketplaceSelectorService) {
+        this.marketplaceSelectorService = marketplaceSelectorService;
     }
 
     @Override
     public void getByMarketplaceId(UserProtoConfiguration.LongMessage request, StreamObserver<UserProtoConfiguration.MarketplaceSelectorMessage> responseObserver) {
         try {
-            responseObserver.onNext(marketplaceSelectorRepository.findByMarketplaceId(request.getLong()).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage())));
+            responseObserver.onNext(marketplaceSelectorService.getByMarketplaceId(request.getLong()));
             responseObserver.onCompleted();
         } catch (NotFoundException e) {
             responseObserver.onError(e);
@@ -29,7 +28,7 @@ public class MarketplaceSelectorServiceGrpc extends MarketplaceSelectorProtoServ
     @Override
     public void getByMarketplaceName(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.MarketplaceSelectorMessage> responseObserver) {
         try {
-            responseObserver.onNext(marketplaceSelectorRepository.findByMarketplaceName(request.getString()).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage())));
+            responseObserver.onNext(marketplaceSelectorService.getByMarketplaceName(request.getString()));
             responseObserver.onCompleted();
         } catch (NotFoundException e) {
             responseObserver.onError(e);

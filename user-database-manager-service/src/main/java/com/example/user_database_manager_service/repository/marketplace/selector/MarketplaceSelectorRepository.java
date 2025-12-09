@@ -7,4 +7,6 @@ import java.util.Optional;
 public abstract class MarketplaceSelectorRepository<MS> implements EntityRepository<MS> {
     public abstract Optional<MS> findByMarketplaceId(long marketplaceId);
     public abstract Optional<MS> findByMarketplaceName(String marketplaceName);
+    public abstract boolean existsByMarketplaceId(long marketplaceId);
+    public abstract boolean existsById(long marketplaceId);
 }

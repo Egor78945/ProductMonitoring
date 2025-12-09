@@ -29,6 +29,9 @@ kafka:
     product:
       save:
         name: ${KAFKA_TOPIC_PRODUCT_SAVE}
+    account:
+      product:
+        delete: ${KAFKA_TOPIC_ACCOUNT_PRODUCT_DELETE}
 
 server:
   port: ${PRODUCT_MANAGER_SERVICE_PORT}

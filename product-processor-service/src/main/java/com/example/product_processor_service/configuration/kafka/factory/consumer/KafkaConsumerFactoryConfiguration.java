@@ -4,7 +4,6 @@ import com.example.product_processor_service.configuration.kafka.environment.Kaf
 import com.example.product_processor_service.model.product.ProductPublisherDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +45,7 @@ public class KafkaConsumerFactoryConfiguration {
         return kafkaConsumerFactory;
     }
 
-    private Map<String, Object> buildKafkaConsumerProperties(String classPathFrom, String classPathTo, String groupId){
+    private Map<String, Object> buildKafkaConsumerProperties(String classPathFrom, String classPathTo, String groupId) {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         properties.put(JsonDeserializer.TYPE_MAPPINGS, String.format("%s:%s", classPathFrom, classPathTo));

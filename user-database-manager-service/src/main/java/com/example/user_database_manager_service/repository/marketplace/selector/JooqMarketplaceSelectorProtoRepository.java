@@ -36,14 +36,6 @@ public abstract class JooqMarketplaceSelectorProtoRepository extends JooqMarketp
     }
 
     @Override
-    public void delete(UserProtoConfiguration.MarketplaceSelectorMessage entity) {
-        dslContext
-                .deleteFrom(Tables.MARKETPLACE_SELECTOR)
-                .where(Tables.MARKETPLACE_SELECTOR.ID.eq(entity.getId()))
-                .execute();
-    }
-
-    @Override
     public Optional<UserProtoConfiguration.MarketplaceSelectorMessage> findByMarketplaceId(long marketplaceId) {
         return dslContext
                 .selectFrom(Tables.MARKETPLACE_SELECTOR)
@@ -55,8 +47,10 @@ public abstract class JooqMarketplaceSelectorProtoRepository extends JooqMarketp
     public Optional<UserProtoConfiguration.MarketplaceSelectorMessage> findByMarketplaceName(String marketplaceName) {
         return dslContext
                 .select(Tables.MARKETPLACE_SELECTOR)
-                .from(Tables.MARKETPLACE_SELECTOR.join(Tables.MARKETPLACE_DEFINITION)
-                        .on(Tables.MARKETPLACE_SELECTOR.MARKETPLACE_ID.eq(Tables.MARKETPLACE_DEFINITION.ID)))
+                .from(Tables.MARKETPLACE_SELECTOR.join(Tables.MARKETPLACE_PATH_DEFINITION)
+                        .on(Tables.MARKETPLACE_SELECTOR.MARKETPLACE_ID.eq(Tables.MARKETPLACE_PATH_DEFINITION.ID))
+                        .join(Tables.MARKETPLACE_DEFINITION)
+                        .on(Tables.MARKETPLACE_DEFINITION.ID.eq(Tables.MARKETPLACE_PATH_DEFINITION.MARKETPLACE_ID)))
                 .where(Tables.MARKETPLACE_DEFINITION.NAME.eq(marketplaceName))
                 .fetchOptional(r -> MarketplaceSelectorMapper.mapTo(r.value1()));
     }

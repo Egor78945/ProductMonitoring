@@ -6,8 +6,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 
 @Service
-class ProductProtoEntityServiceManager(
-    authContextService: AuthenticationContextService<Authentication>,
-    productGrpcClientService: ProductGrpcClientService) : ProductProtoEntityService(authContextService, productGrpcClientService) {
-
+class ProductProtoEntityServiceManager(productGrpcClientService: ProductGrpcClientService) :
+    ProductProtoEntityService(productGrpcClientService) {
 }

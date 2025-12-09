@@ -31,15 +31,6 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository<U
     }
 
     @Override
-    public void delete(UserProtoConfiguration.AccountMessage entity) {
-        dslContext
-                .deleteFrom(Tables.ACCOUNT)
-                .where(Tables.ACCOUNT.UUID.eq(UUID.fromString(entity.getUuid()))
-                        .and(Tables.ACCOUNT.ID.eq(entity.getId())))
-                .execute();
-    }
-
-    @Override
     public UserProtoConfiguration.AccountMessage update(UserProtoConfiguration.AccountMessage entity) {
         return dslContext
                 .update(Tables.ACCOUNT)

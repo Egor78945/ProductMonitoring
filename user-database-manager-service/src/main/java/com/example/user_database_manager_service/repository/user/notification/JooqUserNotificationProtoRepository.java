@@ -40,16 +40,6 @@ public abstract class JooqUserNotificationProtoRepository extends JooqUserNotifi
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserNotificationMessage entity) {
-        dslContext
-                .deleteFrom(Tables.USER_NOTIFICATION)
-                .where(Tables.USER_NOTIFICATION.USER_UUID.eq(UUID.fromString(entity.getUserUuid()))
-                        .and(Tables.USER_NOTIFICATION.NOTIFICATION_TYPE_ID.eq(entity.getNotificationTypeId()))
-                        .and(Tables.USER_NOTIFICATION.NOTIFIED_AT.eq(LocalDateTime.ofInstant(Instant.ofEpochMilli(entity.getNotifiedAt()), ZoneId.systemDefault()))))
-                .execute();
-    }
-
-    @Override
     public Optional<UserProtoConfiguration.UserNotificationMessage> findByUserUuidAndNotificationTypeId(UUID userUuid, Long notificationTypeId) {
         return dslContext
                 .selectFrom(Tables.USER_NOTIFICATION)

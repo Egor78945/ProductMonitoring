@@ -1,9 +1,7 @@
 package com.example.product_processor_service.util.mapper;
 
-import com.example.grpc.product.ProductServiceProtoConfiguration;
 import com.example.grpc.user.UserProtoConfiguration;
-
-import java.util.List;
+import com.example.product_processor_service.model.product.entity.Product;
 
 public class UserGrpcMapper {
     public static UserProtoConfiguration.StringIntMessage mapTo(String string, int intt) {
@@ -36,25 +34,27 @@ public class UserGrpcMapper {
                 .build();
     }
 
-    public static ProductServiceProtoConfiguration.ProductMessage mapTo(ProductServiceProtoConfiguration.AccountProductMessage accountProductMessage) {
-        return ProductServiceProtoConfiguration.ProductMessage.newBuilder()
-                .setUrl(accountProductMessage.getUrl())
-                .setActualPrice(accountProductMessage.getActualPrice())
-                .setPastPrice(accountProductMessage.getPastPrice())
-                .setUpdatedAt(accountProductMessage.getUpdatedAt())
+    public static UserProtoConfiguration.ProductMessage mapTo(Product product) {
+        return UserProtoConfiguration.ProductMessage.newBuilder()
+                .setUrl(product.getUrl())
+                .setName(product.getName())
+                .setActualPrice(product.getActualPrice())
+                .setPastPrice(product.getPastPrice())
+                .setUpdatedAt(product.getUpdatedAt())
                 .build();
     }
 
-    public static ProductServiceProtoConfiguration.ProductListMessage mapTo(List<ProductServiceProtoConfiguration.ProductMessage> productMessageList) {
-        return ProductServiceProtoConfiguration.ProductListMessage.newBuilder()
-                .addAllProducts(productMessageList)
-                .build();
-    }
-
-    public static UserProtoConfiguration.AccountProductMessage mapTo(String uri, String accountUuid) {
-        return UserProtoConfiguration.AccountProductMessage.newBuilder()
-                .setProductUrl(uri)
+    public static UserProtoConfiguration.ProductRegistrationMessage mapTo(Product product, String accountUuid) {
+        return UserProtoConfiguration.ProductRegistrationMessage.newBuilder()
+                .setProduct(mapTo(product))
                 .setAccountUuid(accountUuid)
+                .build();
+    }
+
+    public static UserProtoConfiguration.AccountUuidProductUriMessage mapTo(String accountUuid, String productUri) {
+        return UserProtoConfiguration.AccountUuidProductUriMessage.newBuilder()
+                .setAccountUuid(accountUuid)
+                .setProductUri(productUri)
                 .build();
     }
 }

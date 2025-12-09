@@ -72,9 +72,9 @@ jooq {
                 logging = Logging.DEBUG
                 jdbc {
                     driver = 'org.postgresql.Driver'
-                    url = "jdbc:postgresql://localhost:5433/users"
-                    user = "test"
-                    password = "test"
+                    url = "jdbc:postgresql://${System.getenv('POSTGRES_HOST')}:${System.getenv('POSTGRES_PORT_INNER')}/${System.getenv('POSTGRES_DATABASE_USER_NAME')}"
+                    user = "${System.getenv('POSTGRES_USERNAME')}"
+                    password = "${System.getenv('POSTGRES_PASSWORD')}"
                     properties {
                         property {
                             key = 'ssl'

@@ -15,6 +15,10 @@ public abstract class UserRepository<U> extends UUIDManager implements EntityRep
 
     public abstract Optional<U> getByAccountName(String accountName);
 
+    public abstract void deleteById(Long id);
+
+    public abstract void deleteByUuid(UUID uuid);
+
     public abstract boolean existsBy(Long id, UUID uuid, String email);
 
     public abstract boolean existsByEmail(String email);

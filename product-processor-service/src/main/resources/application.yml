@@ -29,6 +29,9 @@ kafka:
     user:
       notification:
         name: ${KAFKA_TOPIC_USER_NOTIFICATION}
+    account:
+      product:
+        delete: ${KAFKA_TOPIC_ACCOUNT_PRODUCT_DELETE}
 
 product:
   read:

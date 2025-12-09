@@ -21,5 +21,25 @@ public abstract class JooqMarketplacePathDefinitionRepository<MPD> extends Marke
                 );
     }
 
+    @Override
+    public boolean existsByMarketplaceUrl(String marketplaceUrl) {
+        return dslContext
+                .fetchExists(
+                        dslContext
+                                .selectOne()
+                                .from(Tables.MARKETPLACE_PATH_DEFINITION)
+                                .where(Tables.MARKETPLACE_PATH_DEFINITION.BASE_URL.eq(marketplaceUrl))
+                );
+    }
 
+    @Override
+    public boolean existsById(long id) {
+        return dslContext
+                .fetchExists(
+                        dslContext
+                                .selectOne()
+                                .from(Tables.MARKETPLACE_PATH_DEFINITION)
+                                .where(Tables.MARKETPLACE_PATH_DEFINITION.ID.eq(id))
+                );
+    }
 }

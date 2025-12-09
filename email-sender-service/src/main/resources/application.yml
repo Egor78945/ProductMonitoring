@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: ${EMAIL_SENDER_SERVICE_HOST}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_SENDER_SERVICE_EMAIL}
+    password: ${EMAIL_SENDER_SERVICE_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  kafka:
+    bootstrap-servers: ${KAFKA1_HOST}:${KAFKA1_PORT_PLAINTEXT_INNER}, ${KAFKA2_HOST}:${KAFKA2_PORT_PLAINTEXT_INNER}
+    listener:
+      ack-mode: record
+    consumer:
+      auto-offset-reset: earliest
+      group-id: user
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+kafka:
+  replicas: 2
+  topic:
+    user:
+      notification:
+        name: ${KAFKA_TOPIC_USER_NOTIFICATION}
+
+server:
+  port: ${EMAIL_SENDER_SERVICE_PORT}

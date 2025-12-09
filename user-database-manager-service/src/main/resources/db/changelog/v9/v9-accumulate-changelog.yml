@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: ./v9-create-marketplace-definition-table-changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./v9-fill-marketplace-definition-table-changelog.yml
+      relativeToChangelogFile: true

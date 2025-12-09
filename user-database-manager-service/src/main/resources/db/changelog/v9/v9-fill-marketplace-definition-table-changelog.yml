@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: v9-2
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: marketplace_definition
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT COUNT(*) FROM marketplace_definition"
+      changes:
+        - loadData:
+            tableName: marketplace_definition
+            file: db/csv/marketplace_definition_table.csv
+            separator: ","
+            usePreparedStatements: true
+            columns:
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: processor_class_name
+                  type: varchar(500)

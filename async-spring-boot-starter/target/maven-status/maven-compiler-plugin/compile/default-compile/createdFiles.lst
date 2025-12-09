@@ -1,0 +1,4 @@
+com\example\async_spring_boot_starter\service\concurrency\AsyncStarterAsyncTaskExecutorService.class
+com\example\async_spring_boot_starter\configuration\AsyncStarterEnvironment.class
+com\example\async_spring_boot_starter\configuration\executor\AsyncStarterExecutorConfiguration.class
+com\example\async_spring_boot_starter\service\concurrency\AsyncStarterAsyncTaskExecutorServiceManager.class

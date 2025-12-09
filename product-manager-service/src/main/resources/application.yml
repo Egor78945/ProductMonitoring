@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: product-manager-service
+  kafka:
+    bootstrap-servers: ${KAFKA1_HOST}:${KAFKA1_PORT_PLAINTEXT_INNER}, ${KAFKA2_HOST}:${KAFKA2_PORT_PLAINTEXT_INNER}
+    listener:
+      ack-mode: record
+    consumer:
+      auto-offset-reset: earliest
+    producer:
+      retries: 10
+
+grpc:
+  client:
+    user-database-grpc-service:
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
+      negotiation-type: plaintext
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+kafka:
+  replicas: 2
+  topic:
+    product:
+      save:
+        name: ${KAFKA_TOPIC_PRODUCT_SAVE}
+    account:
+      product:
+        delete: ${KAFKA_TOPIC_ACCOUNT_PRODUCT_DELETE}
+
+server:
+  port: ${PRODUCT_MANAGER_SERVICE_PORT}

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: v10-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: marketplace_path_definition
+      changes:
+        - createTable:
+            tableName: marketplace_path_definition
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    unique: true
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: marketplace_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: marketplace_definition
+                    referencedColumnNames: id
+                    foreignKeyName: marketplace_path_definition_id
+              - column:
+                  name: base_url
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+                    unique: true

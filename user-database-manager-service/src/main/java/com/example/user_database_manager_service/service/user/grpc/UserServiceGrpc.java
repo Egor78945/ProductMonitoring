@@ -2,9 +2,8 @@ package com.example.user_database_manager_service.service.user.grpc;
 
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.grpc.user.UserProtoServiceGrpc;
-import com.example.user_database_manager_service.service.grpc.builder.GrpcItemBuilder;
+import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
 import com.example.user_database_manager_service.service.user.UserService;
-import com.example.user_database_manager_service.service.user.authentication.UserAuthenticationService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -12,18 +11,16 @@ import java.util.UUID;
 
 @GrpcService
 public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBase {
-    private final UserAuthenticationService<UserProtoConfiguration.UserRegistrationMessage> authenticationService;
-    private final UserService userService;
+    private final UserService<UserProtoConfiguration.UserMessage> userService;
 
-    public UserServiceGrpc(UserAuthenticationService<UserProtoConfiguration.UserRegistrationMessage> authenticationService, UserService userService) {
-        this.authenticationService = authenticationService;
+    public UserServiceGrpc(UserService<UserProtoConfiguration.UserMessage> userService) {
         this.userService = userService;
     }
 
     @Override
     public void existsUserByEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcItemBuilder.buildFrom(userService.existsByEmail(request.getString())));
+            responseObserver.onNext(GrpcMapper.mapTo(userService.existsByEmail(request.getString())));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -33,7 +30,7 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     @Override
     public void existsUserByUUID(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
         try {
-            responseObserver.onNext(GrpcItemBuilder.buildFrom(userService.existsByUUID(UUID.fromString(request.getString()))));
+            responseObserver.onNext(GrpcMapper.mapTo(userService.existsByUUID(UUID.fromString(request.getString()))));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(e);
@@ -51,9 +48,23 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
     }
 
     @Override
-    public void registerUser(UserProtoConfiguration.UserRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
-            authenticationService.register(request);
-            responseObserver.onNext(GrpcItemBuilder.buildEmpty());
+    public void save(UserProtoConfiguration.UserMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
+        try {
+            userService.save(request);
+            responseObserver.onNext(GrpcMapper.mapTo());
             responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
+    }
+
+    @Override
+    public void getByAccountName(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.UserMessage> responseObserver) {
+        try {
+            responseObserver.onNext(userService.findByAccountName(request.getString()));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
     }
 }

@@ -26,6 +26,12 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
                   name: user_uuid
                   type: uuid
                   constraints:
@@ -45,5 +51,10 @@ databaseChangeLog:
               - column:
                   name: created_at
                   type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: main
+                  type: boolean
                   constraints:
                     nullable: false

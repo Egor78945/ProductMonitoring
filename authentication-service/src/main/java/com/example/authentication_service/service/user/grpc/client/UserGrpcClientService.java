@@ -9,8 +9,23 @@ public abstract class UserGrpcClientService extends GrpcClientService<UserProtoS
         super(stub);
     }
 
-    public abstract UserProtoConfiguration.UserMessage getUserByUUID(UserProtoConfiguration.StringMessage uuid);
-    public abstract void registerUser(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage);
-    public abstract UserProtoConfiguration.BooleanMessage existsUserByEmail(UserProtoConfiguration.StringMessage email);
-    public abstract UserProtoConfiguration.BooleanMessage existsUserByUUID(UserProtoConfiguration.StringMessage uuid);
+    public UserProtoConfiguration.UserMessage getUserByUUID(UserProtoConfiguration.StringMessage uuid) {
+        return stub.getUserByUUID(uuid);
+    }
+
+    public UserProtoConfiguration.UserMessage getByAccountName(UserProtoConfiguration.StringMessage accountName) {
+        return stub.getByAccountName(accountName);
+    }
+
+    public void registerUser(UserProtoConfiguration.UserMessage userMessage) {
+        stub.save(userMessage);
+    }
+
+    public UserProtoConfiguration.BooleanMessage existsUserByEmail(UserProtoConfiguration.StringMessage email) {
+        return stub.existsUserByEmail(email);
+    }
+
+    public UserProtoConfiguration.BooleanMessage existsUserByUUID(UserProtoConfiguration.StringMessage uuid) {
+        return stub.existsUserByUUID(uuid);
+    }
 }

@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+package com.example.grpc.user;
+
+message UserMessage {
+  optional int64 id = 1;
+  string uuid = 2;
+  string email = 3;
+  int64 status_id = 4;
+  int64 registered_at = 5;
+  repeated int64 userRoles = 6;
+}
+
+message AccountMessage {
+  optional int64 id = 1;
+  string uuid = 2;
+  string name = 3;
+  string user_uuid = 4;
+  int64 status_id = 5;
+  int64 created_at = 6;
+  bool main = 7;
+}
+
+message ProductMessage {
+  string url = 1;
+  string name = 2;
+  int32 actualPrice = 3;
+  int32 pastPrice = 4;
+  int64 updatedAt = 5;
+}
+message ProductRegistrationMessage {
+  string accountUuid = 1;
+  ProductMessage product = 2;
+}
+
+message AccountUuidProductUriMessage {
+  string accountUuid = 1;
+  string productUri = 2;
+}
+
+message ProductListMessage {
+  repeated ProductMessage products = 1;
+}
+
+message UserRoleMessage {
+  string userUUID = 1;
+  int64 roleId = 2;
+}
+
+message UserRegistrationMessage {
+  UserMessage user = 1;
+  AccountMessage account = 2;
+}
+
+message BooleanMessage {
+  bool boolean = 1;
+}
+
+message StringMessage {
+  string string = 1;
+}
+
+message StringIntMessage {
+  string string = 1;
+  int32 int = 2;
+}
+
+message StringLongMessage {
+  string string = 1;
+  int64 long = 2;
+}
+
+message MarketplaceDefinitionMessage {
+  int64 id = 1;
+  string name = 2;
+  string processorClassName = 3;
+}
+
+message ListMarketplaceDefinitionMessage {
+  repeated MarketplaceDefinitionMessage marketplaceDefinitionMessageList = 1;
+}
+
+message MarketplacePathDefinitionMessage {
+  int64 marketplaceId = 1;
+  string baseUrl = 2;
+}
+
+message LongMessage {
+  int64 long = 1;
+}
+
+message ListMarketplacePathDefinitionMessage {
+  repeated MarketplacePathDefinitionMessage marketplacePathDefinitionList = 1;
+}
+
+message MarketplaceSelectorMessage {
+  int64 id = 1;
+  int64 marketplaceId = 2;
+  string productName = 3;
+  string productPrice = 4;
+}
+
+message EmptyMessage {}
+
+service AuthenticationProtoService {
+  rpc register(UserRegistrationMessage) returns (UserRegistrationMessage);
+  rpc delete(UserRegistrationMessage) returns (EmptyMessage);
+}
+
+service UserProtoService {
+  rpc save(UserMessage) returns (EmptyMessage);
+  rpc existsUserByEmail(StringMessage) returns (BooleanMessage);
+  rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
+  rpc getUserByUUID(StringMessage) returns (UserMessage);
+  rpc getByAccountName(StringMessage) returns (UserMessage);
+}
+
+service ProductProtoService {
+  rpc save(ProductRegistrationMessage) returns (EmptyMessage);
+  rpc update(ProductMessage) returns (EmptyMessage);
+  rpc getByUrl(StringMessage) returns (ProductMessage);
+  rpc getAllExpired(EmptyMessage) returns (ProductListMessage);
+  rpc getAllByAccountUuidAndPage(StringIntMessage) returns (ProductListMessage);
+  rpc existsByUrl(StringMessage) returns (BooleanMessage);
+  rpc deleteAccountProductByAccountUuidAndProductUri(AccountUuidProductUriMessage) returns (EmptyMessage);
+}
+
+service AccountProtoService {
+  rpc save(AccountMessage) returns (EmptyMessage);
+  rpc existsAccountByUUID(StringMessage) returns (BooleanMessage);
+  rpc existsAccountByName(StringMessage) returns (BooleanMessage);
+  rpc getAccountByUUID(StringMessage) returns (AccountMessage);
+  rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
+}
+
+service MarketplaceDefinitionProtoService {
+  rpc getAll(EmptyMessage) returns (ListMarketplaceDefinitionMessage);
+}
+
+service MarketplacePathDefinitionProtoService {
+  rpc isMarketplaceSupported(StringMessage) returns (BooleanMessage);
+  rpc getSupportedMarketplaces(EmptyMessage) returns (ListMarketplacePathDefinitionMessage);
+  rpc getByMarketplaceDefinitionId(LongMessage) returns (ListMarketplacePathDefinitionMessage);
+}
+
+service MarketplaceSelectorProtoService {
+  rpc getByMarketplaceId(LongMessage) returns (MarketplaceSelectorMessage);
+  rpc getByMarketplaceName(StringMessage) returns (MarketplaceSelectorMessage);
+}

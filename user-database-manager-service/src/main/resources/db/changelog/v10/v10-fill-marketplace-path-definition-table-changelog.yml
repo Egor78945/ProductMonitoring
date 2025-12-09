@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: v10-2
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: marketplace_path_definition
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT COUNT(*) FROM marketplace_path_definition"
+      changes:
+        - loadData:
+            tableName: marketplace_path_definition
+            file: db/csv/marketplace_path_definition_table.csv
+            separator: ","
+            usePreparedStatements: false
+            columns:
+              - column:
+                  name: marketplace_id
+                  type: bigint
+              - column:
+                  name: base_url
+                  type: varchar(500)

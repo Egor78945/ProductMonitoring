@@ -1,0 +1,2 @@
+com.example.security_manager_spring_boot_starter.configuration.security.SecurityManagerSecurityConfiguration
+com.example.security_manager_spring_boot_starter.configuration.security.filter.SecurityManagerRequestFilterConfiguration

@@ -1,7 +1,11 @@
 spring:
   application:
     name: ${API_GATEWAY_HOST}
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT_INNER}/realms/authentication
   cloud:
     gateway:
       routes:
@@ -9,6 +13,14 @@ spring:
           uri: lb://${AUTHENTICATION_SERVICE_HOST}
           predicates:
             - Path=/api/v1/auth/**
+        - id: ${AUTHENTICATION_SERVICE_HOST}
+          uri: lb://${AUTHENTICATION_SERVICE_HOST}
+          predicates:
+            - Path=/api/v1/test/**
+        - id: ${PRODUCT_MANAGER_SERVICE_HOST}
+          uri: lb://${PRODUCT_MANAGER_SERVICE_HOST}
+          predicates:
+            - Path=/api/v1/product/**
 
 eureka:
   client:

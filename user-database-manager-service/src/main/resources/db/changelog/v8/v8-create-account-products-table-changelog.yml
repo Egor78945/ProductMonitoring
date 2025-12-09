@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: v8-1
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: account_products
+      changes:
+        - createTable:
+            tableName: account_products
+            columns:
+              - column:
+                  name: account_uuid
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: account_products_account
+                    referencedTableName: account
+                    referencedColumnNames: uuid
+              - column:
+                  name: product_url
+                  type: varchar(300)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: account_products_product
+                    referencedTableName: product
+                    referencedColumnNames: url

@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: v12-2
+      author: egor78396@gmail.com
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: user_notification_type
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT COUNT(*) FROM user_notification_type"
+      changes:
+        - loadData:
+            tableName: user_notification_type
+            file: db/csv/user_notification_type_table.csv
+            separator: ","
+            usePreparedStatements: false
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+              - column:
+                  name: name
+                  type: varchar(30)

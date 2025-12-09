@@ -4,4 +4,8 @@ public class ProcessingException extends RuntimeException {
     public ProcessingException(String message) {
         super(message);
     }
+
+    public ProcessingException(Object object) {
+        this(String.format("processing exception: %s", object));
+    }
 }

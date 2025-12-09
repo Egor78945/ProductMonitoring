@@ -16,7 +16,6 @@ java {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 ext {
@@ -32,7 +31,9 @@ dependencies {
     implementation "com.google.guava:guava:$guavaVersion"
     implementation "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
     implementation "org.keycloak:keycloak-admin-client:$keycloakAdminClientVersion"
-    implementation "com.example:async-spring-boot-starter:$springBootVersion"
+
+    implementation "com.example:security-manager-spring-boot-starter:3.4.1"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

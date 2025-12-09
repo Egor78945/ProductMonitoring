@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: product-processor-service
+  kafka:
+    bootstrap-servers: ${KAFKA1_HOST}:${KAFKA1_PORT_PLAINTEXT_INNER}, ${KAFKA2_HOST}:${KAFKA2_PORT_PLAINTEXT_INNER}
+    listener:
+      ack-mode: record
+    consumer:
+      auto-offset-reset: earliest
+      group-id: product
+    producer:
+      retries: 10
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+kafka:
+  replicas: 2
+  topic:
+    product:
+      save:
+        name: ${KAFKA_TOPIC_PRODUCT_SAVE}
+      update:
+        name: ${KAFKA_TOPIC_PRODUCT_UPDATE}
+    user:
+      notification:
+        name: ${KAFKA_TOPIC_USER_NOTIFICATION}
+    account:
+      product:
+        delete: ${KAFKA_TOPIC_ACCOUNT_PRODUCT_DELETE}
+
+product:
+  read:
+    count: 30
+
+web:
+  context:
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36
+    view:
+      size:
+        width: 1920
+        height: 1080
+
+server:
+  port: ${PRODUCT_PROCESSOR_SERVICE_PORT}
+
+grpc:
+  server:
+    port: ${PRODUCT_PROCESSOR_SERVICE_GRPC_PORT}
+  client:
+    user-database-grpc-service:
+      address: discovery:///${USER_DATABASE_MANAGER_SERVICE_HOST}
+      negotiation-type: plaintext

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: jwt-spring-boot-starter
+  main:
+    allow-bean-definition-overriding: true

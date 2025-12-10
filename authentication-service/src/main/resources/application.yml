@@ -44,5 +44,9 @@ keycloak:
     name: ${KEYCLOAK_ADMIN_NAME}
     password: ${KEYCLOAK_ADMIN_PASSWORD}
 
+async:
+  starter:
+    thread-pool-size: 30
+
 server:
   port: ${AUTHENTICATION_SERVICE_PORT}

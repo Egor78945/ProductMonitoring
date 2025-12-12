@@ -13,6 +13,8 @@ public abstract class AccountRepository<A> extends UUIDManager implements Entity
 
     public abstract Optional<A> getByUserUUID(UUID uuid);
 
+    public abstract Optional<A> getMainByUserUUID(UUID uuid);
+
     public abstract int getCountOfAccountsOfUserByUserUUID(UUID uuid);
 
     public abstract void deleteById(Long id);

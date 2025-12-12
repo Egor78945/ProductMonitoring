@@ -39,6 +39,11 @@ public abstract class AccountRepositoryService<A> implements AccountService<A> {
     }
 
     @Override
+    public A findMainByUserUuid(UUID uuid) {
+        return accountProtoRepository.getMainByUserUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
+    }
+
+    @Override
     public void deleteById(Long id) {
         accountProtoRepository.deleteById(id);
     }

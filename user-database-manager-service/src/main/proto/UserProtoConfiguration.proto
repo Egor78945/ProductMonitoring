@@ -150,6 +150,7 @@ service AccountProtoService {
   rpc existsAccountByName(StringMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
+  rpc getMainAccountByUserUUID(StringMessage) returns(AccountMessage);
 }
 
 service MarketplaceDefinitionProtoService {

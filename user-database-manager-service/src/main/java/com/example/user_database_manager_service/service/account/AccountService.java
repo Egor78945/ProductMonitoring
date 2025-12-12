@@ -11,6 +11,8 @@ public interface AccountService<A> extends EntityService<A> {
 
     A findByUserUUID(UUID uuid);
 
+    A findMainByUserUuid(UUID uuid);
+
     void deleteById(Long id);
 
     void deleteByAccountUuid(UUID accountUuid);

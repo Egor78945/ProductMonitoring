@@ -31,11 +31,13 @@ public abstract class UserSupplyingRegistrationProtoService implements UserSuppl
 
     @Override
     public UserProtoConfiguration.UserRegistrationMessage register(UserProtoConfiguration.UserRegistrationMessage registerModel) {
-        UserProtoConfiguration.UserMessage savedUser = userService.existsByEmail(registerModel.getUser().getEmail()) ? userService.findByEmail(registerModel.getUser().getEmail()) : userService.save(registerModel.getUser());
+        boolean exists = userService.existsByEmail(registerModel.getUser().getEmail());
+        UserProtoConfiguration.UserMessage savedUser = exists ? userService.findByEmail(registerModel.getUser().getEmail()) : userService.save(registerModel.getUser());
 
         UserProtoConfiguration.AccountMessage accountMessage = registerModel.getAccount()
                 .toBuilder()
                 .setUserUuid(savedUser.getUuid())
+                .setMain(!exists)
                 .build();
 
         UserProtoConfiguration.AccountMessage savedAccount = accountService.save(accountMessage);

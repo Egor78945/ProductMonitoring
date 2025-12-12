@@ -4,4 +4,5 @@ import java.util.UUID;
 
 public interface AccountService<A> {
     A getByUserUuid(UUID userUuid);
+    A getMainByUserUuid(UUID userUuid);
 }

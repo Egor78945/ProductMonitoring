@@ -17,4 +17,9 @@ public abstract class AccountProtoService implements AccountService<UserProtoCon
     public UserProtoConfiguration.AccountMessage getByUserUuid(UUID userUuid) {
         return accountGrpcClientService.getAccountByUserUUID(GrpcMessageBuilder.buildFrom(userUuid.toString()));
     }
+
+    @Override
+    public UserProtoConfiguration.AccountMessage getMainByUserUuid(UUID userUuid) {
+        return accountGrpcClientService.getMainAccountByUserUUID(GrpcMessageBuilder.buildFrom(userUuid.toString()));
+    }
 }

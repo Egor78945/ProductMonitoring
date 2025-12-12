@@ -1,19 +1,24 @@
 package com.example.authentication_service.service.security.authentication.user;
 
+import com.example.authentication_service.exception.KeycloakException;
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.KeycloakRegistrationModel;
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
+import com.example.authentication_service.service.account.AccountService;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
 import com.example.authentication_service.service.security.authentication.AuthenticationService;
 import com.example.authentication_service.service.security.authentication.grpc.AuthenticationGrpcClientService;
 import com.example.authentication_service.service.security.authentication.keycloak.KeycloakAuthenticationService;
+import com.example.authentication_service.service.user.UserService;
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.jwt_spring_boot_starter.service.jwt.JwtService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsyncTaskExecutorService;
 
@@ -21,17 +26,27 @@ import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsy
 public class UserAuthenticationServiceManager implements AuthenticationService<String, UserRegistrationModel> {
     private final AuthenticationGrpcClientService authenticationGrpcClientService;
     private final KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService;
+    private final UserService<UserProtoConfiguration.UserMessage> userService;
+    private final AccountService<UserProtoConfiguration.AccountMessage> accountService;
+    private final JwtService jwtService;
     private final AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService;
 
-    public UserAuthenticationServiceManager(AuthenticationGrpcClientService authenticationGrpcClientService, KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService, AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService) {
+    public UserAuthenticationServiceManager(AuthenticationGrpcClientService authenticationGrpcClientService, KeycloakAuthenticationService<String, KeycloakRegistrationModel> keycloakAuthenticationService, UserService<UserProtoConfiguration.UserMessage> userService, AccountService<UserProtoConfiguration.AccountMessage> accountService, JwtService jwtService, AsyncStarterAsyncTaskExecutorService asyncTaskExecutorService) {
         this.authenticationGrpcClientService = authenticationGrpcClientService;
         this.keycloakAuthenticationService = keycloakAuthenticationService;
+        this.userService = userService;
+        this.accountService = accountService;
+        this.jwtService = jwtService;
         this.asyncTaskExecutorService = asyncTaskExecutorService;
     }
 
     @Override
     public String login(String name, String password) {
-        return keycloakAuthenticationService.login(name, password);
+        UserProtoConfiguration.UserMessage userByAccountName = userService.getByAccountName(name);
+        keycloakAuthenticationService.login(userByAccountName.getEmail(), password);
+        UserProtoConfiguration.AccountMessage accountByUserUuid = accountService.getByUserUuid(UUID.fromString(userByAccountName.getUuid()));
+
+        return jwtService.generate(userByAccountName.getEmail(), Map.of("account_uuid", accountByUserUuid.getUuid()));
     }
 
     @Override

@@ -40,7 +40,7 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
         UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(registerModel.getName(), AccountStatusEnumeration.STATUS_ACTIVE, true);
         UserProtoConfiguration.UserRegistrationMessage userRegistrationResult = authenticationGrpcClientService.register(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
         try {
-            keycloakAuthenticationService.register(new KeycloakRegistrationModel(userRegistrationResult.getAccount().getName(), registerModel.getEmail(), registerModel.getPassword(), Map.of("account_uuid", List.of(userRegistrationResult.getAccount().getUuid()))));
+            keycloakAuthenticationService.register(new KeycloakRegistrationModel(registerModel.getEmail(), registerModel.getEmail(), registerModel.getPassword(), null));
         } catch (Exception e) {
             System.out.println("sending");
             asyncTaskExecutorService.run(() -> authenticationGrpcClientService.delete(userRegistrationResult));

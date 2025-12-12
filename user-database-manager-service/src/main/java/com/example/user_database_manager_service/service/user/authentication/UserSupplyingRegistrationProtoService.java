@@ -31,7 +31,7 @@ public abstract class UserSupplyingRegistrationProtoService implements UserSuppl
 
     @Override
     public UserProtoConfiguration.UserRegistrationMessage register(UserProtoConfiguration.UserRegistrationMessage registerModel) {
-        UserProtoConfiguration.UserMessage savedUser = userService.save(registerModel.getUser());
+        UserProtoConfiguration.UserMessage savedUser = userService.existsByEmail(registerModel.getUser().getEmail()) ? userService.findByEmail(registerModel.getUser().getEmail()) : userService.save(registerModel.getUser());
 
         UserProtoConfiguration.AccountMessage accountMessage = registerModel.getAccount()
                 .toBuilder()

@@ -76,4 +76,12 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository<U
                 .where(Tables.ACCOUNT.USER_UUID.eq(uuid).and(Tables.ACCOUNT.MAIN.eq(true)))
                 .fetchOptional(AccountMapper::map);
     }
+
+    @Override
+    public Optional<UserProtoConfiguration.AccountMessage> getByAccountName(String accountName) {
+        return dslContext
+                .selectFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.NAME.eq(accountName))
+                .fetchOptional(AccountMapper::map);
+    }
 }

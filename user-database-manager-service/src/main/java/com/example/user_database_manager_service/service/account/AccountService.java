@@ -13,6 +13,8 @@ public interface AccountService<A> extends EntityService<A> {
 
     A findMainByUserUuid(UUID uuid);
 
+    A findByAccountName(String accountName);
+
     void deleteById(Long id);
 
     void deleteByAccountUuid(UUID accountUuid);

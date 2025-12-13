@@ -15,4 +15,9 @@ public abstract class UserProtoService implements UserService<UserProtoConfigura
     public UserProtoConfiguration.UserMessage getByAccountName(String accountName) {
         return userGrpcClientService.getByAccountName(GrpcMessageBuilder.buildFrom(accountName));
     }
+
+    @Override
+    public UserProtoConfiguration.UserMessage getByEmail(String email) {
+        return userGrpcClientService.getByEmail(GrpcMessageBuilder.buildFrom(email));
+    }
 }

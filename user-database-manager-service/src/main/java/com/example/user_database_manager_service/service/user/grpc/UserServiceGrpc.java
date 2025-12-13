@@ -67,4 +67,14 @@ public class UserServiceGrpc extends UserProtoServiceGrpc.UserProtoServiceImplBa
             responseObserver.onError(e);
         }
     }
+
+    @Override
+    public void getByEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.UserMessage> responseObserver) {
+        try {
+            responseObserver.onNext(userService.findByEmail(request.getString()));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
+    }
 }

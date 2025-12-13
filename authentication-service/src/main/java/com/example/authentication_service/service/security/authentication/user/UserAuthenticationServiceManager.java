@@ -42,9 +42,10 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
 
     @Override
     public String login(String name, String password) {
-        UserProtoConfiguration.UserMessage userByAccountName = userService.getByAccountName(name);
+        boolean dog = name.contains("@");
+        UserProtoConfiguration.UserMessage userByAccountName = dog ? userService.getByEmail(name) : userService.getByAccountName(name);
         keycloakAuthenticationService.login(userByAccountName.getEmail(), password);
-        UserProtoConfiguration.AccountMessage accountByUserUuid = accountService.getByUserUuid(UUID.fromString(userByAccountName.getUuid()));
+        UserProtoConfiguration.AccountMessage accountByUserUuid = dog ? accountService.getMainByUserUuid(UUID.fromString(userByAccountName.getUuid())) : accountService.getByName(name);
 
         return jwtService.generate(userByAccountName.getEmail(), Map.of("account_uuid", accountByUserUuid.getUuid()));
     }
@@ -54,11 +55,13 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
         UserProtoConfiguration.UserMessage userMessage = GrpcMessageBuilder.buildFrom(registerModel.getEmail(), UserStatusEnumeration.STATUS_ACTIVE, List.of(UserRoleEnumeration.ROLE_USER.getId()));
         UserProtoConfiguration.AccountMessage accountMessage = GrpcMessageBuilder.buildFrom(registerModel.getName(), AccountStatusEnumeration.STATUS_ACTIVE, true);
         UserProtoConfiguration.UserRegistrationMessage userRegistrationResult = authenticationGrpcClientService.register(GrpcMessageBuilder.buildFrom(userMessage, accountMessage));
-        try {
-            keycloakAuthenticationService.register(new KeycloakRegistrationModel(registerModel.getEmail(), registerModel.getEmail(), registerModel.getPassword(), null));
-        } catch (Exception e) {
-            System.out.println("sending");
-            asyncTaskExecutorService.run(() -> authenticationGrpcClientService.delete(userRegistrationResult));
+        if (userRegistrationResult.getFirst()) {
+            try {
+                keycloakAuthenticationService.register(new KeycloakRegistrationModel(registerModel.getEmail(), registerModel.getEmail(), registerModel.getPassword(), null));
+            } catch (Exception e) {
+                System.out.println("sending");
+                asyncTaskExecutorService.run(() -> authenticationGrpcClientService.delete(userRegistrationResult));
+            }
         }
     }
 

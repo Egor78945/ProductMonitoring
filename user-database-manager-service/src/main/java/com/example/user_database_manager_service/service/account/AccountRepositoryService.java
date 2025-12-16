@@ -47,39 +47,4 @@ public abstract class AccountRepositoryService<A> implements AccountService<A> {
     public A findByAccountName(String accountName) {
         return accountProtoRepository.getByAccountName(accountName).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
-
-    @Override
-    public void deleteById(Long id) {
-        accountProtoRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteByAccountUuid(UUID accountUuid) {
-        accountProtoRepository.deleteByAccountUuid(accountUuid);
-    }
-
-    @Override
-    public void deleteByUserUuid(UUID uuid) {
-        accountProtoRepository.deleteByUserUuid(uuid);
-    }
-
-    @Override
-    public boolean existsByUserUUID(UUID uuid) {
-        return accountProtoRepository.existsByUserUUID(uuid);
-    }
-
-    @Override
-    public boolean existsByName(String name) {
-        return accountProtoRepository.existsByName(name);
-    }
-
-    @Override
-    public boolean existsByUUID(UUID uuid) {
-        return accountProtoRepository.existsByUUID(uuid);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return accountProtoRepository.existsById(id);
-    }
 }

@@ -7,17 +7,4 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class AccountProductRepository<AP> implements EntityRepository<AP> {
-    public abstract void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl);
-
-    public abstract void deleteAllByAccountUuid(UUID accountUuid);
-
-    public abstract void deleteAllByProductUrl(URI productUrl);
-
-    public abstract void deleteAllByUserUuid(UUID userUuid);
-
-    public abstract boolean existsBy(UUID accountUuid, URI productUrl);
-
-    public abstract boolean existsByProductUrl(URI productUrl);
-
-    public abstract boolean existsByAccountUuid(UUID accountUuid);
 }

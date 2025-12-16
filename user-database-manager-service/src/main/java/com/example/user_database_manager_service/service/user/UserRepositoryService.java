@@ -42,35 +42,4 @@ public abstract class UserRepositoryService<U> implements UserService<U>{
     public U findByAccountName(String accountName) {
         return userRepository.getByAccountName(accountName).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
-
-    @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteByUuid(UUID uuid) {
-        userRepository.deleteByUuid(uuid);
-    }
-
-    @Override
-    public boolean existsBy(Long id, UUID uuid, String email) {
-        return userRepository.existsBy(id, uuid, email);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return userRepository.existsById(id);
-    }
-
-    @Override
-    public boolean existsByUUID(UUID uuid) {
-        return userRepository.existsByUUID(uuid);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
 }

@@ -16,10 +16,4 @@ public abstract class ProductRepository<P> implements EntityRepository<P> {
     public abstract List<P> findAllExpired(int timeLimit, DatePart datePart, int count);
 
     public abstract List<P> findAllBy(UUID accountUuid, int page, int count);
-
-    public abstract boolean existsByUrl(URI url);
-
-    public abstract boolean existsBy(UUID accountUuid, URI productUrl);
-
-    public abstract void deleteByUrl(URI url);
 }

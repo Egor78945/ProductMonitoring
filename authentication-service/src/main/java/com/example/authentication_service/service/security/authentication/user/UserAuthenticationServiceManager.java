@@ -1,6 +1,6 @@
 package com.example.authentication_service.service.security.authentication.user;
 
-import com.example.authentication_service.exception.KeycloakException;
+import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsyncTaskExecutorService;
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.KeycloakRegistrationModel;
 import com.example.authentication_service.model.security.UserRegistrationModel;
@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import com.example.async_spring_boot_starter.service.concurrency.AsyncStarterAsyncTaskExecutorService;
 
 @Service
 public class UserAuthenticationServiceManager implements AuthenticationService<String, UserRegistrationModel> {
@@ -60,7 +58,7 @@ public class UserAuthenticationServiceManager implements AuthenticationService<S
                 keycloakAuthenticationService.register(new KeycloakRegistrationModel(registerModel.getEmail(), registerModel.getEmail(), registerModel.getPassword(), null));
             } catch (Exception e) {
                 System.out.println("sending");
-                asyncTaskExecutorService.run(() -> authenticationGrpcClientService.delete(userRegistrationResult));
+                asyncTaskExecutorService.run(() -> authenticationGrpcClientService.deleteByEmail(GrpcMessageBuilder.buildFrom(registerModel.getEmail())));
             }
         }
     }

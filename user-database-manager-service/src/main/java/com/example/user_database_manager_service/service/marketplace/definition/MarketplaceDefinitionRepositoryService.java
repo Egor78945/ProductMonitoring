@@ -25,14 +25,4 @@ public abstract class MarketplaceDefinitionRepositoryService<MD> implements Mark
     public List<MD> findAll() {
         return marketplaceDefinitionRepository.findAll();
     }
-
-    @Override
-    public boolean existsByName(String name) {
-        return marketplaceDefinitionRepository.existsByName(name);
-    }
-
-    @Override
-    public boolean existsById(long id) {
-        return marketplaceDefinitionRepository.existsById(id);
-    }
 }

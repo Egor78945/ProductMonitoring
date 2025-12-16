@@ -5,20 +5,24 @@ import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.ProcessingException;
 import com.example.user_database_manager_service.repository.account.AccountRepository;
 import com.example.user_database_manager_service.repository.user.UserRepository;
+import com.example.user_database_manager_service.service.account.common.CommonAccountService;
+import com.example.user_database_manager_service.service.user.common.CommonUserService;
 
 import java.util.UUID;
 
 public abstract class AccountRepositoryProtoService extends AccountRepositoryService<UserProtoConfiguration.AccountMessage> {
-    protected final UserRepository<?> userRepository;
+    protected final CommonUserService commonUserService;
+    protected final CommonAccountService commonAccountService;
 
-    public AccountRepositoryProtoService(AccountRepository<UserProtoConfiguration.AccountMessage> accountProtoRepository, UserRepository<?> userRepository) {
+    public AccountRepositoryProtoService(AccountRepository<UserProtoConfiguration.AccountMessage> accountProtoRepository, CommonUserService commonUserService, CommonAccountService commonAccountService) {
         super(accountProtoRepository);
-        this.userRepository = userRepository;
+        this.commonUserService = commonUserService;
+        this.commonAccountService = commonAccountService;
     }
 
     @Override
     public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage account) {
-        if (userRepository.existsByUUID(UUID.fromString(account.getUserUuid())) && !accountProtoRepository.existsByName(account.getName()) && accountProtoRepository.getCountOfAccountsOfUserByUserUUID(UUID.fromString(account.getUserUuid())) < 3) {
+        if (commonUserService.existsByUUID(UUID.fromString(account.getUserUuid())) && !commonAccountService.existsByName(account.getName()) && commonAccountService.getCountOfAccountsOfUserByUserUUID(UUID.fromString(account.getUserUuid())) < 3) {
             return super.save(account);
         }
         throw new ProcessingException(String.format("User not found or count of accounts of user is exceeded: %s", account));
@@ -26,7 +30,7 @@ public abstract class AccountRepositoryProtoService extends AccountRepositorySer
 
     @Override
     public UserProtoConfiguration.AccountMessage update(UserProtoConfiguration.AccountMessage account) {
-        if (existsByUUID(UUID.fromString(account.getUuid()))) {
+        if (commonAccountService.existsByUUID(UUID.fromString(account.getUuid()))) {
             return super.update(account);
         }
         throw new NotFoundException(String.format("Account is not found by uuid: %s", account.getUuid()));

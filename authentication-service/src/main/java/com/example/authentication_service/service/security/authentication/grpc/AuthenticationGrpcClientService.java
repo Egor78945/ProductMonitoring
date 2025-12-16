@@ -13,7 +13,7 @@ public abstract class AuthenticationGrpcClientService extends GrpcClientService<
         return stub.register(userRegistrationMessage);
     }
 
-    public void delete(UserProtoConfiguration.UserRegistrationMessage userRegistrationMessage) {
-        stub.delete(userRegistrationMessage);
+    public void deleteByEmail(UserProtoConfiguration.StringMessage userEmail) {
+        stub.deleteByEmail(userEmail);
     }
 }

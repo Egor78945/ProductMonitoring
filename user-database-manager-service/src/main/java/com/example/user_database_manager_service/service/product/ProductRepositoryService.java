@@ -44,19 +44,4 @@ public abstract class ProductRepositoryService<P> implements ProductService<P> {
     public List<P> findAllBy(UUID accountUuid, int page, int count) {
         return productRepository.findAllBy(accountUuid, page, count);
     }
-
-    @Override
-    public boolean existsByUrl(URI url) {
-        return productRepository.existsByUrl(url);
-    }
-
-    @Override
-    public boolean existsBy(UUID accountUuid, URI productUrl) {
-        return productRepository.existsBy(accountUuid, productUrl);
-    }
-
-    @Override
-    public void deleteByUrl(URI url) {
-        productRepository.deleteByUrl(url);
-    }
 }

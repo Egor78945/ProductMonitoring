@@ -30,9 +30,4 @@ public abstract class MarketplaceSelectorRepositoryService<MS> implements Market
     public MS getByMarketplaceName(String name) {
         return marketplaceSelectorRepository.findByMarketplaceName(name).orElseThrow(() -> new ProcessingException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
-
-    @Override
-    public boolean existsById(long id) {
-        return marketplaceSelectorRepository.existsById(id);
-    }
 }

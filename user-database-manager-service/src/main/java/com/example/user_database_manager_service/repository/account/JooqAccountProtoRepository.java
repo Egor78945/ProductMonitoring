@@ -20,7 +20,7 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository<U
     public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage entity) {
         return dslContext
                 .insertInto(Tables.ACCOUNT)
-                .set(Tables.ACCOUNT.UUID, build())
+                .set(Tables.ACCOUNT.UUID, UUID.randomUUID())
                 .set(Tables.ACCOUNT.USER_UUID, UUID.fromString(entity.getUserUuid()))
                 .set(Tables.ACCOUNT.NAME, entity.getName())
                 .set(Tables.ACCOUNT.STATUS_ID, entity.getStatusId())

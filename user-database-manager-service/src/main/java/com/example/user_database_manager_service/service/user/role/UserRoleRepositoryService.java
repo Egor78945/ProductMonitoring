@@ -7,7 +7,7 @@ import com.example.user_database_manager_service.repository.user.role.UserRoleRe
 import java.util.List;
 import java.util.UUID;
 
-public abstract class UserRoleRepositoryService<U> implements UserRoleService<U>{
+public abstract class UserRoleRepositoryService<U> implements UserRoleService<U> {
     protected final UserRoleRepository<U> userRoleRepository;
 
     public UserRoleRepositoryService(UserRoleRepository<U> userRoleRepository) {
@@ -32,25 +32,5 @@ public abstract class UserRoleRepositoryService<U> implements UserRoleService<U>
     @Override
     public List<U> findByUserUUID(UUID userUUID) {
         return userRoleRepository.getUserRolesByUserUUID(userUUID);
-    }
-
-    @Override
-    public void deleteAllByRoleId(Long roleId) {
-        userRoleRepository.deleteAllByRoleId(roleId);
-    }
-
-    @Override
-    public void deleteAllByUserUuid(UUID userUuid) {
-        userRoleRepository.deleteAllByUserUuid(userUuid);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return userRoleRepository.existsById(id);
-    }
-
-    @Override
-    public boolean existsBy(UUID userUuid, long roleId) {
-        return userRoleRepository.existsBy(userUuid, roleId);
     }
 }

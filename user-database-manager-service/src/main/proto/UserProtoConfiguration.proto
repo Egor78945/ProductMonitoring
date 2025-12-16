@@ -117,7 +117,7 @@ message EmptyMessage {}
 
 service AuthenticationProtoService {
   rpc register(UserRegistrationMessage) returns (UserRegistrationMessage);
-  rpc delete(UserRegistrationMessage) returns (EmptyMessage);
+  rpc deleteByEmail(StringMessage) returns (EmptyMessage);
 }
 
 service UserProtoService {

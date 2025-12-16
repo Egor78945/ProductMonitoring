@@ -16,10 +16,4 @@ public interface ProductService<P> extends EntityService<P> {
     List<P> findAllExpired(int timeLimit, DatePart datePart, int count);
 
     List<P> findAllBy(UUID accountUuid, int page, int count);
-
-    boolean existsByUrl(URI url);
-
-    boolean existsBy(UUID accountUuid, URI productUrl);
-
-    void deleteByUrl(URI url);
 }

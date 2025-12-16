@@ -13,16 +13,4 @@ public interface UserService<U> extends EntityService<U> {
     U findByEmail(String email);
 
     U findByAccountName(String accountName);
-
-    void deleteById(Long id);
-
-    void deleteByUuid(UUID uuid);
-
-    boolean existsBy(Long id, UUID uuid, String email);
-
-    boolean existsById(Long id);
-
-    boolean existsByUUID(UUID uuid);
-
-    boolean existsByEmail(String email);
 }

@@ -7,17 +7,4 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AccountProductService<AP> extends EntityService<AP> {
-    void deleteAllByAccountUuid(UUID accountUuid);
-
-    void deleteAllByProductUrl(URI productUrl);
-
-    void deleteAllByUserUuid(UUID userUuid);
-
-    void deleteByAccountUuidAndProductUri(UUID accountUuid, URI productUrl);
-
-    boolean existsBy(UUID accountUuid, URI productUrl);
-
-    boolean existsByAccountUuid(UUID accountUuid);
-
-    boolean existsByProductUrl(URI productUrl);
 }

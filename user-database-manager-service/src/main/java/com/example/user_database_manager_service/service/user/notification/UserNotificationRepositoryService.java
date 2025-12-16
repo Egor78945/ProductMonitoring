@@ -26,29 +26,4 @@ public abstract class UserNotificationRepositoryService<UN> implements UserNotif
     public Optional<UN> findByUserUuidAndNotificationTypeId(UUID userUuid, Long notificationTypeId) {
         return userNotificationEntityRepository.findByUserUuidAndNotificationTypeId(userUuid, notificationTypeId);
     }
-
-    @Override
-    public void deleteAllByUserUuid(UUID userUuid) {
-        userNotificationEntityRepository.deleteAllByUserUuid(userUuid);
-    }
-
-    @Override
-    public void deleteAllByNotificationTypeId(Long notificationTypeId) {
-        userNotificationEntityRepository.deleteAllByNotificationTypeId(notificationTypeId);
-    }
-
-    @Override
-    public boolean existsBy(UUID userUuid, Long notificationTypeId) {
-        return userNotificationEntityRepository.existsBy(userUuid, notificationTypeId);
-    }
-
-    @Override
-    public boolean existsByUserUuid(UUID userUuid) {
-        return userNotificationEntityRepository.existsByUserUuid(userUuid);
-    }
-
-    @Override
-    public boolean existsByNotificationTypeId(Long notificationTypeId) {
-        return userNotificationEntityRepository.existsByNotificationTypeId(notificationTypeId);
-    }
 }

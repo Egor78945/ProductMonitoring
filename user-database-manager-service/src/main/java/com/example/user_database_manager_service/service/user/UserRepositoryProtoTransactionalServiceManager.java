@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserRepositoryProtoTransactionalServiceManager extends UserRepositoryProtoService{
-    public UserRepositoryProtoTransactionalServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userProtoRepository) {
-        super(userProtoRepository);
+    public UserRepositoryProtoTransactionalServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userRepository) {
+        super(userRepository);
     }
 
     @Override

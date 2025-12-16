@@ -6,15 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class UserNotificationRepository<UN> implements EntityRepository<UN> {
-    public abstract void deleteAllByUserUuid(UUID userUuid);
-
-    public abstract void deleteAllByNotificationTypeId(Long notificationTypeId);
-
     public abstract Optional<UN> findByUserUuidAndNotificationTypeId(UUID userUuid, Long notificationTypeId);
-
-    public abstract boolean existsBy(UUID userUuid, Long notificationTypeId);
-
-    public abstract boolean existsByNotificationTypeId(Long notificationTypeId);
-
-    public abstract boolean existsByUserUuid(UUID userUuid);
 }

@@ -20,7 +20,7 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository<U
     public UserProtoConfiguration.AccountMessage save(UserProtoConfiguration.AccountMessage entity) {
         return dslContext
                 .insertInto(Tables.ACCOUNT)
-                .set(Tables.ACCOUNT.UUID, build())
+                .set(Tables.ACCOUNT.UUID, UUID.randomUUID())
                 .set(Tables.ACCOUNT.USER_UUID, UUID.fromString(entity.getUserUuid()))
                 .set(Tables.ACCOUNT.NAME, entity.getName())
                 .set(Tables.ACCOUNT.STATUS_ID, entity.getStatusId())
@@ -66,6 +66,32 @@ public abstract class JooqAccountProtoRepository extends JooqAccountRepository<U
         return dslContext
                 .selectFrom(Tables.ACCOUNT)
                 .where(Tables.ACCOUNT.ID.eq(id))
+                .fetchOptional(AccountMapper::map);
+    }
+
+    @Override
+    public Optional<UserProtoConfiguration.AccountMessage> getMainByUserUUID(UUID uuid) {
+        return dslContext
+                .selectFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.USER_UUID.eq(uuid).and(Tables.ACCOUNT.MAIN.eq(true)))
+                .fetchOptional(AccountMapper::map);
+    }
+
+    @Override
+    public Optional<UserProtoConfiguration.AccountMessage> getMainByUserEmail(String email) {
+        return dslContext
+                .select(Tables.ACCOUNT)
+                .from(Tables.USERS.join(Tables.ACCOUNT)
+                        .on(Tables.USERS.UUID.eq(Tables.ACCOUNT.USER_UUID)))
+                .where(Tables.USERS.EMAIL.eq(email).and(Tables.ACCOUNT.MAIN.eq(true)))
+                .fetchOptional(r -> AccountMapper.map(r.value1()));
+    }
+
+    @Override
+    public Optional<UserProtoConfiguration.AccountMessage> getByAccountName(String accountName) {
+        return dslContext
+                .selectFrom(Tables.ACCOUNT)
+                .where(Tables.ACCOUNT.NAME.eq(accountName))
                 .fetchOptional(AccountMapper::map);
     }
 }

@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @GrpcService
 public class AuthenticationServiceGrpc extends AuthenticationProtoServiceGrpc.AuthenticationProtoServiceImplBase {
-    private final UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService;
+    private final UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage, String> userAuthenticationService;
 
-    public AuthenticationServiceGrpc(@Qualifier("userSupplyingRegistrationProtoTransactionalServiceManager") UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage> userAuthenticationService) {
+    public AuthenticationServiceGrpc(@Qualifier("userSupplyingRegistrationProtoTransactionalServiceManager") UserSupplyingRegistrationService<UserProtoConfiguration.UserRegistrationMessage, String> userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }
 
@@ -30,9 +30,9 @@ public class AuthenticationServiceGrpc extends AuthenticationProtoServiceGrpc.Au
     }
 
     @Override
-    public void delete(UserProtoConfiguration.UserRegistrationMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
+    public void deleteByEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
         System.out.println("deleting user");
-        userAuthenticationService.rollback(request);
+        userAuthenticationService.deleteByEmail(request.getString());
         System.out.println("user deleted");
         responseObserver.onNext(GrpcMapper.mapTo());
         responseObserver.onCompleted();

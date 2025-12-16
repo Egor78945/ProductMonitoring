@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Primary
 public class UserRepositoryProtoServiceManager extends UserRepositoryProtoService{
-    public UserRepositoryProtoServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userProtoRepository) {
-        super(userProtoRepository);
+    public UserRepositoryProtoServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userRepository) {
+        super(userRepository);
     }
 }

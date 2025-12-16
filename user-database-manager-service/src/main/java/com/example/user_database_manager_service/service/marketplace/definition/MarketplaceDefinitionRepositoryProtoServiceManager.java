@@ -4,17 +4,20 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.AlreadyExistsException;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.repository.marketplace.definition.MarketplaceDefinitionRepository;
+import com.example.user_database_manager_service.service.marketplace.definition.common.CommonMarketplaceDefinitionService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MarketplaceDefinitionRepositoryProtoServiceManager extends MarketplaceDefinitionRepositoryService<UserProtoConfiguration.MarketplaceDefinitionMessage> {
-    public MarketplaceDefinitionRepositoryProtoServiceManager(MarketplaceDefinitionRepository<UserProtoConfiguration.MarketplaceDefinitionMessage> marketplaceDefinitionRepository) {
+    protected final CommonMarketplaceDefinitionService commonMarketplaceDefinitionService;
+    public MarketplaceDefinitionRepositoryProtoServiceManager(MarketplaceDefinitionRepository<UserProtoConfiguration.MarketplaceDefinitionMessage> marketplaceDefinitionRepository, CommonMarketplaceDefinitionService commonMarketplaceDefinitionService) {
         super(marketplaceDefinitionRepository);
+        this.commonMarketplaceDefinitionService = commonMarketplaceDefinitionService;
     }
 
     @Override
     public UserProtoConfiguration.MarketplaceDefinitionMessage save(UserProtoConfiguration.MarketplaceDefinitionMessage entity) {
-        if (!existsByName(entity.getName())) {
+        if (!commonMarketplaceDefinitionService.existsByName(entity.getName())) {
             return super.save(entity);
         } else
             throw new AlreadyExistsException(String.format("MarketplaceDefinition is already exists by name: %s", entity.getName()));
@@ -22,7 +25,7 @@ public class MarketplaceDefinitionRepositoryProtoServiceManager extends Marketpl
 
     @Override
     public UserProtoConfiguration.MarketplaceDefinitionMessage update(UserProtoConfiguration.MarketplaceDefinitionMessage entity) {
-        if (existsByName(entity.getName())) {
+        if (commonMarketplaceDefinitionService.existsByName(entity.getName())) {
             return super.save(entity);
         } else
             throw new NotFoundException(String.format("MarketplaceDefinition is not found by name: %s", entity.getName()));

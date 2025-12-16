@@ -36,7 +36,6 @@ databaseChangeLog:
                   type: uuid
                   constraints:
                     nullable: false
-                    unique: true
                     foreignKeyName: account_users_uuid
                     referencedTableName: users
                     referencedColumnNames: uuid

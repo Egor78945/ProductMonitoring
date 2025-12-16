@@ -1,6 +1,7 @@
 package com.example.user_database_manager_service.repository.user;
 
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.user_database_manager_service.service.common.utils.UUIDManager;
 import com.example.user_database_manager_service.service.user.mapper.UserMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;
@@ -20,7 +21,7 @@ public abstract class JooqUserProtoRepository extends JooqUserRepository<UserPro
     public UserProtoConfiguration.UserMessage save(UserProtoConfiguration.UserMessage user) {
         return dslContext
                 .insertInto(Tables.USERS)
-                .set(Tables.USERS.UUID, build())
+                .set(Tables.USERS.UUID, UUID.randomUUID())
                 .set(Tables.USERS.EMAIL, user.getEmail())
                 .set(Tables.USERS.STATUS_ID, user.getStatusId())
                 .set(Tables.USERS.REGISTERED_AT, LocalDateTime.ofInstant(Instant.ofEpochMilli(user.getRegisteredAt()), ZoneId.systemDefault()))

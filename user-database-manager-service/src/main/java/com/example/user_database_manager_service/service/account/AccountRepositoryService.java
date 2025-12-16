@@ -39,37 +39,17 @@ public abstract class AccountRepositoryService<A> implements AccountService<A> {
     }
 
     @Override
-    public void deleteById(Long id) {
-        accountProtoRepository.deleteById(id);
+    public A findMainByUserUuid(UUID uuid) {
+        return accountProtoRepository.getMainByUserUUID(uuid).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
-    public void deleteByAccountUuid(UUID accountUuid) {
-        accountProtoRepository.deleteByAccountUuid(accountUuid);
+    public A findMainByUserEmail(String email) {
+        return accountProtoRepository.getMainByUserEmail(email).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 
     @Override
-    public void deleteByUserUuid(UUID uuid) {
-        accountProtoRepository.deleteByUserUuid(uuid);
-    }
-
-    @Override
-    public boolean existsByUserUUID(UUID uuid) {
-        return accountProtoRepository.existsByUserUUID(uuid);
-    }
-
-    @Override
-    public boolean existsByName(String name) {
-        return accountProtoRepository.existsByName(name);
-    }
-
-    @Override
-    public boolean existsByUUID(UUID uuid) {
-        return accountProtoRepository.existsByUUID(uuid);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return accountProtoRepository.existsById(id);
+    public A findByAccountName(String accountName) {
+        return accountProtoRepository.getByAccountName(accountName).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }
 }

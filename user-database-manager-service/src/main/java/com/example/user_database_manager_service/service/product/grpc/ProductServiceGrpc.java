@@ -5,10 +5,11 @@ import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.exception.AlreadyExistsException;
 import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
-import com.example.user_database_manager_service.service.account.product.AccountProductService;
+import com.example.user_database_manager_service.service.account.product.common.CommonAccountProductService;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
 import com.example.user_database_manager_service.service.product.ProductConsumingRegistrationProtoService;
 import com.example.user_database_manager_service.service.product.ProductService;
+import com.example.user_database_manager_service.service.product.common.CommonProductService;
 import com.example.user_database_manager_service.service.product.mapper.ProductMapper;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -21,12 +22,14 @@ import java.util.UUID;
 @GrpcService
 public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServiceImplBase {
     private final ProductService<UserProtoConfiguration.ProductMessage> productService;
-    private final AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService;
+    private final CommonProductService commonProductService;
+    private final CommonAccountProductService commonAccountProductService;
     private final ProductConsumingRegistrationProtoService productConsumingRegistrationProtoService;
 
-    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService, AccountProductService<UserProtoConfiguration.AccountUuidProductUriMessage> accountProductService, @Qualifier("productConsumingRegistrationProtoTransactionalServiceManager") ProductConsumingRegistrationProtoService productConsumingRegistrationProtoService) {
+    public ProductServiceGrpc(ProductService<UserProtoConfiguration.ProductMessage> productService, CommonProductService commonProductService, CommonAccountProductService commonAccountProductService, @Qualifier("productConsumingRegistrationProtoTransactionalServiceManager") ProductConsumingRegistrationProtoService productConsumingRegistrationProtoService) {
         this.productService = productService;
-        this.accountProductService = accountProductService;
+        this.commonProductService = commonProductService;
+        this.commonAccountProductService = commonAccountProductService;
         this.productConsumingRegistrationProtoService = productConsumingRegistrationProtoService;
     }
 
@@ -55,7 +58,7 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
 
     @Override
     public void deleteAccountProductByAccountUuidAndProductUri(UserProtoConfiguration.AccountUuidProductUriMessage request, StreamObserver<UserProtoConfiguration.EmptyMessage> responseObserver) {
-        accountProductService.deleteByAccountUuidAndProductUri(UUID.fromString(request.getAccountUuid()), URI.create(request.getProductUri()));
+        commonAccountProductService.deleteByAccountUuidAndProductUri(UUID.fromString(request.getAccountUuid()), URI.create(request.getProductUri()));
         responseObserver.onNext(GrpcMapper.mapTo());
         responseObserver.onCompleted();
     }
@@ -85,7 +88,7 @@ public class ProductServiceGrpc extends ProductProtoServiceGrpc.ProductProtoServ
 
     @Override
     public void existsByUrl(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
-        responseObserver.onNext(GrpcMapper.mapTo(productService.existsByUrl(URI.create(request.getString()))));
+        responseObserver.onNext(GrpcMapper.mapTo(commonProductService.existsByUrl(URI.create(request.getString()))));
         responseObserver.onCompleted();
     }
 }

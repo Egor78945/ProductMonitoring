@@ -7,6 +7,7 @@ import com.example.user_database_manager_service.exception.NotFoundException;
 import com.example.user_database_manager_service.exception.message.ExceptionMessage;
 import com.example.user_database_manager_service.service.common.grpc.mapper.GrpcMapper;
 import com.example.user_database_manager_service.service.user.notification.UserNotificationService;
+import com.example.user_database_manager_service.service.user.notification.common.CommonUserNotificationService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
@@ -15,9 +16,11 @@ import java.util.UUID;
 @GrpcService
 public class UserNotificationServiceGrpc extends UserNotificationProtoServiceGrpc.UserNotificationProtoServiceImplBase {
     private final UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService;
+    private final CommonUserNotificationService commonUserNotificationService;
 
-    public UserNotificationServiceGrpc(UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService) {
+    public UserNotificationServiceGrpc(UserNotificationService<UserProtoConfiguration.UserNotificationMessage> userNotificationService, CommonUserNotificationService commonUserNotificationService) {
         this.userNotificationService = userNotificationService;
+        this.commonUserNotificationService = commonUserNotificationService;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class UserNotificationServiceGrpc extends UserNotificationProtoServiceGrp
 
     @Override
     public void existsByUserUuidAndNotificationTypeId(UserProtoConfiguration.StringLongMessage request, StreamObserver<UserProtoConfiguration.BooleanMessage> responseObserver) {
-        responseObserver.onNext(GrpcMapper.mapTo(userNotificationService.existsBy(UUID.fromString(request.getString()), request.getLong())));
+        responseObserver.onNext(GrpcMapper.mapTo(commonUserNotificationService.existsBy(UUID.fromString(request.getString()), request.getLong())));
         responseObserver.onCompleted();
     }
 }

@@ -57,6 +57,7 @@ message UserRoleMessage {
 message UserRegistrationMessage {
   UserMessage user = 1;
   AccountMessage account = 2;
+  bool first = 3;
 }
 
 message BooleanMessage {
@@ -116,7 +117,7 @@ message EmptyMessage {}
 
 service AuthenticationProtoService {
   rpc register(UserRegistrationMessage) returns (UserRegistrationMessage);
-  rpc delete(UserRegistrationMessage) returns (EmptyMessage);
+  rpc deleteByEmail(StringMessage) returns (EmptyMessage);
 }
 
 service UserProtoService {
@@ -125,6 +126,7 @@ service UserProtoService {
   rpc existsUserByUUID(StringMessage) returns (BooleanMessage);
   rpc getUserByUUID(StringMessage) returns (UserMessage);
   rpc getByAccountName(StringMessage) returns (UserMessage);
+  rpc getByEmail(StringMessage) returns (UserMessage);
 }
 
 service UserNotificationProtoService {
@@ -150,6 +152,9 @@ service AccountProtoService {
   rpc existsAccountByName(StringMessage) returns (BooleanMessage);
   rpc getAccountByUUID(StringMessage) returns (AccountMessage);
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
+  rpc getAccountByName(StringMessage) returns (AccountMessage);
+  rpc getMainAccountByUserUUID(StringMessage) returns(AccountMessage);
+  rpc getMainAccountByUserEmail(StringMessage) returns(AccountMessage);
 }
 
 service MarketplaceDefinitionProtoService {

@@ -8,7 +8,4 @@ import java.util.List;
 public interface MarketplacePathDefinitionService<MPD> extends EntityService<MPD> {
     List<MPD> findAll();
     List<MPD> findAllByMarketplaceDefinitionId(Long id);
-    boolean existsByMarketplaceDomain(String marketplaceDomain);
-    boolean existsByMarketplaceUrl(URI marketplaceUrl);
-    boolean existsById(long id);
 }

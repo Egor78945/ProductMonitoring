@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface MarketplaceDefinitionService<MD> extends EntityService<MD> {
     List<MD> findAll();
-    boolean existsByName(String name);
-    boolean existsById(long id);
 }

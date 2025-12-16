@@ -48,5 +48,10 @@ async:
   starter:
     thread-pool-size: 30
 
+jwt:
+  starter:
+    secret: ${JWT_SECRET}
+    lifetime: ${JWT_LIFETIME}
+
 server:
   port: ${AUTHENTICATION_SERVICE_PORT}

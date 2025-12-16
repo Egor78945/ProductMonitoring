@@ -22,7 +22,7 @@ public class KeycloakAuthenticationRealmAuthenticationServiceManager implements 
 
     @Override
     public void register(KeycloakRegistrationModel keycloakRegistrationModel) {
-        String userId = keycloakService.createUser(keycloakEnvironment.getKeycloakRealmAuthenticationName(), KeycloakItemBuilder.buildUserRepresentation(keycloakRegistrationModel.getUsername(), keycloakRegistrationModel.getEmail(), keycloakRegistrationModel.getAttributes()));
+        String userId = keycloakService.createUser(keycloakEnvironment.getKeycloakRealmAuthenticationName(), KeycloakItemBuilder.buildUserRepresentation(keycloakRegistrationModel.getUsername(),keycloakRegistrationModel.getEmail(), null));
         keycloakService.resetPassword(keycloakEnvironment.getKeycloakRealmAuthenticationName(), userId, keycloakRegistrationModel.getPassword());
         keycloakService.joinGroup(keycloakEnvironment.getKeycloakRealmAuthenticationName(), userId, keycloakEnvironment.getKeycloakRealmAuthenticationGroupUserRolesName());
     }

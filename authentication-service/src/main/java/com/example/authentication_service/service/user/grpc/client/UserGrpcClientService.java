@@ -17,6 +17,10 @@ public abstract class UserGrpcClientService extends GrpcClientService<UserProtoS
         return stub.getByAccountName(accountName);
     }
 
+    public UserProtoConfiguration.UserMessage getByEmail(UserProtoConfiguration.StringMessage email) {
+        return stub.getByEmail(email);
+    }
+
     public void registerUser(UserProtoConfiguration.UserMessage userMessage) {
         stub.save(userMessage);
     }

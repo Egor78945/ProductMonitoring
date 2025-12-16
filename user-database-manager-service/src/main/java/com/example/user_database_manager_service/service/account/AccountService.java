@@ -11,17 +11,9 @@ public interface AccountService<A> extends EntityService<A> {
 
     A findByUserUUID(UUID uuid);
 
-    void deleteById(Long id);
+    A findMainByUserUuid(UUID uuid);
 
-    void deleteByAccountUuid(UUID accountUuid);
+    A findMainByUserEmail(String email);
 
-    void deleteByUserUuid(UUID uuid);
-
-    boolean existsById(Long id);
-
-    boolean existsByUUID(UUID uuid);
-
-    boolean existsByUserUUID(UUID userUuuid);
-
-    boolean existsByName(String name);
+    A findByAccountName(String accountName);
 }

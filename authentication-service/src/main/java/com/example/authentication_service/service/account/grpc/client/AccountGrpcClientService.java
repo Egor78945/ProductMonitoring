@@ -9,6 +9,10 @@ public abstract class AccountGrpcClientService extends GrpcClientService<Account
         super(stub);
     }
 
+    public void registerAccount(UserProtoConfiguration.AccountMessage account) {
+        stub.save(account);
+    }
+
     public UserProtoConfiguration.AccountMessage getAccountByUUID(UserProtoConfiguration.StringMessage accountUUID) {
         return stub.getAccountByUUID(accountUUID);
     }
@@ -17,8 +21,16 @@ public abstract class AccountGrpcClientService extends GrpcClientService<Account
         return stub.getAccountByUserUUID(userUUID);
     }
 
-    public void registerAccount(UserProtoConfiguration.AccountMessage account) {
-        stub.save(account);
+    public UserProtoConfiguration.AccountMessage getAccountByName(UserProtoConfiguration.StringMessage accountName) {
+        return stub.getAccountByName(accountName);
+    }
+
+    public UserProtoConfiguration.AccountMessage getMainAccountByUserUUID(UserProtoConfiguration.StringMessage userUUID) {
+        return stub.getMainAccountByUserUUID(userUUID);
+    }
+
+    public UserProtoConfiguration.AccountMessage getMainAccountByUserEmail(UserProtoConfiguration.StringMessage userEmail) {
+        return stub.getMainAccountByUserEmail(userEmail);
     }
 
     public UserProtoConfiguration.BooleanMessage existsAccountByUUID(UserProtoConfiguration.StringMessage accountUUID) {

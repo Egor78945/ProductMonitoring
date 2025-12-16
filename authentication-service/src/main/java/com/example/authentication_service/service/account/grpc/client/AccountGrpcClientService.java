@@ -29,6 +29,10 @@ public abstract class AccountGrpcClientService extends GrpcClientService<Account
         return stub.getMainAccountByUserUUID(userUUID);
     }
 
+    public UserProtoConfiguration.AccountMessage getMainAccountByUserEmail(UserProtoConfiguration.StringMessage userEmail) {
+        return stub.getMainAccountByUserEmail(userEmail);
+    }
+
     public UserProtoConfiguration.BooleanMessage existsAccountByUUID(UserProtoConfiguration.StringMessage accountUUID) {
         return stub.existsAccountByUUID(accountUUID);
     }

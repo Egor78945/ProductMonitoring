@@ -72,6 +72,16 @@ public class AccountServiceGrpc extends AccountProtoServiceGrpc.AccountProtoServ
     }
 
     @Override
+    public void getMainAccountByUserEmail(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.AccountMessage> responseObserver) {
+        try {
+            responseObserver.onNext(accountService.findMainByUserEmail(request.getString()));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
+        }
+    }
+
+    @Override
     public void getAccountByName(UserProtoConfiguration.StringMessage request, StreamObserver<UserProtoConfiguration.AccountMessage> responseObserver) {
         try {
             responseObserver.onNext(accountService.findByAccountName(request.getString()));

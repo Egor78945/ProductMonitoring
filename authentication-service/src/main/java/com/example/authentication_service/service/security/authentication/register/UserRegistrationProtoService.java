@@ -1,4 +1,4 @@
-package com.example.authentication_service.service.security.authentication;
+package com.example.authentication_service.service.security.authentication.register;
 
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.UserRegistrationModel;

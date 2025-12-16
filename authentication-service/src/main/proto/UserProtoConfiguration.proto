@@ -64,4 +64,5 @@ service AccountProtoService {
   rpc getAccountByUserUUID(StringMessage) returns(AccountMessage);
   rpc getAccountByName(StringMessage) returns (AccountMessage);
   rpc getMainAccountByUserUUID(StringMessage) returns(AccountMessage);
+  rpc getMainAccountByUserEmail(StringMessage) returns(AccountMessage);
 }

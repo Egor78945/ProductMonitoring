@@ -44,6 +44,11 @@ public abstract class AccountRepositoryService<A> implements AccountService<A> {
     }
 
     @Override
+    public A findMainByUserEmail(String email) {
+        return accountProtoRepository.getMainByUserEmail(email).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
+    }
+
+    @Override
     public A findByAccountName(String accountName) {
         return accountProtoRepository.getByAccountName(accountName).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND.getMessage()));
     }

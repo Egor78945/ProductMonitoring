@@ -13,5 +13,7 @@ public interface AccountService<A> extends EntityService<A> {
 
     A findMainByUserUuid(UUID uuid);
 
+    A findMainByUserEmail(String email);
+
     A findByAccountName(String accountName);
 }

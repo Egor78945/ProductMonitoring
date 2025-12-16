@@ -14,5 +14,7 @@ public abstract class AccountRepository<A> implements EntityRepository<A> {
 
     public abstract Optional<A> getMainByUserUUID(UUID uuid);
 
+    public abstract Optional<A> getMainByUserEmail(String email);
+
     public abstract Optional<A> getByAccountName(String accountName);
 }

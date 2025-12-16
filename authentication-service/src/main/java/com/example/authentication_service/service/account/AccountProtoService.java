@@ -24,6 +24,11 @@ public abstract class AccountProtoService implements AccountService<UserProtoCon
     }
 
     @Override
+    public UserProtoConfiguration.AccountMessage getMainByUserEmail(String userEmail) {
+        return accountGrpcClientService.getMainAccountByUserEmail(GrpcMessageBuilder.buildFrom(userEmail));
+    }
+
+    @Override
     public UserProtoConfiguration.AccountMessage getByName(String name) {
         return accountGrpcClientService.getAccountByName(GrpcMessageBuilder.buildFrom(name));
     }

@@ -1,9 +1,16 @@
 package com.example.authentication_service.model.security;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.Objects;
 
 public class UserAuthenticationModel {
+    @NotEmpty
+    @NotBlank
     private String username;
+    @NotEmpty
+    @NotBlank
     private String password;
 
     public UserAuthenticationModel(String username, String password) {

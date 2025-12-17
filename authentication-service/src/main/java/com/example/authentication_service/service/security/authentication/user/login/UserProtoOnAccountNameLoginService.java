@@ -2,6 +2,7 @@ package com.example.authentication_service.service.security.authentication.user.
 
 import com.example.authentication_service.model.security.UserAuthenticationModel;
 import com.example.authentication_service.service.account.AccountService;
+import com.example.authentication_service.service.role.mapper.RoleMapper;
 import com.example.authentication_service.service.security.authentication.LoginService;
 import com.example.authentication_service.service.security.authentication.keycloak.login.KeycloakLoginService;
 import com.example.authentication_service.service.user.UserService;
@@ -31,6 +32,6 @@ public abstract class UserProtoOnAccountNameLoginService<T extends UserAuthentic
         keycloakLoginService.login(loginModel);
         UserProtoConfiguration.AccountMessage accountByUserUuid = accountService.getByName(accountName);
 
-        return jwtService.generate(userByAccountName.getEmail(), Map.of("account_uuid", accountByUserUuid.getUuid()));
+        return jwtService.generate(userByAccountName.getEmail(), Map.of("account_uuid", accountByUserUuid.getUuid(), "roles", RoleMapper.mapToString(userByAccountName.getUserRolesList())));
     }
 }

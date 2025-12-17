@@ -37,8 +37,8 @@ public abstract class UserSupplyingRegistrationProtoService implements UserSuppl
         UserProtoConfiguration.AccountMessage savedAccount = accountService.save(accountMessage);
 
         if (!exists) {
-            for (long roleId : registerModel.getUser().getUserRolesList()) {
-                userRoleService.save(UserRoleMapper.map(roleId, UUID.fromString(savedUser.getUuid())));
+            for (UserProtoConfiguration.RoleMessage role : registerModel.getUser().getUserRolesList()) {
+                userRoleService.save(UserRoleMapper.map(role.getRoleId(), UUID.fromString(savedUser.getUuid())));
             }
         }
 

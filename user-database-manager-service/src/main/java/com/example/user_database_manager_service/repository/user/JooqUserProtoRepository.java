@@ -1,7 +1,6 @@
 package com.example.user_database_manager_service.repository.user;
 
 import com.example.grpc.user.UserProtoConfiguration;
-import com.example.user_database_manager_service.service.common.utils.UUIDManager;
 import com.example.user_database_manager_service.service.user.mapper.UserMapper;
 import nu.studer.sample.Tables;
 import org.jooq.DSLContext;

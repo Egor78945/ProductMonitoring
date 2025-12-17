@@ -1,10 +1,11 @@
-package com.example.authentication_service.service.security.authentication.register;
+package com.example.authentication_service.service.security.authentication.user.register;
 
 import com.example.authentication_service.model.account.status.AccountStatusEnumeration;
 import com.example.authentication_service.model.security.UserRegistrationModel;
 import com.example.authentication_service.model.user.role.UserRoleEnumeration;
 import com.example.authentication_service.model.user.status.UserStatusEnumeration;
 import com.example.authentication_service.service.grpc.builder.GrpcMessageBuilder;
+import com.example.authentication_service.service.security.authentication.RegistrationService;
 import com.example.authentication_service.service.security.authentication.grpc.AuthenticationGrpcClientService;
 import com.example.grpc.user.UserProtoConfiguration;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public abstract class UserRegistrationProtoService implements RegistrationService<UserRegistrationModel, UserProtoConfiguration.UserRegistrationMessage> {
     protected final AuthenticationGrpcClientService authenticationGrpcClientService;
 
-    protected UserRegistrationProtoService(AuthenticationGrpcClientService authenticationGrpcClientService) {
+    public UserRegistrationProtoService(AuthenticationGrpcClientService authenticationGrpcClientService) {
         this.authenticationGrpcClientService = authenticationGrpcClientService;
     }
 

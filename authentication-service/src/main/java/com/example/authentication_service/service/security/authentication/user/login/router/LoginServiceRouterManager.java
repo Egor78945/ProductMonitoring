@@ -1,9 +1,9 @@
-package com.example.authentication_service.service.security.authentication.login.router;
+package com.example.authentication_service.service.security.authentication.user.login.router;
 
 import com.example.authentication_service.model.security.UserAuthenticationModel;
-import com.example.authentication_service.service.security.authentication.login.LoginService;
-import com.example.authentication_service.service.security.authentication.login.UserProtoOnAccountNameLoginService;
-import com.example.authentication_service.service.security.authentication.login.UserProtoOnEmailLoginService;
+import com.example.authentication_service.service.security.authentication.LoginService;
+import com.example.authentication_service.service.security.authentication.user.login.UserProtoOnAccountNameLoginService;
+import com.example.authentication_service.service.security.authentication.user.login.UserProtoOnEmailLoginService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

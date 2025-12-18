@@ -8,7 +8,7 @@ message UserMessage {
   string email = 3;
   int64 status_id = 4;
   int64 registered_at = 5;
-  repeated int64 userRoles = 6;
+  repeated RoleMessage userRoles = 6;
 }
 
 message AccountMessage {
@@ -52,6 +52,11 @@ message ProductListMessage {
 message UserRoleMessage {
   string userUUID = 1;
   int64 roleId = 2;
+}
+
+message RoleMessage {
+  int64 roleId = 1;
+  string name = 2;
 }
 
 message UserRegistrationMessage {

@@ -1,11 +1,6 @@
 spring:
   application:
     name: ${API_GATEWAY_HOST}
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT_INNER}/realms/authentication
   cloud:
     gateway:
       routes:
@@ -28,6 +23,11 @@ eureka:
       defaultZone: http://${SERVICE_DISCOVERY_HOST}:${SERVICE_DISCOVERY_PORT_INNER}/eureka
     register-with-eureka: true
     fetch-registry: true
+
+jwt:
+  starter:
+    secret: ${JWT_SECRET}
+    lifetime: ${JWT_LIFETIME}
 
 server:
   port: ${API_GATEWAY_PORT_INNER}

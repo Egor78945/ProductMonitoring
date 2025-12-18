@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 public class GrpcMessageBuilder {
-    public static UserProtoConfiguration.UserMessage buildFrom(String email, UserStatusEnumeration userStatusEnumeration, List<Long> roleIdList) {
+    public static UserProtoConfiguration.UserMessage buildFrom(String email, UserStatusEnumeration userStatusEnumeration, List<UserProtoConfiguration.RoleMessage> roleIdList) {
         return UserProtoConfiguration.UserMessage
                 .newBuilder()
                 .setEmail(email.toLowerCase())

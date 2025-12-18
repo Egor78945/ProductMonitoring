@@ -2,14 +2,15 @@ package com.example.user_database_manager_service.service.user;
 
 import com.example.grpc.user.UserProtoConfiguration;
 import com.example.user_database_manager_service.repository.user.UserRepository;
+import com.example.user_database_manager_service.service.role.RoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserRepositoryProtoTransactionalServiceManager extends UserRepositoryProtoService{
-    public UserRepositoryProtoTransactionalServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userRepository) {
-        super(userRepository);
+public class UserRepositoryProtoTransactionalServiceManager extends UserRepositoryProtoService {
+    public UserRepositoryProtoTransactionalServiceManager(UserRepository<UserProtoConfiguration.UserMessage> userRepository, RoleService<UserProtoConfiguration.RoleMessage> roleService) {
+        super(userRepository, roleService);
     }
 
     @Override

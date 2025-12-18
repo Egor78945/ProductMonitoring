@@ -5,8 +5,8 @@ import com.example.authentication_service.controller.advice.handler.CommonContro
 import com.example.authentication_service.controller.authentication.advice.handler.AuthenticationControllerExceptionHandler;
 import com.example.authentication_service.model.security.UserAuthenticationModel;
 import com.example.authentication_service.model.security.UserRegistrationModel;
-import com.example.authentication_service.service.security.authentication.login.router.LoginServiceRouter;
-import com.example.authentication_service.service.security.authentication.register.RegistrationService;
+import com.example.authentication_service.service.security.authentication.user.login.router.LoginServiceRouter;
+import com.example.authentication_service.service.security.authentication.RegistrationService;
 import com.example.grpc.user.UserProtoConfiguration;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

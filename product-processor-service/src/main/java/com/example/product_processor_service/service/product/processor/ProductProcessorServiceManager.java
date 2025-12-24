@@ -8,6 +8,7 @@ import com.example.product_processor_service.service.product.ProductRegistration
 import com.example.product_processor_service.service.marketplace.manager.router.MarketplaceManagerRouterService;
 import com.example.product_processor_service.service.product.ProductService;
 import com.example.product_processor_service.util.mapper.UrlMapper;
+import com.example.product_processor_service.util.mapper.UserGrpcMapper;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -33,11 +34,20 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
 
         System.out.println("product register before load");
 
-        ProductDTO product = marketplaceManagerRouterService.getByBaseUrl(baseUrl).loadProduct(uri);
+        UserProtoConfiguration.ProductRegistrationMessage productRegistrationModel;
+        if (!productService.existsByUrl(productDTO.getProductUri())) {
+            ProductDTO product = marketplaceManagerRouterService.getByBaseUrl(baseUrl).loadProduct(uri);
+            productRegistrationModel = UserGrpcMapper.mapToProductRegistrationMessage(new ProductRegistrationModel(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), new Date().toInstant().toEpochMilli(), productDTO.getPublisherAccountUuid()));
 
-        System.out.println("product register loaded: " + product);
+            System.out.println("product register loaded: " + product);
 
-        productRegistrationService.register(new ProductRegistrationModel(product.getUrl(), product.getName(), product.getPrice(), product.getPrice(), new Date().toInstant().toEpochMilli(), productDTO.getPublisherAccountUuid()));
+        } else {
+            productRegistrationModel = UserGrpcMapper.mapToProductRegistrationMessage(productDTO.getProductUri(), productDTO.getPublisherAccountUuid());
+
+            System.out.println("create exists product");
+        }
+        productRegistrationService.register(productRegistrationModel);
+        System.out.println("product register after load");
     }
 
     @Override
@@ -61,7 +71,7 @@ public class ProductProcessorServiceManager implements ProductProcessorService {
 
     @Override
     public void delete(ProductPublisherDTO accountProductDeleteDTO) {
-        System.out.println("deleting product of: " +  accountProductDeleteDTO);
+        System.out.println("deleting product of: " + accountProductDeleteDTO);
         productService.deleteByAccountUuidAndProductUrl(UUID.fromString(accountProductDeleteDTO.getPublisherAccountUuid()), URI.create(accountProductDeleteDTO.getProductUri()));
         System.out.println("product deleted: " + accountProductDeleteDTO);
     }

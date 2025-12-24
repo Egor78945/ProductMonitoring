@@ -17,6 +17,10 @@ public class Product {
         this.updatedAt = updatedAt;
     }
 
+    public Product(String url) {
+        this.url = url;
+    }
+
     public Product() {
     }
 

@@ -28,6 +28,7 @@ dependencies {
     implementation "com.google.guava:guava:$guavaVersion"
     implementation "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
     implementation "com.microsoft.playwright:playwright:$playwrightVersion"
+    implementation "com.example:async-spring-boot-starter:$springBootVersion"
     implementation 'org.springframework.kafka:spring-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

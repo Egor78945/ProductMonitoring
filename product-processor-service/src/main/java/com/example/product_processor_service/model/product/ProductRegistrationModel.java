@@ -13,6 +13,11 @@ public class ProductRegistrationModel extends Product {
         this.accountUuid = accountUuid;
     }
 
+    public ProductRegistrationModel(String url, String accountUuid) {
+        super(url);
+        this.accountUuid = accountUuid;
+    }
+
     public ProductRegistrationModel() {
     }
 

@@ -1,6 +1,7 @@
 package com.example.product_processor_service.util.mapper;
 
 import com.example.grpc.user.UserProtoConfiguration;
+import com.example.product_processor_service.model.product.ProductRegistrationModel;
 import com.example.product_processor_service.model.product.entity.Product;
 
 public class UserGrpcMapper {
@@ -34,7 +35,7 @@ public class UserGrpcMapper {
                 .build();
     }
 
-    public static UserProtoConfiguration.ProductMessage mapTo(Product product) {
+    public static UserProtoConfiguration.ProductMessage mapToProductMessage(Product product) {
         return UserProtoConfiguration.ProductMessage.newBuilder()
                 .setUrl(product.getUrl())
                 .setName(product.getName())
@@ -44,9 +45,22 @@ public class UserGrpcMapper {
                 .build();
     }
 
-    public static UserProtoConfiguration.ProductRegistrationMessage mapTo(Product product, String accountUuid) {
+    public static UserProtoConfiguration.ProductMessage mapToProductMessage(String uri) {
+        return UserProtoConfiguration.ProductMessage.newBuilder()
+                .setUrl(uri)
+                .build();
+    }
+
+    public static UserProtoConfiguration.ProductRegistrationMessage mapToProductRegistrationMessage(ProductRegistrationModel productRegistrationModel) {
         return UserProtoConfiguration.ProductRegistrationMessage.newBuilder()
-                .setProduct(mapTo(product))
+                .setProduct(mapToProductMessage(productRegistrationModel))
+                .setAccountUuid(productRegistrationModel.getAccountUuid())
+                .build();
+    }
+
+    public static UserProtoConfiguration.ProductRegistrationMessage mapToProductRegistrationMessage(String uri, String accountUuid) {
+        return UserProtoConfiguration.ProductRegistrationMessage.newBuilder()
+                .setProduct(mapToProductMessage(uri))
                 .setAccountUuid(accountUuid)
                 .build();
     }

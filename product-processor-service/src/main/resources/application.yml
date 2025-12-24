@@ -45,6 +45,10 @@ web:
         width: 1920
         height: 1080
 
+async:
+  starter:
+    thread-pool-size: 30
+
 server:
   port: ${PRODUCT_PROCESSOR_SERVICE_PORT}
 
